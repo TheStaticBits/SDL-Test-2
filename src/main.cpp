@@ -1,7 +1,16 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-int main(int argc, char* args[])
+#include "game.h"
+
+int main(int argc, char* args[]) 
 {
-  std::cout << "Hello again, SDL" << std::endl;
+    Game game;
+
+    if (!game.initSDL())
+        return -1;
+    
+    game.loop();
+    
+    return 0;
 }

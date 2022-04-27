@@ -1,0 +1,62 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C++ Run (Debug)",
+            "detail": "Runs the debug application",
+            "type": "shell",
+            "command": "start ${workspaceFolder}\\bin\\debug\\application.exe"
+        },
+        {
+            "label": "C++ Compile (Debug)",
+            "detail": "Compiles the project with the Makefile",
+            "type": "shell",
+            "command": "make"
+        },
+        {
+            "label": "C++ Compile & Run (Debug)",
+            "detail": "Runs the debug application",
+            "type": "shell",
+            "dependsOn": [
+                "C++ Compile (Debug)",
+                "C++ Run (Debug)"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "C++ Run (Release)",
+            "detail": "Runs the release application",
+            "type": "shell",
+            "command": "start ${workspaceFolder}\\bin\\release\\application.exe"
+        },
+        {
+            "label": "C++ Compile (Release)",
+            "detail": "Compiles the project with the Makefile",
+            "type": "shell",
+            "command": "make release"
+        },
+        {
+            "label": "C++ Compile & Run (Release)",
+            "detail": "Runs the release application",
+            "type": "shell",
+            "dependsOn": [
+                "C++ Compile (Release)",
+                "C++ Run (Release)"
+            ],
+            "dependsOrder": "sequence"
+        },
+        {
+            "label": "C++ Clean Intermediates",
+            "detail": "Deletes intermediate object files",
+            "type": "shell",
+            "command": "make clean"
+        }
+    ]
+}
