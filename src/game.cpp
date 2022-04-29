@@ -1,13 +1,17 @@
 #include "game.h"
 
 #include <iostream>
+#include <unordered_map>
+#include <algorithm>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 #include "window.h"
+#include "player.h"
 
 Game::Game()
+    : player(Vect<float>(50.0f, 50.0f))
 {
 
 }
@@ -33,26 +37,34 @@ bool Game::initSDL() const
 void Game::iteration()
 {
     inputs();
+
+    // Updating
+    player.update(keys);
+
+    Vect<int> renderOffset = player.getRenderOffset();
+
+    // Rendering
+    player.render(window, renderOffset);
+
     window.update();
 }
 
 void Game::loop()
 {
-    while (!quit)
-        iteration();
+    while (!quit) iteration();
 }
 
 void Game::inputs()
 {
-
     while (SDL_PollEvent(&event))
     {
-        if (event.type == SDL_QUIT) quit = true;
+        if (event.type == SDL_QUIT)quit = true;
         else handleKey(event.key.keysym.sym, event.type);
     }
 }
 
 void Game::handleKey(SDL_Keycode& key, Uint32& type)
 {
-    // Add key handling later
+    if (std::find(allowedKeys.begin(), allowedKeys.end(), key) != allowedKeys.end())
+        keys[key] = (type == SDL_KEYDOWN);
 }
