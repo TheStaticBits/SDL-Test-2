@@ -29,6 +29,8 @@ public:
     void render(SDL_Texture* texture, SDL_Rect& pos);
     void render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& pos);
 
+    void drawRect(SDL_Rect& rect, std::vector<Uint8> color);
+
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;

@@ -1,6 +1,7 @@
 #include "window.h"
 
 #include <iostream>
+#include <vector>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -73,4 +74,17 @@ void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& pos)
 {
     if (SDL_RenderCopy(renderer, texture, &src, &pos) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
+}
+
+void Window::drawRect(SDL_Rect& rect, std::vector<Uint8> color)
+{
+    if (color.size() == 4)
+        SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], color[3]);
+    else
+        SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], 255);
+
+    if (SDL_RenderFillRect(renderer, &rect) != 0)
+        std::cout << "[Error] Rendering rect failed: " << SDL_GetError() << std::endl;
+    
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
