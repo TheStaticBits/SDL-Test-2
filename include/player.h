@@ -17,14 +17,15 @@ public:
 
     void operator=(const Player&) = delete;
 
-    void update(std::unordered_map<SDL_Keycode, bool> keys);
+    void update(std::unordered_map<SDL_Keycode, bool> keys, float deltaTime);
     void render(Window& window, Vect<int> renderOffset);
     
     inline Vect<int> getRenderOffset() const { return Vect<int>(static_cast<int>(renderOffset.x),
                                                                 static_cast<int>(renderOffset.y)); }
 
 private:
-    static const int speed = 2;
+    static constexpr int speed = 80; // Pixels per second
+    static constexpr float camTightness = 2.0f; // How tight the camera is on the player (higher is tighter)
 
     Vect<float> pos;
     Vect<int> size;

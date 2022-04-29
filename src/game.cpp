@@ -36,10 +36,11 @@ bool Game::initSDL() const
 
 void Game::iteration()
 {
+    calcDeltaTime();
     inputs();
 
     // Updating
-    player.update(keys);
+    player.update(keys, deltaTime);
 
     Vect<int> renderOffset = player.getRenderOffset();
 
@@ -52,6 +53,13 @@ void Game::iteration()
 void Game::loop()
 {
     while (!quit) iteration();
+}
+
+void Game::calcDeltaTime()
+{
+    int currentTime = SDL_GetTicks();
+    deltaTime = (currentTime - lastTime) / 1000.0f;
+    lastTime = currentTime;
 }
 
 void Game::inputs()

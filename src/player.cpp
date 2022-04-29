@@ -22,15 +22,15 @@ Player::~Player()
     // Destroy image/animations (currently none)
 }
 
-void Player::update(std::unordered_map<SDL_Keycode, bool> keys)
+void Player::update(std::unordered_map<SDL_Keycode, bool> keys, float deltaTime)
 {
-    pos.x += (keys[SDLK_d] - keys[SDLK_a]) * speed;
-    pos.y += (keys[SDLK_s] - keys[SDLK_w]) * speed;
+    pos.x += (keys[SDLK_d] - keys[SDLK_a]) * speed * deltaTime;
+    pos.y += (keys[SDLK_s] - keys[SDLK_w]) * speed * deltaTime;
 
     // Moving towards player's position
-    Vect<float> offset = getOffset();
-    renderOffset.x -= (renderOffset.x - offset.x) / 25;
-    renderOffset.y -= (renderOffset.y - offset.y) / 25;
+    Vect<float> offset = getOffset(); 
+    renderOffset.x -= (renderOffset.x - offset.x) * camTightness * deltaTime;
+    renderOffset.y -= (renderOffset.y - offset.y) * camTightness * deltaTime;
 }
 
 void Player::render(Window& window, Vect<int> renderOffset)
@@ -41,9 +41,6 @@ void Player::render(Window& window, Vect<int> renderOffset)
         size.x, 
         size.y
     };
-
-    std::cout << "Rendering player at " << pos.x << ", " << pos.y << std::endl;
-    std::cout << "renderOffset: " << renderOffset.x << ", " << renderOffset.y << std::endl;
 
     window.drawRect(renderTo, {255, 255, 255});
 }

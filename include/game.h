@@ -35,8 +35,13 @@ private:
     Player player;
 
     SDL_Event event;
+
+    int lastTime;
+    float deltaTime;
     
     void iteration();
+
+    void calcDeltaTime();
 
     void inputs();
     void handleKey(SDL_Keycode& key, Uint32& type);
