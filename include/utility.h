@@ -16,4 +16,11 @@ namespace util
 
         return result;
     }
+
+    template <typename T>
+    inline void lock(T& number, T max, T min)
+    {
+        if (number < min) number = min;
+        else if (number > max) number = max;
+    }
 };

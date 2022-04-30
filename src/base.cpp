@@ -23,13 +23,12 @@ Base::~Base()
 }
 
 void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
-                  std::unordered_map<SDL_Keycode, bool>& oneTimeKeys,
                   std::unordered_map<Uint8, bool>& mouseButtons, 
                   Vect<int>& mousePos,
                   Vect<int>& renderOffset)
 {
     // Temporary
-    if (oneTimeKeys[SDLK_SPACE])
+    if (keys[SDLK_SPACE] && !placing)
     {
         placing = true;
         objects.push_back(Interactable({40, 40}, {2, 2}, {255, 255, 255}));

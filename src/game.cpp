@@ -14,7 +14,7 @@
 #include "base.h"
 
 Game::Game()
-    : mousePos{0, 0}, player(Vect<float>(0.0f, 0.0f)), quit(false), lastTime(0), deltaTime(0.0f)
+    : mousePos{0, 0}, player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), quit(false), lastTime(0), deltaTime(0.0f)
 {
 
 }
@@ -43,9 +43,9 @@ void Game::iteration()
     inputs();
 
     // Updating
-    player.update(keys, deltaTime);
+    player.update(keys, base, deltaTime);
     Vect<int> renderOffset = player.getRenderOffset();
-    base.update(keys, oneTimeKeys, mouseButtons, mousePos, renderOffset);
+    base.update(keys, mouseButtons, mousePos, renderOffset);
 
     // Rendering
     base.render(window, renderOffset);
@@ -70,7 +70,6 @@ void Game::inputs()
 {
     // Resetting
     mouseButtons.clear();
-    oneTimeKeys.clear();
 
     SDL_Event event;
 
@@ -100,6 +99,5 @@ void Game::handleKey(SDL_Keycode& key, Uint32& type)
     if (std::find(allowedKeys.begin(), allowedKeys.end(), key) != allowedKeys.end())
     {
         keys[key] = (type == SDL_KEYDOWN);
-        oneTimeKeys[key] = (type == SDL_KEYDOWN);
     }
 }
