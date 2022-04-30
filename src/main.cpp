@@ -11,6 +11,6 @@ int main(int argc, char* args[])
         return -1;
     
     game.loop();
-    
+   
     return 0;
 }

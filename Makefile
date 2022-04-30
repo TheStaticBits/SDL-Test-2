@@ -7,6 +7,7 @@ CPATH = bin/intermediates
 
 IFLAGS = -IC:/SDL2/include -IC:/JSON_Parse -I$(IPATH)
 LFLAGS = -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+DFLAGS = -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread
 OFLAGS = -Wall
 FLAGS = $(IFLAGS) $(LFLAGS) $(OFLAGS)
 
@@ -15,6 +16,7 @@ FLAGS = $(IFLAGS) $(LFLAGS) $(OFLAGS)
 default: FLAGS += -g
 default: application.exe
 
+release: FLAGS += $(DFLAGS)
 release: FLAGS += -O3
 release: OUTPUT = bin/release/application.exe
 release: application.exe

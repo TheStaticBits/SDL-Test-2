@@ -11,7 +11,7 @@
 #include "player.h"
 
 Game::Game()
-    : player(Vect<float>(50.0f, 50.0f))
+    : quit(false), player(Vect<float>(50.0f, 50.0f))
 {
 
 }
