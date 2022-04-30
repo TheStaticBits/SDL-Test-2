@@ -24,13 +24,13 @@ Player::~Player()
 
 void Player::update(std::unordered_map<SDL_Keycode, bool> keys, float deltaTime)
 {
-    pos.x += (keys[SDLK_d] - keys[SDLK_a]) * speed * deltaTime;
-    pos.y += (keys[SDLK_s] - keys[SDLK_w]) * speed * deltaTime;
+    pos.x += (keys[SDLK_d] - keys[SDLK_a]) * SPEED * deltaTime;
+    pos.y += (keys[SDLK_s] - keys[SDLK_w]) * SPEED * deltaTime;
 
     // Moving towards player's position
     Vect<float> offset = getOffset(); 
-    renderOffset.x -= (renderOffset.x - offset.x) * camTightness * deltaTime;
-    renderOffset.y -= (renderOffset.y - offset.y) * camTightness * deltaTime;
+    renderOffset.x -= (renderOffset.x - offset.x) * CAM_TIGHTNESS * deltaTime;
+    renderOffset.y -= (renderOffset.y - offset.y) * CAM_TIGHTNESS * deltaTime;
 }
 
 void Player::render(Window& window, Vect<int> renderOffset)

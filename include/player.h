@@ -24,8 +24,8 @@ public:
                                                                 static_cast<int>(renderOffset.y)); }
 
 private:
-    static constexpr int speed = 80; // Pixels per second
-    static constexpr float camTightness = 2.0f; // How tight the camera is on the player (higher is tighter)
+    static constexpr int SPEED = 80; // Pixels per second
+    static constexpr float CAM_TIGHTNESS = 2.0f; // How tight the camera is on the player (higher is tighter)
 
     Vect<float> pos;
     Vect<int> size;

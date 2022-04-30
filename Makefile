@@ -23,13 +23,13 @@ release: application.exe
 
 # --------------------------------
 
-application.exe: $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o
-	$(CC) $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(FLAGS) -o $(OUTPUT)
+application.exe: $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o
+	$(CC) $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(FLAGS) -o $(OUTPUT)
 
 $(CPATH)/main.o: $(SPATH)/main.cpp $(IPATH)/game.h
 	$(CC) -c $(SPATH)/main.cpp $(FLAGS) -o $(CPATH)/main.o
 
-$(CPATH)/game.o: $(SPATH)/game.cpp $(IPATH)/game.h $(IPATH)/window.h $(IPATH)/player.h
+$(CPATH)/game.o: $(SPATH)/game.cpp $(IPATH)/game.h $(IPATH)/window.h $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/base.h 
 	$(CC) -c $(SPATH)/game.cpp $(FLAGS) -o $(CPATH)/game.o
 
 $(CPATH)/window.o: $(SPATH)/window.cpp $(IPATH)/window.h $(IPATH)/vector.h $(IPATH)/utility.h
@@ -37,6 +37,12 @@ $(CPATH)/window.o: $(SPATH)/window.cpp $(IPATH)/window.h $(IPATH)/vector.h $(IPA
 
 $(CPATH)/player.o: $(SPATH)/player.cpp $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/window.h
 	$(CC) -c $(SPATH)/player.cpp $(FLAGS) -o $(CPATH)/player.o
+
+$(CPATH)/interactable.o: $(SPATH)/interactable.cpp $(IPATH)/interactable.h $(IPATH)/vector.h $(IPATH)/window.h
+	$(CC) -c $(SPATH)/interactable.cpp $(FLAGS) -o $(CPATH)/interactable.o
+
+$(CPATH)/base.o: $(SPATH)/base.cpp $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/window.h $(IPATH)/interactable.h
+	$(CC) -c $(SPATH)/base.cpp $(FLAGS) -o $(CPATH)/base.o
 
 clean:
 	-rm $(CPATH)/*.o

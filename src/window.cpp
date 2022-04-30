@@ -13,7 +13,7 @@ Window::Window()
     : window(NULL), renderer(NULL)
 {
     // Setting up window
-    window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, R_WIN_WIDTH, R_WIN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, R_WIN_WIDTH, R_WIN_HEIGHT, SDL_WINDOW_SHOWN);
 
     if (window == NULL)
         std::cout << "[Error] Window creation failed: " << SDL_GetError() << std::endl;

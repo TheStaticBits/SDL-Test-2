@@ -9,6 +9,8 @@
 
 #include "window.h"
 #include "player.h"
+#include "vector.h"
+#include "base.h"
 
 class Game
 {
@@ -24,17 +26,18 @@ public:
 
 private:
     inline static const std::vector<SDL_Keycode> allowedKeys = {
-        SDLK_w, SDLK_s, SDLK_a, SDLK_d,
+        SDLK_w, SDLK_s, SDLK_a, SDLK_d, SDLK_RETURN, SDLK_SPACE
     };
 
     std::unordered_map<SDL_Keycode, bool> keys;
+    std::unordered_map<Uint8, bool> mouseButtons;
+    Vect<int> mousePos;
 
     Window window;
-    bool quit;
-
     Player player;
+    Base base;
 
-    SDL_Event event;
+    bool quit;
 
     int lastTime;
     float deltaTime;
