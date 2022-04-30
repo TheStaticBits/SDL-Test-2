@@ -22,13 +22,14 @@ Base::~Base()
 
 }
 
-void Base::update(std::unordered_map<SDL_Keycode, bool>& keys, 
+void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
+                  std::unordered_map<SDL_Keycode, bool>& oneTimeKeys,
                   std::unordered_map<Uint8, bool>& mouseButtons, 
                   Vect<int>& mousePos,
                   Vect<int>& renderOffset)
 {
     // Temporary
-    if (keys[SDLK_SPACE])
+    if (oneTimeKeys[SDLK_SPACE])
     {
         placing = true;
         objects.push_back(Interactable({40, 40}, {2, 2}, {255, 255, 255}));
@@ -54,11 +55,8 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
         {
             if (obj.isPlacing())
             {
-                // Centering
                 placeTile.x -= (int)floor(obj.getTileSize().x / 2);
                 placeTile.y -= (int)floor(obj.getTileSize().y / 2);
-
-                // placeTile.print();
 
                 Vect<int> screenPos;
                 screenPos.x = placeTile.x * TILE_SIZE;
@@ -81,7 +79,6 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
             }
         }
     }
-    //else std::cout << "Not placing" << std::endl;
 
     for (Interactable& obj : objects)
         obj.update();

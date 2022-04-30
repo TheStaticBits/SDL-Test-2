@@ -43,7 +43,5 @@ void Interactable::render(Window& window, Vect<int>& renderOffset)
         }
     }
 
-    // std::cout << "Rendering at " << render.x << ", " << render.y << std::endl;
-
     window.drawRect(render, color);
 }

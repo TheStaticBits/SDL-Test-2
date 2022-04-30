@@ -45,7 +45,7 @@ void Game::iteration()
     // Updating
     player.update(keys, deltaTime);
     Vect<int> renderOffset = player.getRenderOffset();
-    base.update(keys, mouseButtons, mousePos, renderOffset);
+    base.update(keys, oneTimeKeys, mouseButtons, mousePos, renderOffset);
 
     // Rendering
     base.render(window, renderOffset);
@@ -68,8 +68,9 @@ void Game::calcDeltaTime()
 
 void Game::inputs()
 {
-    // Resetting mouse presses
+    // Resetting
     mouseButtons.clear();
+    oneTimeKeys.clear();
 
     SDL_Event event;
 
@@ -97,5 +98,8 @@ void Game::inputs()
 void Game::handleKey(SDL_Keycode& key, Uint32& type)
 {
     if (std::find(allowedKeys.begin(), allowedKeys.end(), key) != allowedKeys.end())
+    {
         keys[key] = (type == SDL_KEYDOWN);
+        oneTimeKeys[key] = (type == SDL_KEYDOWN);
+    }
 }
