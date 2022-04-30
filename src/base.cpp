@@ -31,7 +31,7 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     if (keys[SDLK_SPACE])
     {
         placing = true;
-        objects.push_back(Interactable({20, 20}, {1, 1}, {255, 255, 255}));
+        objects.push_back(Interactable({40, 40}, {2, 2}, {255, 255, 255}));
     }
 
     for (Interactable& obj : objects)
@@ -44,6 +44,12 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
         placeTile.x = (int)floor((mousePos.x + renderOffset.x) / TILE_SIZE);
         placeTile.y = (int)floor((mousePos.y + renderOffset.y) / TILE_SIZE);
 
+        // Changing floor to ceil for negatives
+        if (mousePos.x + renderOffset.x < 0)
+            placeTile.x -= 1;
+        if (mousePos.y + renderOffset.y < 0)
+            placeTile.y -= 1;
+
         for (Interactable& obj : objects)
         {
             if (obj.isPlacing())
@@ -52,9 +58,11 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                 placeTile.x -= (int)floor(obj.getTileSize().x / 2);
                 placeTile.y -= (int)floor(obj.getTileSize().y / 2);
 
+                // placeTile.print();
+
                 Vect<int> screenPos;
-                screenPos.x = placeTile.x * TILE_SIZE - renderOffset.x;
-                screenPos.y = placeTile.y * TILE_SIZE - renderOffset.y;
+                screenPos.x = placeTile.x * TILE_SIZE;
+                screenPos.y = placeTile.y * TILE_SIZE;
 
                 obj.setPos(screenPos);
 
@@ -73,6 +81,10 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
             }
         }
     }
+    //else std::cout << "Not placing" << std::endl;
+
+    for (Interactable& obj : objects)
+        obj.update();
 }
 
 void Base::render(Window& window, Vect<int> renderOffset)

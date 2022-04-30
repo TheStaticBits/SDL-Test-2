@@ -14,7 +14,7 @@
 #include "base.h"
 
 Game::Game()
-    : player(Vect<float>(50.0f, 50.0f)), quit(false)
+    : mousePos{0, 0}, player(Vect<float>(0.0f, 0.0f)), quit(false), lastTime(0), deltaTime(0.0f)
 {
 
 }

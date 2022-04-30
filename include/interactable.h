@@ -24,7 +24,7 @@ public:
 
     void update();
 
-    void render(Window& window, Vect<int> renderOffset);
+    void render(Window& window, Vect<int>& renderOffset);
 
     inline bool isPlacing() const { return placing; }
     inline void setPlacable(bool canPlace) { placable = canPlace; }
