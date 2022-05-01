@@ -26,10 +26,7 @@ Platform::~Platform()
 
 bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
 {
-    if (!genCanPlace(pos, objects, size))
-        return false;
-
-    return true;
+    return genCanPlace(pos, objects, size);
 }
 
 void Platform::update()

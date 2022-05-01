@@ -35,9 +35,10 @@ public:
     void drawRect(SDL_Rect& rect, std::vector<Uint8> color);
 
 private:
+    static constexpr char* TITLE = (char*)"Game again";
+    static constexpr bool VSYNC = false;
+
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Texture* mini;
-
-    static constexpr char* TITLE = (char*)"Game again";
 };
