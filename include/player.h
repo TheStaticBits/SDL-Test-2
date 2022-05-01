@@ -29,8 +29,8 @@ public:
                                                                 static_cast<int>(renderOffset.y)); }
 
 private:
-    static constexpr int SPEED = 80; // Pixels per second
-    static constexpr float CAM_TIGHTNESS = 4.0f; // How tight the camera is on the player (higher is tighter)
+    static constexpr int SPEED = 120; // Pixels per second
+    static constexpr float CAM_TIGHTNESS = 3.75f; // How tight the camera is on the player (higher is tighter)
 
     static constexpr int JUMP_SPEED = -400; 
     static constexpr int GRAVITY = -800; 
