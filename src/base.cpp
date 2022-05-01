@@ -30,7 +30,7 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                   Vect<int>& renderOffset)
 {
     // Temporary
-    if (keys[SDLK_SPACE] && !placing)
+    if (mouseButtons[SDL_BUTTON_RIGHT] && !placing)
     {
         placing = true;
         objects.push_back(std::make_unique<Platform>(4));
