@@ -24,6 +24,7 @@ Window::Window()
     // Setting up mini window
     mini = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WIN_WIDTH, WIN_HEIGHT);
 
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetTextureBlendMode(mini, SDL_BLENDMODE_BLEND);
 }
 

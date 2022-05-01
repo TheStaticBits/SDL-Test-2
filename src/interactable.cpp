@@ -33,7 +33,7 @@ void Interactable::render(Window& window, Vect<int>& renderOffset)
     std::vector<Uint8> color = renderColor;
     if (placing) // Alphafied
     {
-        color[3] = 128;
+        color.push_back(hoveringAlpha);
 
         if (!placable) // Redified
         {

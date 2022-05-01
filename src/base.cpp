@@ -85,6 +85,9 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
 
 void Base::render(Window& window, Vect<int> renderOffset)
 {
+    SDL_Rect background = {-renderOffset.x, -renderOffset.y, size.x, size.y};
+    window.drawRect(background, {0, 0, 255, 255});
+
     for (Interactable& obj : objects)
         obj.render(window, renderOffset);
 }

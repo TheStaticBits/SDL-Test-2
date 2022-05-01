@@ -63,16 +63,16 @@ void Player::render(Window& window, Vect<int> renderOffset)
 Vect<float> Player::getOffset() // Percise offset for rendering the player, not moving one
 {
     return Vect<float>(static_cast<float>(pos.x + size.x / 2 - WIN_WIDTH / 2 ), 
-                       static_cast<float>(pos.y + size.y / 2 - WIN_HEIGHT / 2));
+                       static_cast<float>(pos.y + size.y / 2 - WIN_HEIGHT / 1.5));
 }
 
 void Player::collisions(Base& base)
 {
-    util::lock(pos.x, (float)base.getSize().x, 0.0f);
-    util::lock(pos.y, (float)base.getSize().y, 0.0f);
+    util::lock(pos.x, (float)base.getSize().x - size.x, 0.0f);
+    util::lock(pos.y, (float)base.getSize().y - size.y, 0.0f);
 
     // Landed on surface
-    if (pos.y == (float)base.getSize().y)
+    if (pos.y == (float)base.getSize().y - size.y)
     {
         velocity.y = 0;
         jump = false;
