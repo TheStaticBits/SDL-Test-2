@@ -31,6 +31,7 @@ public:
     void render(Window& window, Vect<int> renderOffset);
 
     inline Vect<int> getSize() const { return size; }
+    inline std::vector<std::unique_ptr<Interactable>>& getObjects() { return objects; }
 
 private:
     Vect<int> size;

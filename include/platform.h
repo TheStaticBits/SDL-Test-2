@@ -11,6 +11,7 @@
 #include "window.h"
 #include "base.h"
 #include "interactable.h"
+#include "utility.h"
 
 class Platform : public Interactable
 {
@@ -20,10 +21,9 @@ public:
 
     void operator=(const Platform&) = delete;
 
-    bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& otherObjects);
+    bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) override;
 
-    void update();
-
+    void update() override;
     void render(Window& window, Vect<int> renderOffset);
 
 private:

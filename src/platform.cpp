@@ -11,6 +11,7 @@
 #include "window.h"
 #include "base.h"
 #include "interactable.h"
+#include "utility.h"
 
 Platform::Platform(const int tileWidth)
     : Interactable({TILE_SIZE * tileWidth, TILE_SIZE}, {tileWidth, 1}, {0, 255, 0})
@@ -23,19 +24,21 @@ Platform::~Platform()
 
 }
 
-bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& otherObjects)
+bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
 {
+    if (!genCanPlace(pos, objects, size))
+        return false;
+
     return true;
 }
 
 void Platform::update()
 {
-    std::cout << "CHILD" << std::endl;
+
 }
 
 void Platform::render(Window& window, Vect<int> renderOffset)
 {
-    std::cout << "CHILD" << std::endl;
-
+    std::cout << "Child" << std::endl;
     Interactable::render(window, renderOffset);
 }
