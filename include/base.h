@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
+#include <memory>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -9,6 +11,9 @@
 #include "vector.h"
 #include "window.h"
 #include "interactable.h"
+#include "platform.h"
+
+inline const int TILE_SIZE = 20;
 
 class Base
 {
@@ -28,11 +33,9 @@ public:
     inline Vect<int> getSize() const { return size; }
 
 private:
-    static constexpr int TILE_SIZE = 20;
-
     Vect<int> size;
 
-    std::vector<Interactable> objects;
+    std::vector<std::unique_ptr<Interactable>> objects;
 
     bool placing;
 };

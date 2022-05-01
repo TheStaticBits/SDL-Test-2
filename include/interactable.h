@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -19,10 +20,9 @@ public:
 
     void operator=(const Interactable&) = delete;
 
-    // virtual bool canPlace(const Vect<int>& pos, std::vector<Interactable> otherObjects) = 0;
-    bool canPlace(const std::vector<Interactable>& otherObjects) const { return true; } // For now, so this class isn't Abstract
+    virtual bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& otherObjects) = 0;
 
-    void update();
+    virtual void update() = 0;
 
     void render(Window& window, Vect<int>& renderOffset);
 
@@ -32,8 +32,8 @@ public:
     inline void setPos(Vect<int> pos) { renderPos.x = pos.x; renderPos.y = pos.y; }
     inline void completePlace() { placing = false; }
 
-private:
-    static constexpr int hoveringAlpha = 128;
+protected:
+    static constexpr int hoveringAlpha = 150;
 
     // SDL_Texture* image; // Add image later
     SDL_Rect renderPos; // Top left corner

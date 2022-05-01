@@ -20,10 +20,6 @@ Interactable::~Interactable()
     // SDL_DestroyTexture(image);
 }
 
-void Interactable::update()
-{
-}
-
 void Interactable::render(Window& window, Vect<int>& renderOffset)
 {
     SDL_Rect render = renderPos;

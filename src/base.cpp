@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <memory>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -10,6 +11,7 @@
 #include "vector.h"
 #include "window.h"
 #include "interactable.h"
+#include "platform.h"
 
 Base::Base()
     : size{R_WIN_WIDTH, R_WIN_HEIGHT}, placing(false)
@@ -31,11 +33,11 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     if (keys[SDLK_SPACE] && !placing)
     {
         placing = true;
-        objects.push_back(Interactable({40, 40}, {2, 2}, {255, 255, 255}));
+        objects.push_back(std::make_unique<Platform>(4));
     }
 
-    for (Interactable& obj : objects)
-        obj.update();
+    for (std::unique_ptr<Interactable>& obj : objects)
+        obj->update();
 
     if (placing)
     {
@@ -50,37 +52,34 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
         if (mousePos.y + renderOffset.y < 0)
             placeTile.y -= 1;
 
-        for (Interactable& obj : objects)
+        for (std::unique_ptr<Interactable>& obj : objects)
         {
-            if (obj.isPlacing())
+            if (obj->isPlacing())
             {
-                placeTile.x -= (int)floor(obj.getTileSize().x / 2);
-                placeTile.y -= (int)floor(obj.getTileSize().y / 2);
+                placeTile.x -= (int)floor(obj->getTileSize().x / 2);
+                placeTile.y -= (int)floor(obj->getTileSize().y / 2);
 
                 Vect<int> screenPos;
                 screenPos.x = placeTile.x * TILE_SIZE;
                 screenPos.y = placeTile.y * TILE_SIZE;
 
-                obj.setPos(screenPos);
+                obj->setPos(screenPos);
 
-                if (obj.canPlace(objects))
+                if (obj->canPlace(screenPos, objects))
                 {
-                    obj.setPlacable(true);
+                    obj->setPlacable(true);
 
                     if (mouseButtons[SDL_BUTTON_LEFT])
                     {
                         placing = false;
-                        obj.completePlace();
+                        obj->completePlace();
                     }
                 }
                 else
-                    obj.setPlacable(false);
+                    obj->setPlacable(false);
             }
         }
     }
-
-    for (Interactable& obj : objects)
-        obj.update();
 }
 
 void Base::render(Window& window, Vect<int> renderOffset)
@@ -88,6 +87,6 @@ void Base::render(Window& window, Vect<int> renderOffset)
     SDL_Rect background = {-renderOffset.x, -renderOffset.y, size.x, size.y};
     window.drawRect(background, {0, 0, 255, 255});
 
-    for (Interactable& obj : objects)
-        obj.render(window, renderOffset);
+    for (std::unique_ptr<Interactable>& obj : objects)
+        obj->render(window, renderOffset);
 }
