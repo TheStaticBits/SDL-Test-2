@@ -1,6 +1,7 @@
 #include "base.h"
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <cmath>
 #include <memory>
@@ -8,13 +9,16 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include <nlohmann/json.hpp>
+
 #include "vector.h"
 #include "window.h"
 #include "interactable.h"
 #include "platform.h"
 
 Base::Base()
-    : size{R_WIN_WIDTH, R_WIN_HEIGHT}, placing(false)
+    : buildingData(nlohmann::json::parse(std::ifstream(bDataPath))), 
+      size{R_WIN_WIDTH, R_WIN_HEIGHT}, placing(false)
 {
 
 }

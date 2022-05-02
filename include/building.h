@@ -7,25 +7,26 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "vector.h"
-#include "window.h"
-#include "base.h"
-#include "interactable.h"
-#include "utility.h"
+#include <nlohmann/json.hpp>
 
-class Platform : public Interactable
+#include "vector.h"
+#include "interactable.h"
+
+// Contains more specific code, for each building
+// Buildings will inherit from this class
+class Building : public Interactable
 {
 public:
-    Platform(const int tileWidth);
-    ~Platform();
+    Building();
+    ~Building();
 
-    void operator=(const Platform&) = delete;
+    void operator=(const Building&) = delete;
 
     bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size, nlohmann::json bData) override;
 
     void update() override;
     void render(Window& window, Vect<int> renderOffset) override;
 
-private:
-
-};
+protected:
+    int buildingTimer;
+}

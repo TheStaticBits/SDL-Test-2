@@ -24,7 +24,7 @@ Platform::~Platform()
 
 }
 
-bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
+bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size, nlohmann::json bData)
 {
     return genCanPlace(pos, objects, size);
 }
@@ -38,5 +38,5 @@ void Platform::render(Window& window, Vect<int> renderOffset)
 {
     std::cout << "Child" << std::endl;
     // Add rendering for the supports of the platform
-    Interactable::renderTiles(window, renderOffset);
+    Interactable::genRender(window, renderOffset);
 }

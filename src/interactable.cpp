@@ -20,6 +20,7 @@ Interactable::~Interactable()
     // SDL_DestroyTexture(image);
 }
 
+// General canPlace function that every canPlace function should use somewhere
 bool Interactable::genCanPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
 {
     // If the platform is touching any other object besides itself
@@ -38,7 +39,7 @@ bool Interactable::genCanPlace(const Vect<int>& pos, std::vector<std::unique_ptr
 }
 
 
-void Interactable::render(Window& window, Vect<int>& renderOffset)
+void Interactable::genRender(Window& window, Vect<int>& renderOffset)
 {
     SDL_Rect render = renderPos;
     render.x -= renderOffset.x;

@@ -8,6 +8,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include <nlohmann/json.hpp>
+
 #include "vector.h"
 #include "window.h"
 #include "interactable.h"
@@ -34,6 +36,9 @@ public:
     inline std::vector<std::unique_ptr<Interactable>>& getObjects() { return objects; }
 
 private:
+    static constexpr char* bDataPath = (char*)"data/buildings.json";
+    nlohmann::json buildingData;
+
     Vect<int> size;
 
     std::vector<std::unique_ptr<Interactable>> objects;
