@@ -25,7 +25,7 @@ public:
 
     virtual void update() = 0;
 
-    void render(Window& window, Vect<int>& renderOffset);
+    void renderTiles(Window& window, Vect<int>& renderOffset);
 
     inline bool isPlacing() const { return placing; }
     inline void setPlacable(bool canPlace) { placable = canPlace; }
