@@ -36,7 +36,7 @@ public:
 
 private:
     static constexpr char* TITLE = (char*)"Game again";
-    static constexpr bool VSYNC = false;
+    static constexpr bool VSYNC = true;
 
     SDL_Window* window;
     SDL_Renderer* renderer;
