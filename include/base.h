@@ -14,6 +14,7 @@
 #include "window.h"
 #include "interactable.h"
 #include "platform.h"
+#include "building.h"
 
 inline const int TILE_SIZE = 20;
 

@@ -18,7 +18,7 @@
 class Building : public Interactable
 {
 public:
-    Building(Vect<int> tileSize, std::vector<Uint8>& color);
+    Building(Vect<int> tileSize, std::vector<Uint8> color);
     ~Building();
 
     void operator=(const Building&) = delete;
@@ -29,5 +29,6 @@ public:
     void render(Window& window, Vect<int> renderOffset) override;
 
 protected:
+    bool beingBuilt;
     int buildingTimer;
 };

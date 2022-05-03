@@ -15,6 +15,7 @@
 #include "window.h"
 #include "interactable.h"
 #include "platform.h"
+#include "building.h"
 
 Base::Base()
     : buildingData(nlohmann::json::parse(std::ifstream(bDataPath))), 
@@ -33,11 +34,19 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                   Vect<int>& mousePos,
                   Vect<int>& renderOffset)
 {
-    // Temporary
-    if (mouseButtons[SDL_BUTTON_RIGHT] && !placing)
+    if (!placing)
     {
-        placing = true;
-        objects.push_back(std::make_unique<Platform>(4));
+        // Temporary
+        if (keys[SDLK_SPACE])
+        {
+            placing = true;
+            objects.push_back(std::make_unique<Platform>(4));
+        } 
+        if (mouseButtons[SDL_BUTTON_RIGHT])
+        {
+            placing = true;
+            objects.push_back(std::make_unique<Building>(Vect<int>{2, 3}, std::vector<Uint8>{0, 255, 255}));
+        }
     }
 
     for (std::unique_ptr<Interactable>& obj : objects)

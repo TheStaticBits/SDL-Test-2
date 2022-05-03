@@ -13,8 +13,8 @@
 #include "base.h"
 #include "interactable.h"
 
-Building::Building(Vect<int> tileSize, std::vector<Uint8>& color)
-    : Interactable({tileSize.x / TILE_SIZE, tileSize.y / TILE_SIZE}, tileSize, color, BuildingType), buildingTimer(0)
+Building::Building(Vect<int> tileSize, std::vector<Uint8> color)
+    : Interactable({tileSize.x * TILE_SIZE, tileSize.y * TILE_SIZE}, tileSize, color, BuildingType), buildingTimer(0)
 {
 
 }
@@ -26,7 +26,7 @@ Building::~Building()
 
 bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size, nlohmann::json bData)
 {
-    if (genCanPlace(pos, objects, size)) return false;
+    if (!genCanPlace(pos, objects, size)) return false;
 
     int pChecked = 0; // Tiles of the building base with a platform below
 
@@ -34,18 +34,23 @@ bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
     {
         if (obj->getType() == PlatformType)
         {
+            SDL_Rect objRect = obj->getRect();
             // If the platform is at the bottom of the building
-            if (obj->getRect().y == renderPos.y + renderPos.h)
+            if (objRect.y == pos.y + renderPos.h)
             {
-                int pixelsBeneath = obj->getRect().w
+                // If the platform is at least partially in the building
+                if (objRect.x + objRect.w > pos.x && objRect.x < pos.x + renderPos.w)
+                {
+                    int pixelsBeneath = obj->getRect().w;
 
-                // Removing pixels off the side
-                if (obj->getRect().x < renderPos.x)
-                    pixelsBeneath -= renderPos.x - obj->getRect().x;
-                if (obj->getRect().x > renderPos.x)
-                    pixelsBeneath -= obj->getRect().x - renderPos.x;
-                
-                pChecked += pixelsBeneath;
+                    // Removing pixels off the side
+                    if (objRect.x < pos.x)
+                        pixelsBeneath -= pos.x - objRect.x;
+                    if (objRect.x + objRect.w > pos.x + renderPos.w)
+                        pixelsBeneath -= (objRect.x + objRect.w) - (pos.x + renderPos.w);
+                    
+                    pChecked += pixelsBeneath;
+                }
             }
         }
     }
