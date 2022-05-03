@@ -36,7 +36,6 @@ void Platform::update()
 
 void Platform::render(Window& window, Vect<int> renderOffset)
 {
-    std::cout << "Child" << std::endl;
     // Add rendering for the supports of the platform
     Interactable::genRender(window, renderOffset);
 }

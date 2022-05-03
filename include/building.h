@@ -10,6 +10,7 @@
 #include <nlohmann/json.hpp>
 
 #include "vector.h"
+#include "base.h"
 #include "interactable.h"
 
 // Contains more specific code, for each building
@@ -17,7 +18,7 @@
 class Building : public Interactable
 {
 public:
-    Building();
+    Building(Vect<int> tileSize, std::vector<Uint8>& color);
     ~Building();
 
     void operator=(const Building&) = delete;
@@ -29,4 +30,4 @@ public:
 
 protected:
     int buildingTimer;
-}
+};

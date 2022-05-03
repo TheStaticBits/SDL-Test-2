@@ -69,7 +69,7 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
 
                 obj->setPos(screenPos);
 
-                if (obj->canPlace(screenPos, objects, size))
+                if (obj->canPlace(screenPos, objects, size, buildingData))
                 {
                     obj->setPlacable(true);
 

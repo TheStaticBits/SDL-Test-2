@@ -10,10 +10,11 @@
 #include <nlohmann/json.hpp>
 
 #include "vector.h"
+#include "base.h"
 #include "interactable.h"
 
-Building::Building()
-    : buildingTimer(0)
+Building::Building(Vect<int> tileSize, std::vector<Uint8>& color)
+    : Interactable({tileSize.x / TILE_SIZE, tileSize.y / TILE_SIZE}, tileSize, color), buildingTimer(0)
 {
 
 }
@@ -36,5 +37,5 @@ void Building::update()
 void Building::render(Window& window, Vect<int> renderOffset)
 {
     // more code here?? perhaps
-    Interactable::genRender();
+    Interactable::genRender(window, renderOffset);
 }
