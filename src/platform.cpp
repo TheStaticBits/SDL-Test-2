@@ -14,7 +14,7 @@
 #include "utility.h"
 
 Platform::Platform(const int tileWidth)
-    : Interactable({TILE_SIZE * tileWidth, TILE_SIZE}, {tileWidth, 1}, {0, 255, 0})
+    : Interactable({TILE_SIZE * tileWidth, TILE_SIZE}, {tileWidth, 1}, {0, 255, 0}, PlatformType)
 {
 
 }
@@ -37,5 +37,5 @@ void Platform::update()
 void Platform::render(Window& window, Vect<int> renderOffset)
 {
     // Add rendering for the supports of the platform
-    Interactable::genRender(window, renderOffset);
+    genRender(window, renderOffset);
 }

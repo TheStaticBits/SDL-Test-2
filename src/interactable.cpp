@@ -8,9 +8,9 @@
 #include "vector.h"
 #include "window.h"
 
-Interactable::Interactable(Vect<int> size, Vect<int> tileSize, std::vector<Uint8> color)
-    : renderPos{0, 0, size.x, size.y}, tileSize(tileSize), pos(0, 0), 
-      renderColor(color), placing(true), placable(true), hovering(false)
+Interactable::Interactable(Vect<int> size, Vect<int> tileSize, std::vector<Uint8> color, ObjType type)
+    : renderPos{0, 0, size.x, size.y}, tileSize(tileSize), renderColor(color), 
+    placing(true), placable(true), hovering(false), type(type)
 {
 
 }

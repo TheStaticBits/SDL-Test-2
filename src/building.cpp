@@ -14,7 +14,7 @@
 #include "interactable.h"
 
 Building::Building(Vect<int> tileSize, std::vector<Uint8>& color)
-    : Interactable({tileSize.x / TILE_SIZE, tileSize.y / TILE_SIZE}, tileSize, color), buildingTimer(0)
+    : Interactable({tileSize.x / TILE_SIZE, tileSize.y / TILE_SIZE}, tileSize, color, BuildingType), buildingTimer(0)
 {
 
 }
@@ -26,7 +26,31 @@ Building::~Building()
 
 bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size, nlohmann::json bData)
 {
-    // place on platform 
+    if (genCanPlace(pos, objects, size)) return false;
+
+    int pChecked = 0; // Tiles of the building base with a platform below
+
+    for (std::unique_ptr<Interactable>& obj : objects)
+    {
+        if (obj->getType() == PlatformType)
+        {
+            // If the platform is at the bottom of the building
+            if (obj->getRect().y == renderPos.y + renderPos.h)
+            {
+                int pixelsBeneath = obj->getRect().w
+
+                // Removing pixels off the side
+                if (obj->getRect().x < renderPos.x)
+                    pixelsBeneath -= renderPos.x - obj->getRect().x;
+                if (obj->getRect().x > renderPos.x)
+                    pixelsBeneath -= obj->getRect().x - renderPos.x;
+                
+                pChecked += pixelsBeneath;
+            }
+        }
+    }
+    
+    return pChecked == renderPos.w;
 }
 
 void Building::update()
