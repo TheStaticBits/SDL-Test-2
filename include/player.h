@@ -47,6 +47,7 @@ private:
     SDL_Rect rect;
 
     bool jump;
+    bool canJump;
     float downCountdown; // Counter for going down a platform
     static constexpr float downCountdownMax = 0.2f; // Time before the hitbox kicks in again after pressing down
 

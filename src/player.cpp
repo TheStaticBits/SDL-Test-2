@@ -16,7 +16,7 @@
 #include "interactable.h"
 
 Player::Player(Vect<float> pos)
-    : pos(pos), size{20, 20}, renderOffset(getOffset()), velocity{0, 0}, jump(false)
+    : pos(pos), size{20, 20}, renderOffset(getOffset()), velocity{0, 0}, jump(false), canJump(false)
 {
 
 }
@@ -30,10 +30,11 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, Base& base, flo
 {
     velocity.x = (keys[SDLK_d] - keys[SDLK_a]) * SPEED * deltaTime;
 
-    if (keys[SDLK_w] && !jump)
+    if (keys[SDLK_w] && !jump && canJump)
     {
         velocity.y += JUMP_SPEED;
         jump = true;
+        canJump = false;
     }
 
     velocity.y -= GRAVITY * deltaTime;
@@ -94,9 +95,16 @@ void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys,
         }
 
         if (!onPlatform) // Resetting
+        {
             pos.y = origY + velocity.y * deltaTime;
+            canJump = false;
+        }
     }
-    else pos.y += velocity.y * deltaTime;
+    else 
+    {
+        canJump = false;
+        pos.y += velocity.y * deltaTime;
+    }
           
     pos.x += velocity.x;
     
@@ -108,6 +116,7 @@ void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys,
     {
         velocity.y = 0;
         jump = false;
+        canJump = true;
     }
     else if (pos.y <= 0) velocity.y = 0;
 
@@ -123,6 +132,7 @@ int Player::platformCollide(std::vector<std::unique_ptr<Interactable>>& objects,
                 {
                     velocity.y = 0;
                     jump = false;
+                    canJump = true;
                     return obj->getRect().y - size.y;
                 }
     
