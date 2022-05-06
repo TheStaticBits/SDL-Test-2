@@ -3,13 +3,17 @@
 
 #include "game.h"
 
+Game game;
+
+#ifdef __EMSCRIPTEN__
+void it() { game.iteration(); }
+#endif
+
 int main(int argc, char* args[]) 
 {
-    Game game;
-
     if (!game.initSDL())
         return -1;
-    
+
     game.loop();
    
     return 0;

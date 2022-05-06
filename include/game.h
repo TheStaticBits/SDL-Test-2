@@ -23,6 +23,8 @@ public:
     void loop();
 
     void operator=(const Game&) = delete;
+    
+    void iteration();
 
 private:
     inline static const std::vector<SDL_Keycode> allowedKeys = {
@@ -42,8 +44,6 @@ private:
 
     int lastTime;
     float deltaTime;
-    
-    void iteration();
 
     void calcDeltaTime();
 

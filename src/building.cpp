@@ -27,6 +27,7 @@ Building::~Building()
 bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size, nlohmann::json bData)
 {
     if (!genCanPlace(pos, objects, size)) return false;
+    if (pos.y + renderPos.h == size.y) return true; // Bottom of map
 
     int pChecked = 0; // Tiles of the building base with a platform below
 

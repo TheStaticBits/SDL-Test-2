@@ -8,18 +8,30 @@ CPATH = bin/intermediates
 IFLAGS = -IC:/SDL2/include -IC:/JSON_Parse -I$(IPATH)
 LFLAGS = -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 DFLAGS = -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread
-OFLAGS = -Wall
-FLAGS = $(IFLAGS) $(LFLAGS) $(OFLAGS)
+OFLAGS = -Wall -std=c++17
+EFLAGS = -s WASM=1 -s USE_SDL=2 -s --preload-file data USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='png' -s ASYNCIFY=1
+FLAGS = $(OFLAGS) $(IFLAGS) 
 
 # --------------------------------
 
+# Debug build
 default: FLAGS += -g
+default: FLAGS += $(LFLAGS)
 default: application.exe
 
+# Release build
+release: FLAGS += $(LFLAGS)
 release: FLAGS += $(DFLAGS)
 release: FLAGS += -O3
 release: OUTPUT = bin/release/application.exe
 release: application.exe
+
+# Emscripten build
+emscripten: CC = em++
+emscripten: FLAGS += -g
+emscripten: FLAGS += $(EFLAGS)
+emscripten: OUTPUT = bin/web/game.html
+emscripten: application.exe
 
 # --------------------------------
 
@@ -29,7 +41,7 @@ application.exe: $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/play
 $(CPATH)/main.o: $(SPATH)/main.cpp $(IPATH)/game.h
 	$(CC) -c $(SPATH)/main.cpp $(FLAGS) -o $(CPATH)/main.o
 
-$(CPATH)/game.o: $(SPATH)/game.cpp $(IPATH)/game.h $(IPATH)/window.h $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/base.h 
+$(CPATH)/game.o: $(SPATH)/game.cpp $(IPATH)/game.h $(IPATH)/window.h $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/base.h $(IPATH)/save.h
 	$(CC) -c $(SPATH)/game.cpp $(FLAGS) -o $(CPATH)/game.o
 
 $(CPATH)/window.o: $(SPATH)/window.cpp $(IPATH)/window.h $(IPATH)/vector.h $(IPATH)/utility.h

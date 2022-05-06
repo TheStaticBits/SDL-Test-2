@@ -5,6 +5,11 @@
 #include <algorithm>
 #include <cmath>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+    #include <emscripten/html5.h>
+#endif
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -12,11 +17,20 @@
 #include "player.h"
 #include "vector.h"
 #include "base.h"
+#include "save.h"
 
 Game::Game()
     : mousePos{0, 0}, player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), quit(false), lastTime(0), deltaTime(0.0f)
 {
+    setSave("save", "yoylecake");
+    char* saveCharP = getSave("save");
+    std::string save = saveCharP;
+// Emscripten C strings compatability
+#ifdef __EMSCRIPTEN__
+    free(saveCharP);
+#endif
 
+    std::cout << save << std::endl;
 }
 
 Game::~Game()
@@ -54,9 +68,17 @@ void Game::iteration()
     window.update();
 }
 
+#ifdef __EMSCRIPTEN__
+void it(); // Calls Game::iteration() in main.cpp
+#endif
+
 void Game::loop()
 {
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(it, 0, 1);
+#else
     while (!quit) iteration();
+#endif
 }
 
 void Game::calcDeltaTime()

@@ -53,6 +53,12 @@
             "dependsOrder": "sequence"
         },
         {
+            "label": "C++ Compile (Emscripten)",
+            "detail": "Compiles the project with the Makefile and Emscripten",
+            "type": "shell",
+            "command": "make emscripten"
+        },
+        {
             "label": "C++ Clean Intermediates",
             "detail": "Deletes intermediate object files",
             "type": "shell",
