@@ -48,6 +48,9 @@ private:
     int lastTime;
     float deltaTime;
 
+    int lastSaveTime;
+    static constexpr int SAVE_INTERVAL = 5; // Save every 5 seconds
+
     void calcDeltaTime();
 
     void inputs();

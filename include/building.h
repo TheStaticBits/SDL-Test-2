@@ -31,7 +31,7 @@ public:
     void render(Window& window, Vect<int> renderOffset) override;
 
     std::string getSave() override;
-    void readSave(std::string save);
+    void readSave(std::string save) override;
 
 protected:
     bool beingBuilt;

@@ -118,14 +118,17 @@ std::string Base::getSave()
 
 void Base::readSave(std::string save)
 {
-    save = save.substr(saveName.length() + 1);
-    std::vector<std::string> saveList = util::split(save, " | ");
-
-    for (std::string& obj : saveList)
+    if (save.size() > saveName.length() + 1)
     {
-        if (Interactable::checkSavePart(obj, PlatformType))
-            objects.push_back(std::make_unique<Platform>(obj));
-        else if (Interactable::checkSavePart(obj, BuildingType))
-            objects.push_back(std::make_unique<Building>(obj, std::vector<Uint8>{0, 255, 255}));
+        save = save.substr(saveName.length() + 1);
+        std::vector<std::string> saveList = util::split(save, " | ");
+
+        for (std::string& obj : saveList)
+        {
+            if (Interactable::checkSavePart(obj, PlatformType))
+                objects.push_back(std::make_unique<Platform>(obj));
+            else if (Interactable::checkSavePart(obj, BuildingType))
+                objects.push_back(std::make_unique<Building>(obj, std::vector<Uint8>{0, 255, 255}));
+        }
     }
 }

@@ -10,17 +10,18 @@
 
 // For the web build (retrieves save from cookies)
 EM_JS(bool, hasSave, (const char* saveName), {
-    return window.localStorage.getItem(saveName) != null;
+    return document.cookie != null;
+    // return window.localStorage.getItem(saveName) != null;
 });
 
 EM_JS(void, setSave, (const char* saveName, const char* saveData), {
-    // document.cookie = UTF8ToString(saveName) + "=" + UTF8ToString(saveData) + ";";
-    window.localStorage.setItem(UTF8ToString(saveName), UTF8ToString(saveData));
+    document.cookie = UTF8ToString(saveName) + "=" + UTF8ToString(saveData) + ";";
+    // window.localStorage.setItem(UTF8ToString(saveName), UTF8ToString(saveData));
 });
 
 EM_JS(char*, getSave, (const char* saveName), {
-    // var data = document.cookie.substring(UTF8ToString(saveName).length + 1, document.cookie.length);
-    var data = window.localStorage.getItem(UTF8ToString(saveName));
+    var data = document.cookie.substring(UTF8ToString(saveName).length + 1, document.cookie.length);
+    // var data = window.localStorage.getItem(UTF8ToString(saveName));
     var lengthBytes = lengthBytesUTF8(data) + 1;
     var stringOnHeap = _malloc(lengthBytes);
     stringToUTF8(data, stringOnHeap, lengthBytes);

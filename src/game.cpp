@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <cmath>
+#include <ctime>
 
 #ifdef __EMSCRIPTEN__
     #include <emscripten.h>
@@ -21,14 +22,13 @@
 #include "utility.h"
 
 Game::Game()
-    : mousePos{0, 0}, player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), quit(false), lastTime(0), deltaTime(0.0f)
+    : mousePos{0, 0}, player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), quit(false), lastTime(0), deltaTime(0.0f), lastSaveTime(0)
 {
     // Loading save if the person has one
     if (hasSave("save"))
     {
 #ifdef __EMSCRIPTEN__
         char* save = getSave("save");
-        std::cout << save << std::endl;
         readSave(std::string(save));
         free(save);
 #else
@@ -70,6 +70,13 @@ void Game::iteration()
     player.render(window, renderOffset);
 
     window.update();
+
+    // Saving every 5 seconds
+    if (std::time(nullptr) > lastSaveTime + SAVE_INTERVAL)
+    {
+        lastSaveTime = std::time(nullptr);
+        save();
+    }
 }
 
 #ifdef __EMSCRIPTEN__
@@ -93,7 +100,7 @@ void Game::save()
     save += " ~ ";
     save += base.getSave();
 
-    setSave("save", save);
+    setSave("save", save.c_str()); // For emscripten
 }
 
 void Game::readSave(const std::string save)
