@@ -26,7 +26,7 @@ class Interactable
 public:
     Interactable(Vect<int> size, Vect<int> tileSize, std::vector<Uint8> color, ObjType type);
     Interactable(ObjType type); // For loading from save
-    ~Interactable();
+    virtual ~Interactable();
 
     void operator=(const Interactable&) = delete;
 
