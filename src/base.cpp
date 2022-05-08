@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <cmath>
+#include <ctime>
 #include <memory>
 
 #include <SDL2/SDL.h>
@@ -16,6 +17,7 @@
 #include "interactable.h"
 #include "platform.h"
 #include "building.h"
+#include "utility.h"
 
 Base::Base()
     : buildingData(nlohmann::json::parse(std::ifstream(bDataPath))), 
@@ -50,14 +52,12 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     }
 
     for (std::unique_ptr<Interactable>& obj : objects)
-        obj->update();
+        obj->update(std::time(nullptr));
 
     if (placing)
     {
         // Getting the tile the mouse is hovering over
-        Vect<int> placeTile;
-        placeTile.x = (int)floor((mousePos.x + renderOffset.x) / TILE_SIZE);
-        placeTile.y = (int)floor((mousePos.y + renderOffset.y) / TILE_SIZE);
+        Vect<int> placeTile = (mousePos + renderOffset) / TILE_SIZE;
 
         // Changing floor to ceil for negatives
         if (mousePos.x + renderOffset.x < 0)
@@ -69,12 +69,9 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
         {
             if (obj->isPlacing())
             {
-                placeTile.x -= (int)floor(obj->getTileSize().x / 2);
-                placeTile.y -= (int)floor(obj->getTileSize().y / 2);
+                placeTile -= obj->getTileSize() / 2;
 
-                Vect<int> screenPos;
-                screenPos.x = placeTile.x * TILE_SIZE;
-                screenPos.y = placeTile.y * TILE_SIZE;
+                Vect<int> screenPos = placeTile * TILE_SIZE;
 
                 obj->setPos(screenPos);
 
@@ -102,4 +99,33 @@ void Base::render(Window& window, Vect<int> renderOffset)
 
     for (std::unique_ptr<Interactable>& obj : objects)
         obj->render(window, renderOffset);
+}
+
+std::string Base::getSave()
+{
+    std::string save = saveName + " ";
+
+    // Add money related stuff here
+
+    for (std::unique_ptr<Interactable>& obj : objects)
+        save += obj->getSave() + " | ";
+    
+    if (save.size() > saveName.length() + 1)
+        save = save.substr(0, save.length() - 3); // Removing last divider
+    
+    return save;
+}
+
+void Base::readSave(std::string save)
+{
+    save = save.substr(saveName.length() + 1);
+    std::vector<std::string> saveList = util::split(save, " | ");
+
+    for (std::string& obj : saveList)
+    {
+        if (Interactable::checkSavePart(obj, PlatformType))
+            objects.push_back(std::make_unique<Platform>(obj));
+        else if (Interactable::checkSavePart(obj, BuildingType))
+            objects.push_back(std::make_unique<Building>(obj));
+    }
 }

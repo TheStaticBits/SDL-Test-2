@@ -1,0 +1,17 @@
+make.exe --dry-run --keep-going --print-directory
+make: Entering directory 'c:/dev/C++/SDL-Test-2'
+g++ -c src/game.cpp -Wall -std=c++20 -IC:/SDL2/include -IC:/JSON_Parse -Iinclude  -g -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o bin/intermediates/game.o
+ 
+g++ -c src/player.cpp -Wall -std=c++20 -IC:/SDL2/include -IC:/JSON_Parse -Iinclude  -g -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o bin/intermediates/player.o
+ 
+g++ -c src/interactable.cpp -Wall -std=c++20 -IC:/SDL2/include -IC:/JSON_Parse -Iinclude  -g -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o bin/intermediates/interactable.o
+ 
+g++ -c src/base.cpp -Wall -std=c++20 -IC:/SDL2/include -IC:/JSON_Parse -Iinclude  -g -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o bin/intermediates/base.o
+ 
+g++ -c src/platform.cpp -Wall -std=c++20 -IC:/SDL2/include -IC:/JSON_Parse -Iinclude  -g -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o bin/intermediates/platform.o
+ 
+g++ -c src/building.cpp -Wall -std=c++20 -IC:/SDL2/include -IC:/JSON_Parse -Iinclude  -g -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o bin/intermediates/building.o
+ 
+g++ bin/intermediates/main.o bin/intermediates/game.o bin/intermediates/window.o bin/intermediates/player.o bin/intermediates/interactable.o bin/intermediates/base.o bin/intermediates/platform.o bin/intermediates/building.o -Wall -std=c++20 -IC:/SDL2/include -IC:/JSON_Parse -Iinclude  -g -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -o bin/debug/application.exe
+make: Leaving directory 'c:/dev/C++/SDL-Test-2'
+ 

@@ -19,6 +19,30 @@ struct Vect
     bool operator==(const Vect<T>& other) const { return x == other.x && y == other.y; }
     bool operator!=(const Vect<T>& other) const { return x != other.x || y != other.y; }
 
+    // Addition
+    Vect<T> operator+(const Vect<T>& other) const { return Vect<T>(x + other.x, y + other.y); }
+    Vect<T>& operator+=(const Vect<T>& other) { x += other.x; y += other.y; return *this; }
+    Vect<T> operator+(const T& other) const { return Vect<T>(x + other, y + other); }
+    Vect<T>& operator+=(const T& other) { x += other; y += other; return *this; }
+
+    // Subtraction
+    Vect<T> operator-(const Vect<T>& other) const { return Vect<T>(x - other.x, y - other.y); }
+    Vect<T>& operator-=(const Vect<T>& other) { x -= other.x; y -= other.y; return *this; }
+    Vect<T> operator-(const T& other) const { return Vect<T>(x - other, y - other); }
+    Vect<T>& operator-=(const T& other) { x -= other; y -= other; return *this; }
+
+    // Multiplication
+    Vect<T> operator*(const Vect<T>& other) const { return Vect<T>(x * other.x, y * other.y); }
+    Vect<T>& operator*=(const Vect<T>& other) { x *= other.x; y *= other.y; return *this; }
+    Vect<T> operator*(const T& other) const { return Vect<T>(x * other, y * other); }
+    Vect<T> operator*=(const T& other) { x *= other; y *= other; return *this; }
+
+    // Division
+    Vect<T> operator/(const Vect<T>& other) const { return Vect<T>(x / other.x, y / other.y); }
+    Vect<T>& operator/=(const Vect<T>& other) { x /= other.x; y /= other.y; return *this; }
+    Vect<T> operator/(const T& other) const { return Vect<T>(x / other, y / other); }
+    Vect<T> operator/=(const T& other) { x /= other; y /= other; return *this; }
+
     void print() const
     {
         std::cout << "(" << x << ", " << y << ")" << std::endl;

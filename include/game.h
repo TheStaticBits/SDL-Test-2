@@ -18,13 +18,16 @@ public:
     Game();
     ~Game();
 
+    void operator=(const Game&) = delete;
+
     bool initSDL() const;
 
     void loop();
-
-    void operator=(const Game&) = delete;
     
     void iteration();
+
+    void save();
+    void readSave(const std::string save);
 
 private:
     inline static const std::vector<SDL_Keycode> allowedKeys = {

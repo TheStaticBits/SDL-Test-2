@@ -43,8 +43,7 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, Base& base, flo
 
     // Moving towards player's position
     Vect<float> offset = getOffset(); 
-    renderOffset.x -= (renderOffset.x - offset.x) * CAM_TIGHTNESS * deltaTime;
-    renderOffset.y -= (renderOffset.y - offset.y) * CAM_TIGHTNESS * deltaTime;
+    renderOffset -= (renderOffset - offset) * CAM_TIGHTNESS * deltaTime;
 }
 
 void Player::render(Window& window, Vect<int> renderOffset)
@@ -54,6 +53,29 @@ void Player::render(Window& window, Vect<int> renderOffset)
     renderTo.y -= renderOffset.y;
 
     window.drawRect(renderTo, {255, 255, 255});
+}
+
+std::string Player::getSave()
+{
+    std::string save = saveName + " ";
+    save += std::to_string(pos.x) + "," + std::to_string(pos.y) + " ";
+    save += std::to_string(velocity.x) + "," + std::to_string(velocity.y) + " ";
+    save += std::to_string(jump) + "," + std::to_string(canJump);
+    return save;
+}
+
+void Player::readSave(std::string save)
+{
+    save = save.substr(saveName.length() + 1); // Skipping "Player "
+
+    // Copying over save data
+    std::vector<std::string> saveData = util::split(save, " ");
+    std::vector<std::string> posPart = util::split(saveData[0], ",");
+    pos.x = std::stof(posPart[0]); pos.y = std::stof(posPart[1]);
+    std::vector<std::string> velPart = util::split(saveData[1], ",");
+    velocity.x = std::stof(velPart[0]); velocity.y = std::stof(velPart[1]);
+    std::vector<std::string> otherPart = util::split(saveData[2], ",");
+    jump = std::stoi(otherPart[0]); canJump = std::stoi(otherPart[1]);
 }
 
 void Player::updateRect()

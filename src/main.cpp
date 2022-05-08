@@ -15,6 +15,7 @@ int main(int argc, char* args[])
         return -1;
 
     game.loop();
+    game.save();
    
     return 0;
 }

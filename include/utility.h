@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+#include <string>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -30,5 +32,21 @@ namespace util
                 rect1.y < rect2.y + rect2.h &&
                 rect2.x < rect1.x + rect1.w &&
                 rect2.y < rect1.y + rect1.h);
+    }
+
+    inline std::vector<std::string> split(std::string str, const std::string& delim)
+    {
+        std::vector<std::string> result;
+
+        size_t pos = 0;
+        while ((pos = str.find(delim)) != std::string::npos)
+        {
+            result.push_back(str.substr(0, pos));
+            str.erase(0, pos + delim.length());
+        }
+
+        result.push_back(str);
+
+        return result;
     }
 };

@@ -26,12 +26,18 @@ public:
     void update(std::unordered_map<SDL_Keycode, bool>& keys, Base& base, float deltaTime);
     void render(Window& window, Vect<int> renderOffset);
 
+    std::string getSave();
+    void readSave(std::string save);
+    inline bool checkSavePart(std::string save) { return save.substr(0, saveName.size()) == saveName; }
+
     void updateRect();
     
     inline Vect<int> getRenderOffset() const { return Vect<int>(static_cast<int>(renderOffset.x),
                                                                 static_cast<int>(renderOffset.y)); }
 
 private:
+    inline static const std::string saveName = "Player";
+
     static constexpr int SPEED = 120; // Pixels per second
     static constexpr float CAM_TIGHTNESS = 3.75f; // How tight the camera is on the player (higher is tighter)
 

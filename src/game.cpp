@@ -18,19 +18,23 @@
 #include "vector.h"
 #include "base.h"
 #include "save.h"
+#include "utility.h"
 
 Game::Game()
     : mousePos{0, 0}, player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), quit(false), lastTime(0), deltaTime(0.0f)
 {
-    setSave("save", "yoylecake");
-    char* saveCharP = getSave("save");
-    std::string save = saveCharP;
-// Emscripten C strings compatability
+    // Loading save if the person has one
+    if (hasSave("save"))
+    {
 #ifdef __EMSCRIPTEN__
-    free(saveCharP);
+        char* save = getSave("save");
+        std::cout << save << std::endl;
+        readSave(std::string(save));
+        free(save);
+#else
+        readSave(getSave("save"));
 #endif
-
-    std::cout << save << std::endl;
+    }
 }
 
 Game::~Game()
@@ -79,6 +83,30 @@ void Game::loop()
 #else
     while (!quit) iteration();
 #endif
+    save();
+}
+
+void Game::save()
+{
+    std::string save = "";
+    save += player.getSave();
+    save += " ~ ";
+    save += base.getSave();
+
+    setSave("save", save);
+}
+
+void Game::readSave(const std::string save)
+{
+    std::vector<std::string> saveParts = util::split(save, " ~ ");
+
+    for (std::string part : saveParts)
+    {
+        if (player.checkSavePart(part))
+            player.readSave(part);
+        else if (base.checkSavePart(part))
+            base.readSave(part);
+    }
 }
 
 void Game::calcDeltaTime()
@@ -112,14 +140,11 @@ void Game::inputs()
 
     SDL_GetMouseState(&mousePos.x, &mousePos.y);
     // Adjusting based on the scale of the screen
-    mousePos.x = (int)floor(mousePos.x / WIN_SCALE);
-    mousePos.y = (int)floor(mousePos.y / WIN_SCALE);
+    mousePos /= WIN_SCALE;
 }
 
 void Game::handleKey(SDL_Keycode& key, Uint32& type)
 {
     if (std::find(allowedKeys.begin(), allowedKeys.end(), key) != allowedKeys.end())
-    {
         keys[key] = (type == SDL_KEYDOWN);
-    }
 }

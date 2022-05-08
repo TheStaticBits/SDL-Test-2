@@ -36,7 +36,14 @@ public:
     inline Vect<int> getSize() const { return size; }
     inline std::vector<std::unique_ptr<Interactable>>& getObjects() { return objects; }
 
+    std::string getSave();
+    void readSave(std::string save);
+    inline bool checkSavePart(std::string save) { return save.substr(0, saveName.size()) == saveName; }
+
+
 private:
+    inline static const std::string saveName = "Base";
+
     static constexpr char* bDataPath = (char*)"data/buildings.json";
     nlohmann::json buildingData;
 

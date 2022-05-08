@@ -19,6 +19,13 @@ Platform::Platform(const int tileWidth)
 
 }
 
+Platform::Platform(std::string save)
+    : Interactable(PlatformType)
+{
+    save = genReadSave(save);
+    readSave(save);
+}
+
 Platform::~Platform()
 {
 
@@ -26,10 +33,10 @@ Platform::~Platform()
 
 bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size, nlohmann::json bData)
 {
-    return genCanPlace(pos, objects, size);
+    return Interactable::genCanPlace(pos, objects, size);
 }
 
-void Platform::update()
+void Platform::update(std::time_t seconds)
 {
 
 }
@@ -37,5 +44,15 @@ void Platform::update()
 void Platform::render(Window& window, Vect<int> renderOffset)
 {
     // Add rendering for the supports of the platform
-    genRender(window, renderOffset);
+    Interactable::genRender(window, renderOffset);
+}
+
+std::string Platform::getSave()
+{
+    return Interactable::genSaveData();
+}
+
+void Platform::readSave(std::string save)
+{
+
 }
