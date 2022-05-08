@@ -18,7 +18,7 @@ Interactable::Interactable(Vect<int> size, Vect<int> tileSize, std::vector<Uint8
 }
 
 Interactable::Interactable(ObjType type)
-    : placing(true), placable(true), hovering(false), type(type)
+    : placing(false), placable(false), hovering(false), type(type)
 {
 
 }
@@ -71,10 +71,11 @@ void Interactable::genRender(Window& window, Vect<int>& renderOffset)
 
 std::string Interactable::genSaveData()
 {
+    if (placing) return ""; // Don't save if placing
     std::string save = objTypeNames.at(type) + " ";
     save += std::to_string(renderPos.x) + "," + std::to_string(renderPos.y) + " ";
     save += std::to_string(tileSize.x) + "," + std::to_string(tileSize.y);
-    save += "#"; // Divider between general saVe data and the specific object save data
+    save += "#"; // Divider between general save data and the specific object save data
     return save;
 }
 
@@ -91,8 +92,8 @@ std::string Interactable::genReadSave(std::string save)
     std::vector<std::string> sizeData = util::split(data[1], ",");
     tileSize.x = std::stoi(sizeData[0]);
     tileSize.y = std::stoi(sizeData[1]);
-    renderPos.x = std::stoi(sizeData[0]) * TILE_SIZE;
-    renderPos.y = std::stoi(sizeData[1]) * TILE_SIZE;
+    renderPos.w = tileSize.x * TILE_SIZE;
+    renderPos.h = tileSize.y * TILE_SIZE;
 
     return save.substr(save.find("#") + 1); // Removing everything before the divider
 }

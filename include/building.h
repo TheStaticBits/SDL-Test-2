@@ -20,7 +20,7 @@ class Building : public Interactable
 {
 public:
     Building(Vect<int> tileSize, std::vector<Uint8> color);
-    Building(std::string save); // Loading from save
+    Building(std::string save, std::vector<Uint8> color); // Loading from save
     ~Building();
 
     void operator=(const Building&) = delete;

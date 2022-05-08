@@ -22,6 +22,7 @@ Platform::Platform(const int tileWidth)
 Platform::Platform(std::string save)
     : Interactable(PlatformType)
 {
+    renderColor = {0, 255, 0};
     save = genReadSave(save);
     readSave(save);
 }

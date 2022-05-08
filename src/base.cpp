@@ -126,6 +126,6 @@ void Base::readSave(std::string save)
         if (Interactable::checkSavePart(obj, PlatformType))
             objects.push_back(std::make_unique<Platform>(obj));
         else if (Interactable::checkSavePart(obj, BuildingType))
-            objects.push_back(std::make_unique<Building>(obj));
+            objects.push_back(std::make_unique<Building>(obj, std::vector<Uint8>{0, 255, 255}));
     }
 }

@@ -19,9 +19,10 @@ Building::Building(Vect<int> tileSize, std::vector<Uint8> color)
 
 }
 
-Building::Building(std::string save)
+Building::Building(std::string save, std::vector<Uint8> color)
     : Interactable(BuildingType), beingBuilt(false), buildingTimer(0)
 {
+    renderColor = color;
     save = genReadSave(save);
     readSave(save);
 }
