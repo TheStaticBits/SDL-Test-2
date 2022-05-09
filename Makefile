@@ -9,7 +9,7 @@ IFLAGS = -IC:/SDL2/include -IC:/JSON_Parse -I$(IPATH)
 LFLAGS = -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 DFLAGS = -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread
 OFLAGS = -Wall -std=c++20
-EFLAGS = -s WASM=1 -s USE_SDL=2 -s --preload-file data USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='png' -s ASYNCIFY=1
+EFLAGS = -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sSDL2_IMAGE_FORMATS='png' -sWASM=1 -sASYNCIFY=1 --preload-file data
 FLAGS = $(OFLAGS) $(IFLAGS) 
 
 # --------------------------------
