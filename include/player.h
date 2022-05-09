@@ -40,6 +40,7 @@ private:
 
     static constexpr int SPEED = 120; // Pixels per second
     static constexpr float CAM_TIGHTNESS = 3.75f; // How tight the camera is on the player (higher is tighter)
+    inline static const Vect<int> CAM_OFFSET = {(int)round(WIN_WIDTH / 2), (int)round(WIN_HEIGHT / 1.5)}; // Camera offset from player
 
     static constexpr int JUMP_SPEED = -400; 
     static constexpr int GRAVITY = -800; 

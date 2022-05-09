@@ -89,8 +89,8 @@ void Game::loop()
     emscripten_set_main_loop(it, 0, 1);
 #else
     while (!quit) iteration();
-#endif
     save();
+#endif
 }
 
 void Game::save()

@@ -16,7 +16,7 @@
 #include "interactable.h"
 
 Player::Player(Vect<float> pos)
-    : pos(pos), size{20, 20}, renderOffset(getOffset()), velocity{0, 0}, jump(false), canJump(false)
+    : pos(pos), size{20, 20}, renderOffset{0, 0}, velocity{0, 0}, jump(false), canJump(false)
 {
 
 }
@@ -42,8 +42,9 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, Base& base, flo
     collisions(base, keys, deltaTime);
 
     // Moving towards player's position
-    Vect<float> offset = getOffset(); 
+    Vect<float> offset = getOffset();
     renderOffset -= (renderOffset - offset) * CAM_TIGHTNESS * deltaTime;
+    renderOffset.lock(base.getSize().cast<float>() - Vect<float>(WIN_WIDTH, WIN_HEIGHT), Vect<float>(0.0f, 0.0f));
 }
 
 void Player::render(Window& window, Vect<int> renderOffset)
@@ -76,6 +77,8 @@ void Player::readSave(std::string save)
     velocity.x = std::stof(velPart[0]); velocity.y = std::stof(velPart[1]);
     std::vector<std::string> otherPart = util::split(saveData[2], ",");
     jump = std::stoi(otherPart[0]); canJump = std::stoi(otherPart[1]);
+
+    renderOffset = getOffset();
 }
 
 void Player::updateRect()
@@ -85,8 +88,7 @@ void Player::updateRect()
 
 Vect<float> Player::getOffset() // Percise offset for rendering the player, not moving one
 {
-    return Vect<float>(static_cast<float>(pos.x + size.x / 2 - WIN_WIDTH / 2 ), 
-                       static_cast<float>(pos.y + size.y / 2 - WIN_HEIGHT / 1.5));
+    return pos + (size.cast<float>() / 2) - CAM_OFFSET.cast<float>();
 }
 
 void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys, float deltaTime)
@@ -129,9 +131,8 @@ void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys,
     }
           
     pos.x += velocity.x;
-    
-    util::lock(pos.x, (float)base.getSize().x - size.x, 0.0f);
-    util::lock(pos.y, (float)base.getSize().y - size.y, 0.0f);
+
+    pos.lock(base.getSize().cast<float>() - size.cast<float>(), Vect<float>(0.0f, 0.0f));
 
     // Landed on bottom
     if (pos.y >= (float)base.getSize().y - size.y)

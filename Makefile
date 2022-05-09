@@ -9,9 +9,10 @@ IFLAGS = -IC:/SDL2/include -IC:/JSON_Parse -I$(IPATH)
 LFLAGS = -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 DFLAGS = -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread
 OFLAGS = -Wall -std=c++20
-EFLAGS = -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sSDL2_IMAGE_FORMATS='png' -sWASM=1 --preload-file data
-FLAGS = $(OFLAGS) $(IFLAGS) 
-TRY = -sASYNCIFY=1
+EFLAGS = -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sSDL2_IMAGE_FORMATS='png'
+EFFLAGS = -sASYNCIFY=1 --preload-file data
+FFLAGS =
+FLAGS = $(OFLAGS) $(IFLAGS)
 
 # --------------------------------
 
@@ -31,13 +32,14 @@ release: application.exe
 emscripten: CC = em++
 emscripten: FLAGS += -g
 emscripten: FLAGS += $(EFLAGS)
+emscripten: FFLAGS += $(EFFLAGS)
 emscripten: OUTPUT = bin/web/game.html
 emscripten: application.exe
 
 # --------------------------------
 
 application.exe: $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o
-	$(CC) $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o $(FLAGS) -o $(OUTPUT)
+	$(CC) $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o $(FLAGS) $(FFLAGS) -o $(OUTPUT)
 
 $(CPATH)/main.o: $(SPATH)/main.cpp $(IPATH)/game.h
 	$(CC) -c $(SPATH)/main.cpp $(FLAGS) -o $(CPATH)/main.o
