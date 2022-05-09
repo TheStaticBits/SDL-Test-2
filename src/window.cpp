@@ -29,6 +29,7 @@ Window::Window()
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetTextureBlendMode(mini, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderTarget(renderer, mini); 
 }
 
 Window::~Window()
