@@ -36,4 +36,5 @@ public:
 protected:
     bool beingBuilt;
     int buildingTimer;
+    int level; 
 };

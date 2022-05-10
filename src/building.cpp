@@ -14,7 +14,7 @@
 #include "interactable.h"
 
 Building::Building(Vect<int> tileSize, std::vector<Uint8> color)
-    : Interactable(tileSize * TILE_SIZE, tileSize, color, BuildingType), buildingTimer(0)
+    : Interactable(tileSize * TILE_SIZE, tileSize, color, BuildingType), beingBuilt(false), buildingTimer(0), level(0)
 {
 
 }
@@ -81,6 +81,7 @@ void Building::render(Window& window, Vect<int> renderOffset)
 std::string Building::getSave()
 {
     std::string save = Interactable::genSaveData();
+    save += std::to_string(beingBuilt) + "," + std::to_string(buildingTimer) + "," + std::to_string(level);
 
     return save;
 }
