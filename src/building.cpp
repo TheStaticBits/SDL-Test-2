@@ -12,9 +12,10 @@
 #include "vector.h"
 #include "base.h"
 #include "interactable.h"
+#include "utility.h"
 
 Building::Building(Vect<int> tileSize, std::vector<Uint8> color)
-    : Interactable(tileSize * TILE_SIZE, tileSize, color, BuildingType), beingBuilt(false), buildingTimer(0), level(0)
+    : Interactable(tileSize * TILE_SIZE, tileSize, color, BuildingType), beingBuilt(false), updating(false), buildingTimer(0), level(0)
 {
 
 }
@@ -24,7 +25,7 @@ Building::Building(std::string save, std::vector<Uint8> color)
 {
     renderColor = color;
     save = genReadSave(save);
-    readSave(save);
+    buildingReadSave(save);
 }
 
 Building::~Building()
@@ -78,15 +79,26 @@ void Building::render(Window& window, Vect<int> renderOffset)
     Interactable::genRender(window, renderOffset);
 }
 
-std::string Building::getSave()
+std::string Building::buildingGetSave()
 {
     std::string save = Interactable::genSaveData();
-    save += std::to_string(beingBuilt) + "," + std::to_string(buildingTimer) + "," + std::to_string(level);
+
+    save += std::to_string(beingBuilt)    + "," + 
+            std::to_string(updating)      + "," + 
+            std::to_string(buildingTimer) + "," + 
+            std::to_string(level)         + "#"; // Divider
 
     return save;
 }
 
-void Building::readSave(std::string save)
+std::string Building::buildingReadSave(std::string save)
 {
-    
+    std::vector<std::string> data = util::split(save, ",");
+
+    beingBuilt =    std::stoi(save[0]);
+    updating =      std::stoi(save[1]);
+    buildingTimer = std::stoi(save[2]);
+    level =         std::stoi(save[3]);
+
+    return save.substr(save.find("#") + 1);
 }

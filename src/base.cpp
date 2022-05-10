@@ -107,8 +107,14 @@ std::string Base::getSave()
 
     // Add money related stuff here
 
+    std::string saveSection;
     for (std::unique_ptr<Interactable>& obj : objects)
-        save += obj->getSave() + " | ";
+    {
+        saveSection = obj->getSave() + " | ";
+        // If the object is to be not saved (may be being placed)
+        if (saveSection.substr(0, RemoveObj.length()) != RemoveObj)
+            save += saveSection;
+    }
     
     if (save.size() > saveName.length() + 1)
         save = save.substr(0, save.length() - 3); // Removing last divider

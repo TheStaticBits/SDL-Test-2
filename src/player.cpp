@@ -16,7 +16,7 @@
 #include "interactable.h"
 
 Player::Player(Vect<float> pos)
-    : pos(pos), size{20, 20}, renderOffset{0, 0}, velocity{0, 0}, jump(false), canJump(false)
+    : pos(pos), size{20, 20}, renderOffset(getOffset()), velocity{0, 0}, jump(false), canJump(false)
 {
 
 }
@@ -59,9 +59,14 @@ void Player::render(Window& window, Vect<int> renderOffset)
 std::string Player::getSave()
 {
     std::string save = saveName + " ";
-    save += std::to_string(pos.x) + "," + std::to_string(pos.y) + " ";
-    save += std::to_string(velocity.x) + "," + std::to_string(velocity.y) + " ";
-    save += std::to_string(jump) + "," + std::to_string(canJump);
+
+    save += std::to_string(pos.x)      + "," + 
+            std::to_string(pos.y)      + "," +
+            std::to_string(velocity.x) + "," + 
+            std::to_string(velocity.y) + "," +
+            std::to_string(jump)       + "," +
+            std::to_string(canJump);
+    
     return save;
 }
 
@@ -70,15 +75,16 @@ void Player::readSave(std::string save)
     save = save.substr(saveName.length() + 1); // Skipping "Player "
 
     // Copying over save data
-    std::vector<std::string> saveData = util::split(save, " ");
-    std::vector<std::string> posPart = util::split(saveData[0], ",");
-    pos.x = std::stof(posPart[0]); pos.y = std::stof(posPart[1]);
-    std::vector<std::string> velPart = util::split(saveData[1], ",");
-    velocity.x = std::stof(velPart[0]); velocity.y = std::stof(velPart[1]);
-    std::vector<std::string> otherPart = util::split(saveData[2], ",");
-    jump = std::stoi(otherPart[0]); canJump = std::stoi(otherPart[1]);
+    std::vector<std::string> data = util::split(save, ",");
+    
+    pos.x      = std::stof(data[0]); 
+    pos.y      = std::stof(data[1]);
+    velocity.x = std::stof(data[2]); 
+    velocity.y = std::stof(data[3]);
+    jump       = std::stoi(data[4]); 
+    canJump    = std::stoi(data[5]);
 
-    renderOffset = getOffset();
+    renderOffset = getOffset(); // Updating renderOffset after pos is set
 }
 
 void Player::updateRect()

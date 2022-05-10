@@ -17,6 +17,7 @@
 #include "building.h"
 
 inline const int TILE_SIZE = 20;
+inline const std::string RemoveObj = "Remove"
 
 class Base
 {

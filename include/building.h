@@ -30,11 +30,12 @@ public:
     void update(std::time_t seconds) override;
     void render(Window& window, Vect<int> renderOffset) override;
 
-    std::string getSave() override;
-    void readSave(std::string save) override;
+    std::string buildingGetSave() override;
+    std::string buildingReadSave(std::string save) override;
 
 protected:
     bool beingBuilt;
+    bool updating; // Building is updating
     int buildingTimer;
     int level; 
 };

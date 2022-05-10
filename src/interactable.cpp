@@ -71,11 +71,15 @@ void Interactable::genRender(Window& window, Vect<int>& renderOffset)
 
 std::string Interactable::genSaveData()
 {
-    if (placing) return ""; // Don't save if placing
-    std::string save = objTypeNames.at(type) + " ";
-    save += std::to_string(renderPos.x) + "," + std::to_string(renderPos.y) + " ";
-    save += std::to_string(tileSize.x) + "," + std::to_string(tileSize.y);
-    save += "#"; // Divider between general save data and the specific object save data
+    if (placing) return RemoveObj; // Removes this because it's placing
+
+    std::string save = objTypeNames.at(type) + " "; // Object name
+
+    save += std::to_string(renderPos.x) + "," + 
+            std::to_string(renderPos.y) + "," +
+            std::to_string(tileSize.x)  + "," + 
+            std::to_string(tileSize.y)  + "#"; // Divider
+
     return save;
 }
 
@@ -83,15 +87,15 @@ std::string Interactable::genReadSave(std::string save)
 {
     // Remove name
     save = save.substr(objTypeNames.at(type).size() + 1);
-    // Loading save data
+
     // Basically inverting what is done in the genSaveData function
-    std::vector<std::string> data = util::split(save, " ");
-    std::vector<std::string> posData = util::split(data[0], ",");
-    renderPos.x = std::stoi(posData[0]);
-    renderPos.y = std::stoi(posData[1]);
-    std::vector<std::string> sizeData = util::split(data[1], ",");
-    tileSize.x = std::stoi(sizeData[0]);
-    tileSize.y = std::stoi(sizeData[1]);
+    std::vector<std::string> data = util::split(save, ",");
+
+    renderPos.x = std::stoi(data[0]);
+    renderPos.y = std::stoi(data[1]);
+    tileSize.x =  std::stoi(data[2]);
+    tileSize.y =  std::stoi(data[3]);
+
     renderPos.w = tileSize.x * TILE_SIZE;
     renderPos.h = tileSize.y * TILE_SIZE;
 
