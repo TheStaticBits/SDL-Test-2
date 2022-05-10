@@ -1,6 +1,7 @@
 #include "building.h"
 
 #include <iostream>
+#include <string>
 #include <vector>
 #include <memory>
 
@@ -95,10 +96,10 @@ std::string Building::buildingReadSave(std::string save)
 {
     std::vector<std::string> data = util::split(save, ",");
 
-    beingBuilt =    std::stoi(save[0]);
-    updating =      std::stoi(save[1]);
-    buildingTimer = std::stoi(save[2]);
-    level =         std::stoi(save[3]);
+    beingBuilt =    std::stoi(data[0]);
+    updating =      std::stoi(data[1]);
+    buildingTimer = std::stoi(data[2]);
+    level =         std::stoi(data[3]);
 
     return save.substr(save.find("#") + 1);
 }

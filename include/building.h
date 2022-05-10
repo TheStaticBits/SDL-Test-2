@@ -30,8 +30,8 @@ public:
     void update(std::time_t seconds) override;
     void render(Window& window, Vect<int> renderOffset) override;
 
-    std::string buildingGetSave() override;
-    std::string buildingReadSave(std::string save) override;
+    std::string buildingGetSave();
+    std::string buildingReadSave(std::string save);
 
 protected:
     bool beingBuilt;

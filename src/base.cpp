@@ -46,8 +46,8 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
         } 
         if (mouseButtons[SDL_BUTTON_RIGHT])
         {
-            placing = true;
-            objects.push_back(std::make_unique<Building>(Vect<int>{2, 3}, std::vector<Uint8>{0, 255, 255}));
+            // placing = true;
+            // objects.push_back(std::make_unique<Building>(Vect<int>{2, 3}, std::vector<Uint8>{0, 255, 255}));
         }
     }
 
@@ -133,8 +133,8 @@ void Base::readSave(std::string save)
         {
             if (Interactable::checkSavePart(obj, PlatformType))
                 objects.push_back(std::make_unique<Platform>(obj));
-            else if (Interactable::checkSavePart(obj, BuildingType))
-                objects.push_back(std::make_unique<Building>(obj, std::vector<Uint8>{0, 255, 255}));
+            // else if (Interactable::checkSavePart(obj, BuildingType))
+            //     objects.push_back(std::make_unique<Building>(obj, std::vector<Uint8>{0, 255, 255}));
         }
     }
 }
