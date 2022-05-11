@@ -117,7 +117,7 @@ std::string Base::getSave()
     }
     
     if (save.size() > saveName.length())
-        save = save.substr(0, save.length() - 3); // Removing last divider
+        save = save.substr(0, save.length() - 1); // Removing last divider
     
     return save;
 }
@@ -131,7 +131,7 @@ void Base::readSave(std::string save)
 
         for (std::string& obj : saveList)
         {
-            if (Interactable::checkSavePart(obj, PlatformType))
+            if (Interactable::checkSavePart(obj, Platform_T))
                 objects.push_back(std::make_unique<Platform>(obj));
             // else if (Interactable::checkSavePart(obj, BuildingType))
             //     objects.push_back(std::make_unique<Building>(obj, std::vector<Uint8>{0, 255, 255}));

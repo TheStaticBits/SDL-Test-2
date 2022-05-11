@@ -18,18 +18,20 @@ class Platform : public Interactable
 {
 public:
     Platform(const int tileWidth);
-    Platform(std::string save); // Loading from save
+    Platform(const std::string save); // Loading from save
     ~Platform();
 
     void operator=(const Platform&) = delete;
 
-    bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size, nlohmann::json bData) override;
+    bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) override;
 
-    void update(std::time_t seconds) override;
-    void render(Window& window, Vect<int> renderOffset) override;
+    void update(const std::time_t seconds) override;
+    void render(Window& window, const Vect<int> renderOffset) override;
 
     std::string getSave() override;
-    void readSave(std::string save) override;
+    void readSave(const std::string save) override;
+    
+    void placeDown() override;
 
 private:
 

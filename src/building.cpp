@@ -15,18 +15,19 @@
 #include "interactable.h"
 #include "utility.h"
 
-Building::Building(Vect<int> tileSize, std::vector<Uint8> color)
-    : Interactable(tileSize * TILE_SIZE, tileSize, color, BuildingType), beingBuilt(false), updating(false), buildingTimer(0), level(0)
+Building::Building(const nlohmann::json& data, const Vect<int> tileSize, const std::vector<Uint8> color, const ObjType type)
+    : Interactable(tileSize, color, type), 
+    beingBuilt(false), updating(false), buildingTimer(0), level(0),
+    data(data)
 {
-
+    renderPos.w = tileSize.x * TILE_SIZE;
+    renderPos.h = tileSize.y * TILE_SIZE;
 }
 
-Building::Building(std::string save, std::vector<Uint8> color)
-    : Interactable(BuildingType), beingBuilt(false), buildingTimer(0)
+Building::Building(const nlohmann::json& data, const std::vector<Uint8> color, const ObjType type)
+    : Interactable(type), renderColor(color), data(data)
 {
-    renderColor = color;
-    save = genReadSave(save);
-    buildingReadSave(save);
+
 }
 
 Building::~Building()
@@ -34,7 +35,7 @@ Building::~Building()
     
 }
 
-bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size, nlohmann::json bData)
+bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
 {
     if (!Interactable::genCanPlace(pos, objects, size)) return false;
     if (pos.y + renderPos.h == size.y) return true; // Bottom of map
@@ -43,7 +44,7 @@ bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
 
     for (std::unique_ptr<Interactable>& obj : objects)
     {
-        if (obj->getType() == PlatformType)
+        if (obj->getType() == Platform_T)
         {
             SDL_Rect objRect = obj->getRect();
             // If the platform is at the bottom of the building
@@ -71,7 +72,20 @@ bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
 
 void Building::update(std::time_t seconds)
 {
-    // timer updating and whatnot
+    // Handling being built
+    if (beingBuilt)
+    {
+        if (buildingTimer > 0)
+            buildingTimer--;
+        else
+            beingBuilt = false;
+    }
+    else
+    {
+        // Functionality
+    }
+
+    updateBuilding(seconds);
 }
 
 void Building::render(Window& window, Vect<int> renderOffset)
@@ -92,7 +106,7 @@ std::string Building::buildingGetSave()
     return save;
 }
 
-std::string Building::buildingReadSave(std::string save)
+std::string Building::buildingReadSave(const std::string save)
 {
     std::vector<std::string> data = util::split(save, ",");
 
@@ -102,4 +116,9 @@ std::string Building::buildingReadSave(std::string save)
     level =         std::stoi(data[3]);
 
     return save.substr(save.find("#") + 1);
+}
+
+void Building::placeDown()
+{
+
 }

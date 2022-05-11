@@ -155,7 +155,7 @@ void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys,
 int Player::platformCollide(std::vector<std::unique_ptr<Interactable>>& objects, float deltaTime)
 {
     for (std::unique_ptr<Interactable>& obj : objects)
-        if (obj->getType() == PlatformType && !obj->isPlacing())
+        if (obj->getType() == Platform_T && !obj->isPlacing())
             if ((pos.y + size.y) <= (obj->getRect().y + 2))
                 if (util::collide(rect, obj->getRect()))
                 {
