@@ -58,7 +58,7 @@ void Player::render(Window& window, Vect<int> renderOffset)
 
 std::string Player::getSave()
 {
-    std::string save = saveName + " ";
+    std::string save = saveName;
 
     save += std::to_string(pos.x)      + "," + 
             std::to_string(pos.y)      + "," +
@@ -72,7 +72,7 @@ std::string Player::getSave()
 
 void Player::readSave(std::string save)
 {
-    save = save.substr(saveName.length() + 1); // Skipping "Player "
+    save = save.substr(saveName.length()); // Skipping "Player"
 
     // Copying over save data
     std::vector<std::string> data = util::split(save, ",");

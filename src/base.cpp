@@ -103,20 +103,20 @@ void Base::render(Window& window, Vect<int> renderOffset)
 
 std::string Base::getSave()
 {
-    std::string save = saveName + " ";
+    std::string save = saveName;
 
     // Add money related stuff here
 
     std::string saveSection;
     for (std::unique_ptr<Interactable>& obj : objects)
     {
-        saveSection = obj->getSave() + " | ";
+        saveSection = obj->getSave() + "|";
         // If the object is to be not saved (may be being placed)
         if (saveSection.substr(0, RemoveObj.length()) != RemoveObj)
             save += saveSection;
     }
     
-    if (save.size() > saveName.length() + 1)
+    if (save.size() > saveName.length())
         save = save.substr(0, save.length() - 3); // Removing last divider
     
     return save;
@@ -124,10 +124,10 @@ std::string Base::getSave()
 
 void Base::readSave(std::string save)
 {
-    if (save.size() > saveName.length() + 1)
+    if (save.size() > saveName.length())
     {
-        save = save.substr(saveName.length() + 1);
-        std::vector<std::string> saveList = util::split(save, " | ");
+        save = save.substr(saveName.length());
+        std::vector<std::string> saveList = util::split(save, "|");
 
         for (std::string& obj : saveList)
         {

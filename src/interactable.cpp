@@ -74,7 +74,7 @@ std::string Interactable::genSaveData()
 {
     if (placing) return RemoveObj; // Removes this because it's placing
 
-    std::string save = objTypeNames.at(type) + " "; // Object name
+    std::string save = objTypeNames.at(type); // Object name
 
     save += std::to_string(renderPos.x) + "," + 
             std::to_string(renderPos.y) + "," +
@@ -87,7 +87,7 @@ std::string Interactable::genSaveData()
 std::string Interactable::genReadSave(std::string save)
 {
     // Remove name
-    save = save.substr(objTypeNames.at(type).size() + 1);
+    save = save.substr(objTypeNames.at(type).size());
 
     // Basically inverting what is done in the genSaveData function
     std::vector<std::string> data = util::split(save, ",");
