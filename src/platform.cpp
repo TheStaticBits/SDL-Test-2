@@ -19,7 +19,7 @@ Platform::Platform(const int tileWidth)
 
 }
 
-Platform::Platform(const std::string save)
+Platform::Platform(std::string save)
     : Interactable(Platform_T)
 {
     renderColor = {0, 255, 0};
@@ -50,22 +50,20 @@ void Platform::render(Window& window, const Vect<int> renderOffset)
 
 std::string Platform::getSave()
 {
-    std::string save = Interactable::genSaveData();
+    std::string save = Interactable::genGetSave();
 
-    save += std::to_string(tileSize.x) + "#";
+    save += std::to_string(tileSize.x);
 
     return save;
 }
 
-void Platform::readSave(const std::string save)
+void Platform::readSave(const std::string& save)
 {
-    tileSize.y = 1;
-    tileSize.x = std::stoi(save.substr(0, save.find("#") - 1));
+    tileSize.y = 1; // Height of platform is always 1
+    tileSize.x = std::stoi(save);
 
     renderPos.w = tileSize.x * TILE_SIZE;
     renderPos.h = tileSize.y * TILE_SIZE;
-
-    return save.substr(save.find("#") + 1); // Removing everything before the divider
 }
 
 void Platform::placeDown()

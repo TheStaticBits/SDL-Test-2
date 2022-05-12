@@ -18,7 +18,7 @@ class Platform : public Interactable
 {
 public:
     Platform(const int tileWidth);
-    Platform(const std::string save); // Loading from save
+    Platform(std::string save); // Loading from save
     ~Platform();
 
     void operator=(const Platform&) = delete;
@@ -29,7 +29,7 @@ public:
     void render(Window& window, const Vect<int> renderOffset) override;
 
     std::string getSave() override;
-    void readSave(const std::string save) override;
+    void readSave(const std::string& save) override;
     
     void placeDown() override;
 

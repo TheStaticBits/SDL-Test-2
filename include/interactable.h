@@ -37,10 +37,10 @@ public:
     virtual void render(Window& window, const Vect<int> renderOffset) = 0;
     virtual void placeDown() = 0; // Called when placed down
 
-    std::string genSaveData(); // General save data for the object
+    std::string genGetSave(); // General save data for the object
     virtual std::string getSave() = 0;
-    std::string genReadSave(const std::string save);
-    virtual void readSave(const std::string save) = 0;
+    std::string genReadSave(std::string save);
+    virtual void readSave(const std::string& save) = 0;
 
     void genRender(Window& window, const Vect<int>& renderOffset);
 
@@ -50,7 +50,7 @@ public:
     inline void setPos(Vect<int> pos) { renderPos.x = pos.x; renderPos.y = pos.y; }
     inline void completePlace() { placing = false; placeDown(); }
     inline SDL_Rect& getRect() { return renderPos; }
-    inline ObjType& getType() { return type; }
+    inline const ObjType& getType() { return type; }
 
     static inline bool checkSavePart(const std::string part, const ObjType objType) 
     { 

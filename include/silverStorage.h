@@ -11,21 +11,22 @@
 
 #include "building.h"
 #include "interactable.h"
+#include "vector.h"
 
 class SilverStorage : public Building
 {
 public:
     SilverStorage(const nlohmann::json& data); // Creation function
-    SilverStorage(const std::string save, const nlohmann::json& data); // Loading from save
+    SilverStorage(const nlohmann::json& data, std::string save); // Loading from save
     ~SilverStorage();
 
     void operator=(const SilverStorage&) = delete;
 
     std::string getSave() override;
-    void readSave(const std::string save) override;
+    void readSave(const std::string& save) override;
 
-    void frameUpdate(const std::time_t& seconds) override;
+    void updateFrame(const std::time_t& seconds) override;
 
 private:
 
-}
+};

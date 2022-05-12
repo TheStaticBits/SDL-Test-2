@@ -38,8 +38,8 @@ emscripten: application.exe
 
 # --------------------------------
 
-application.exe: $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o
-	$(CC) $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o $(FLAGS) $(FFLAGS) -o $(OUTPUT)
+application.exe: $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o $(CPATH)/silverStorage.o
+	$(CC) $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o $(CPATH)/silverStorage.o $(FLAGS) $(FFLAGS) -o $(OUTPUT)
 
 $(CPATH)/main.o: $(SPATH)/main.cpp $(IPATH)/game.h
 	$(CC) -c $(SPATH)/main.cpp $(FLAGS) -o $(CPATH)/main.o
@@ -64,6 +64,9 @@ $(CPATH)/platform.o: $(SPATH)/platform.cpp $(IPATH)/platform.h $(IPATH)/base.h $
 
 $(CPATH)/building.o: $(SPATH)/building.cpp $(IPATH)/building.h $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/interactable.h $(IPATH)/utility.h
 	$(CC) -c $(SPATH)/building.cpp $(FLAGS) -o $(CPATH)/building.o
+
+$(CPATH)/silverStorage.o: $(SPATH)/silverStorage.cpp $(IPATH)/silverStorage.h $(IPATH)/building.h $(IPATH)/interactable.h $(IPATH)/vector.h
+	$(CC) -c $(SPATH)/silverStorage.cpp $(FLAGS) -o $(CPATH)/silverStorage.o
 
 clean:
 	-rm $(CPATH)/*.o

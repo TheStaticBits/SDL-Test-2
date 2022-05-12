@@ -11,6 +11,7 @@
 
 #include "building.h"
 #include "interactable.h"
+#include "vector.h"
 
 SilverStorage::SilverStorage(const nlohmann::json& data)
     : Building(data, {data["size"][0], data["size"][1]}, {148, 148, 148}, SilverStorage_T)
@@ -19,7 +20,7 @@ SilverStorage::SilverStorage(const nlohmann::json& data)
 }
 
 // Loads from save file
-SilverStorage::SilverStorage(const nlohmann::json& data, const std::string save)
+SilverStorage::SilverStorage(const nlohmann::json& data, std::string save)
     : Building(data, {148, 148, 148}, SilverStorage_T)
 {
     save = Interactable::genReadSave(save);
@@ -38,15 +39,20 @@ SilverStorage::~SilverStorage()
 
 std::string SilverStorage::getSave()
 {
+    std::string save = Interactable::genGetSave();
+    save += Building::buildingGetSave();
+    
+    // Add anything nessecary
 
+    return save;
 }
 
-void SilverStorage::readSave(std::string save)
+void SilverStorage::readSave(const std::string& save)
 {
 
 }
 
-void frameUpdate(const std::time_t& seconds)
+void SilverStorage::updateFrame(const std::time_t& seconds)
 {
 
 }

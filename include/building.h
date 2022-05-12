@@ -27,8 +27,8 @@ public:
 
     bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) override;
 
-    virtual void frameUpdate(const std::time_t& seconds) = 0;
-    void update(const std::time_t seconds) override; // Calls frameUpdate
+    virtual void updateFrame(const std::time_t& seconds) = 0;
+    void update(const std::time_t seconds) override; // Calls update in child class
     void render(Window& window, const Vect<int> renderOffset) override;
 
     std::string buildingGetSave();

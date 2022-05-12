@@ -71,7 +71,7 @@ void Interactable::genRender(Window& window, const Vect<int>& renderOffset)
     window.drawRect(render, color);
 }
 
-std::string Interactable::genSaveData()
+std::string Interactable::genGetSave()
 {
     if (placing) return RemoveObj; // Removes this because it's placing
 
@@ -83,7 +83,7 @@ std::string Interactable::genSaveData()
     return save;
 }
 
-std::string Interactable::genReadSave(const std::string save)
+std::string Interactable::genReadSave(std::string save)
 {
     // Remove name
     save = save.substr(objTNames.at(type).size());

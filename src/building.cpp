@@ -25,9 +25,9 @@ Building::Building(const nlohmann::json& data, const Vect<int> tileSize, const s
 }
 
 Building::Building(const nlohmann::json& data, const std::vector<Uint8> color, const ObjType type)
-    : Interactable(type), renderColor(color), data(data)
+    : Interactable(type), data(data)
 {
-
+    renderColor = color;
 }
 
 Building::~Building()
@@ -70,7 +70,7 @@ bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
     return pChecked == renderPos.w;
 }
 
-void Building::update(std::time_t seconds)
+void Building::update(const std::time_t seconds)
 {
     // Handling being built
     if (beingBuilt)
@@ -85,7 +85,7 @@ void Building::update(std::time_t seconds)
         // Functionality
     }
 
-    updateBuilding(seconds);
+    // updateFrame(seconds);
 }
 
 void Building::render(Window& window, Vect<int> renderOffset)
@@ -96,7 +96,7 @@ void Building::render(Window& window, Vect<int> renderOffset)
 
 std::string Building::buildingGetSave()
 {
-    std::string save = Interactable::genSaveData();
+    std::string save = Interactable::genGetSave();
 
     save += std::to_string(beingBuilt)    + "," + 
             std::to_string(updating)      + "," + 
@@ -106,7 +106,7 @@ std::string Building::buildingGetSave()
     return save;
 }
 
-std::string Building::buildingReadSave(const std::string save)
+std::string Building::buildingReadSave(const std::string& save)
 {
     std::vector<std::string> data = util::split(save, ",");
 
