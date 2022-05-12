@@ -49,16 +49,16 @@ bool Interactable::genCanPlace(const Vect<int>& pos, std::vector<std::unique_ptr
 }
 
 
-void Interactable::genRender(Window& window, const Vect<int>& renderOffset)
+void Interactable::genRender(Window& window, const Vect<int>& renderOffset, const SDL_Rect& renderRect)
 {
-    SDL_Rect render = renderPos;
+    SDL_Rect render = renderRect;
     render.x -= renderOffset.x;
     render.y -= renderOffset.y;
 
     std::vector<Uint8> color = renderColor;
     if (placing) // Alphafied
     {
-        color.push_back(hoveringAlpha);
+        color.push_back(alpha);
 
         if (!placable) // Redified
         {

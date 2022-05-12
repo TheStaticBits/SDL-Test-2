@@ -52,7 +52,7 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     }
 
     for (std::unique_ptr<Interactable>& obj : objects)
-        obj->update(std::time(nullptr));
+        obj->update(std::time(0));
 
     if (placing)
     {

@@ -42,7 +42,7 @@ public:
     std::string genReadSave(std::string save);
     virtual void readSave(const std::string& save) = 0;
 
-    void genRender(Window& window, const Vect<int>& renderOffset);
+    void genRender(Window& window, const Vect<int>& renderOffset, const SDL_Rect& renderRect = renderPos);
 
     inline bool isPlacing() const { return placing; }
     inline void setPlacable(bool canPlace) { placable = canPlace; }
@@ -58,7 +58,7 @@ public:
     }
 
 protected:
-    static constexpr int hoveringAlpha = 150;
+    static constexpr int alpha = 150;
 
     // SDL_Texture* image; // Add image later
     Vect<int> tileSize; // Amount of tiles it takes up

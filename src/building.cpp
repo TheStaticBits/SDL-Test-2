@@ -17,17 +17,10 @@
 
 Building::Building(const nlohmann::json& data, const Vect<int> tileSize, const std::vector<Uint8> color, const ObjType type)
     : Interactable(tileSize, color, type), 
-    beingBuilt(false), updating(false), buildingTimer(0), level(0),
-    data(data)
+      beingBuilt(false), timeAtPlace(0), level(1), 
+      percentComplete(100), data(data)
 {
-    renderPos.w = tileSize.x * TILE_SIZE;
-    renderPos.h = tileSize.y * TILE_SIZE;
-}
 
-Building::Building(const nlohmann::json& data, const std::vector<Uint8> color, const ObjType type)
-    : Interactable(type), data(data)
-{
-    renderColor = color;
 }
 
 Building::~Building()
@@ -70,19 +63,15 @@ bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
     return pChecked == renderPos.w;
 }
 
-void Building::update(const std::time_t seconds)
+void Building::update(const std::time_t time)
 {
-    // Handling being built
+    // Being built timer
     if (beingBuilt)
     {
-        if (buildingTimer > 0)
-            buildingTimer--;
-        else
+        if (time >= timeAtPlace + data[std::to_string(level)]["upgradeTime"])
             beingBuilt = false;
-    }
-    else
-    {
-        // Functionality
+        else
+            percentComplete = (time - timeAtPlace) / data[std::to_string(level)]["upgradeTime"]);
     }
 
     updateFrame(seconds);
@@ -90,8 +79,23 @@ void Building::update(const std::time_t seconds)
 
 void Building::render(Window& window, Vect<int> renderOffset)
 {
-    // more code here?? perhaps
-    Interactable::genRender(window, renderOffset);
+    if (beingBuilt)
+    {
+        // Drawing transparent part
+        std::vector<Uint8> color = renderColor;
+        color.push_back(alpha)
+        window.drawRect(renderRect, color);
+
+        // Drawing solid part
+        const int solidHeight = static_cast<int>(percentComplete * renderPos.h);
+        SDL_Rect renderRect = {
+            renderPos.x, renderPos.y + solidHeight,
+            renderPos.w, renderPos.h - solidHeight
+        }; 
+        window.drawRect(renderRect, renderColor);
+    }
+    else
+        Interactable::genRender(window, renderOffset)
 }
 
 std::string Building::buildingGetSave()
@@ -99,8 +103,7 @@ std::string Building::buildingGetSave()
     std::string save = Interactable::genGetSave();
 
     save += std::to_string(beingBuilt)    + "," + 
-            std::to_string(updating)      + "," + 
-            std::to_string(buildingTimer) + "," + 
+            std::to_string(timeAtPlace)   + "," + 
             std::to_string(level)         + "#"; // Divider
 
     return save;
@@ -110,15 +113,16 @@ std::string Building::buildingReadSave(const std::string& save)
 {
     std::vector<std::string> data = util::split(save, ",");
 
-    beingBuilt =    std::stoi(data[0]);
-    updating =      std::stoi(data[1]);
-    buildingTimer = std::stoi(data[2]);
-    level =         std::stoi(data[3]);
+    beingBuilt =  std::stoi(data[0]);
+    timeAtPlace = std::stoi(data[1]);
+    level =       std::stoi(data[2]);
 
     return save.substr(save.find("#") + 1);
 }
 
-void Building::placeDown()
+void Building::placeDown(const std::time_t time)
 {
-
+    beingBuilt = true;
+    timeAtPlace = time;
+    percentComplete = 0;
 }

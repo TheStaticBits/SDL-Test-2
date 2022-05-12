@@ -72,9 +72,9 @@ void Game::iteration()
     window.update();
 
     // Saving every 5 seconds
-    if (std::time(nullptr) > lastSaveTime + SAVE_INTERVAL)
+    if (std::time(0) > lastSaveTime + SAVE_INTERVAL)
     {
-        lastSaveTime = std::time(nullptr);
+        lastSaveTime = std::time(0);
         save();
     }
 }
