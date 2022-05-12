@@ -85,7 +85,7 @@ void Building::update(const std::time_t seconds)
         // Functionality
     }
 
-    // updateFrame(seconds);
+    updateFrame(seconds);
 }
 
 void Building::render(Window& window, Vect<int> renderOffset)
