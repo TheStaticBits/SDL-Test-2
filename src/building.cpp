@@ -88,17 +88,20 @@ void Building::render(Window& window, Vect<int> renderOffset)
 {
     if (beingBuilt)
     {
+        SDL_Rect renderRect = {
+            renderPos.x - renderOffset.x, renderPos.y - renderOffset.y,
+            renderPos.w, renderPos.h
+        };
+
         // Drawing transparent part
         std::vector<Uint8> color = renderColor;
         color.push_back(alpha);
-        window.drawRect(renderPos, color);
+        window.drawRect(renderRect, color);
 
         // Drawing solid part
         const int solidHeight = static_cast<int>(percentComplete * renderPos.h);
-        SDL_Rect renderRect = {
-            renderPos.x, renderPos.y + solidHeight,
-            renderPos.w, renderPos.h - solidHeight
-        }; 
+        renderRect.y += solidHeight;
+        renderRect.h -= solidHeight;
         window.drawRect(renderRect, renderColor);
     }
     else
