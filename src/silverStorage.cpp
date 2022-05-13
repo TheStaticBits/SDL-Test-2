@@ -26,6 +26,7 @@ SilverStorage::SilverStorage(const nlohmann::json& data, std::string save)
     : Building(data, {data["size"][0], data["size"][1]}, 
                {148, 148, 148}, SilverStorage_T)
 {
+    placing = false;
     save = Interactable::genReadSave(save);
     save = Building::buildingReadSave(save);
     readSave(save);

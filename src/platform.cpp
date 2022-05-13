@@ -66,7 +66,7 @@ void Platform::readSave(const std::string& save)
     renderPos.h = tileSize.y * TILE_SIZE;
 }
 
-void Platform::placeDown()
+void Platform::placeDown(const std::time_t time)
 {
 
 }

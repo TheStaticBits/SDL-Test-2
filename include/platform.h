@@ -31,8 +31,9 @@ public:
     std::string getSave() override;
     void readSave(const std::string& save) override;
     
-    void placeDown() override;
+    void placeDown(const std::time_t time) override;
 
 private:
+    static const ObjType type = Platform_T;
 
 };

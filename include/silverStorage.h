@@ -28,5 +28,5 @@ public:
     void updateFrame(const std::time_t& seconds) override;
 
 private:
-
+    
 };

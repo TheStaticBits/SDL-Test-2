@@ -19,7 +19,7 @@
 class Building : public Interactable
 {
 public:
-    Building(const nlohmann::json& data, const Vect<int> tileSize, const std::time_t time, const std::vector<Uint8> color, const ObjType type);
+    Building(const nlohmann::json& data, const Vect<int> tileSize, const std::vector<Uint8> color, const ObjType type);
     ~Building();
 
     void operator=(const Building&) = delete;
@@ -33,7 +33,7 @@ public:
     std::string buildingGetSave();
     std::string buildingReadSave(const std::string& save);
 
-    void placeDown() override;
+    void placeDown(const std::time_t time) override;
 
 protected:
     bool beingBuilt;

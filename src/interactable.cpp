@@ -49,9 +49,9 @@ bool Interactable::genCanPlace(const Vect<int>& pos, std::vector<std::unique_ptr
 }
 
 
-void Interactable::genRender(Window& window, const Vect<int>& renderOffset, const SDL_Rect& renderRect)
+void Interactable::genRender(Window& window, const Vect<int>& renderOffset)
 {
-    SDL_Rect render = renderRect;
+    SDL_Rect render = renderPos;
     render.x -= renderOffset.x;
     render.y -= renderOffset.y;
 

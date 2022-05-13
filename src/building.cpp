@@ -17,8 +17,8 @@
 
 Building::Building(const nlohmann::json& data, const Vect<int> tileSize, const std::vector<Uint8> color, const ObjType type)
     : Interactable(tileSize, color, type), 
-      beingBuilt(false), timeAtPlace(0), level(1), 
-      percentComplete(100), data(data)
+      beingBuilt(false), timeAtPlace(0), percentComplete(100),
+      level(1), data(data)
 {
 
 }
@@ -68,13 +68,20 @@ void Building::update(const std::time_t time)
     // Being built timer
     if (beingBuilt)
     {
-        if (time >= timeAtPlace + data[std::to_string(level)]["upgradeTime"])
+        int upgradeTime = data[std::to_string(level)]["upgradeTime"];
+
+        if ((int)time >= (int)timeAtPlace + upgradeTime)
+        {
             beingBuilt = false;
+            percentComplete = 100;
+        }
         else
-            percentComplete = (time - timeAtPlace) / data[std::to_string(level)]["upgradeTime"]);
+        {
+            percentComplete = (float)(time - timeAtPlace) / upgradeTime;
+        }
     }
 
-    updateFrame(seconds);
+    updateFrame(time);
 }
 
 void Building::render(Window& window, Vect<int> renderOffset)
@@ -83,8 +90,8 @@ void Building::render(Window& window, Vect<int> renderOffset)
     {
         // Drawing transparent part
         std::vector<Uint8> color = renderColor;
-        color.push_back(alpha)
-        window.drawRect(renderRect, color);
+        color.push_back(alpha);
+        window.drawRect(renderPos, color);
 
         // Drawing solid part
         const int solidHeight = static_cast<int>(percentComplete * renderPos.h);
@@ -95,7 +102,7 @@ void Building::render(Window& window, Vect<int> renderOffset)
         window.drawRect(renderRect, renderColor);
     }
     else
-        Interactable::genRender(window, renderOffset)
+        Interactable::genRender(window, renderOffset);
 }
 
 std::string Building::buildingGetSave()

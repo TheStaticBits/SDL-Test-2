@@ -35,20 +35,20 @@ public:
 
     virtual void update(const std::time_t seconds) = 0;
     virtual void render(Window& window, const Vect<int> renderOffset) = 0;
-    virtual void placeDown() = 0; // Called when placed down
+    virtual void placeDown(const std::time_t time) = 0; // Called when placed down
 
     std::string genGetSave(); // General save data for the object
     virtual std::string getSave() = 0;
     std::string genReadSave(std::string save);
     virtual void readSave(const std::string& save) = 0;
 
-    void genRender(Window& window, const Vect<int>& renderOffset, const SDL_Rect& renderRect = renderPos);
+    void genRender(Window& window, const Vect<int>& renderOffset);
 
     inline bool isPlacing() const { return placing; }
     inline void setPlacable(bool canPlace) { placable = canPlace; }
     inline Vect<int>& getTileSize() { return tileSize; }
     inline void setPos(Vect<int> pos) { renderPos.x = pos.x; renderPos.y = pos.y; }
-    inline void completePlace() { placing = false; placeDown(); }
+    inline void completePlace(const std::time_t time) { placing = false; placeDown(time); }
     inline SDL_Rect& getRect() { return renderPos; }
     inline const ObjType& getType() { return type; }
 

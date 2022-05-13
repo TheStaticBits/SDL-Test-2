@@ -18,6 +18,7 @@
 #include "platform.h"
 #include "building.h"
 #include "utility.h"
+#include "silverStorage.h"
 
 Base::Base()
     : buildingData(nlohmann::json::parse(std::ifstream(bDataPath))), 
@@ -36,6 +37,8 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                   Vect<int>& mousePos,
                   Vect<int>& renderOffset)
 {
+    std::time_t timeAtUpdate = std::time(0);
+
     if (!placing)
     {
         // Temporary
@@ -46,13 +49,13 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
         } 
         if (mouseButtons[SDL_BUTTON_RIGHT])
         {
-            // placing = true;
-            // objects.push_back(std::make_unique<Building>(Vect<int>{2, 3}, std::vector<Uint8>{0, 255, 255}));
+            placing = true;
+            objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames[SilverStorage_T]]));
         }
     }
 
     for (std::unique_ptr<Interactable>& obj : objects)
-        obj->update(std::time(0));
+        obj->update(timeAtUpdate);
 
     if (placing)
     {
@@ -72,7 +75,6 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                 placeTile -= obj->getTileSize() / 2;
 
                 Vect<int> screenPos = placeTile * TILE_SIZE;
-
                 obj->setPos(screenPos);
 
                 if (obj->canPlace(screenPos, objects, size))
@@ -82,7 +84,8 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                     if (mouseButtons[SDL_BUTTON_LEFT])
                     {
                         placing = false;
-                        obj->completePlace();
+                        obj->completePlace(timeAtUpdate);
+                        std::cout << "complete" << std::endl;
                     }
                 }
                 else
@@ -133,8 +136,8 @@ void Base::readSave(std::string save)
         {
             if (Interactable::checkSavePart(obj, Platform_T))
                 objects.push_back(std::make_unique<Platform>(obj));
-            // else if (Interactable::checkSavePart(obj, BuildingType))
-            //     objects.push_back(std::make_unique<Building>(obj, std::vector<Uint8>{0, 255, 255}));
+            else if (Interactable::checkSavePart(obj, SilverStorage_T))
+                objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames[SilverStorage_T]], obj));
         }
     }
 }
