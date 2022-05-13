@@ -44,12 +44,12 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     if (!placing)
     {
         // Temporary
-        if (keys[SDLK_SPACE])
+        if (keys[SDLK_p]) // Platform
         {
             placing = true;
             objects.push_back(std::make_unique<Platform>(4));
         } 
-        if (mouseButtons[SDL_BUTTON_RIGHT])
+        if (keys[SDLK_b]) // Building
         {
             placing = true;
             objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames[SilverStorage_T]]));

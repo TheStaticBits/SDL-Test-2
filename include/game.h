@@ -31,7 +31,8 @@ public:
 
 private:
     inline static const std::vector<SDL_Keycode> allowedKeys = {
-        SDLK_w, SDLK_s, SDLK_a, SDLK_d, SDLK_RETURN, SDLK_SPACE
+        SDLK_w, SDLK_s, SDLK_a, SDLK_d, SDLK_RETURN, SDLK_SPACE,
+        SDLK_b, SDLK_p // Temporary, for placing buildings/platforms
     };
 
     std::unordered_map<SDL_Keycode, bool> keys;

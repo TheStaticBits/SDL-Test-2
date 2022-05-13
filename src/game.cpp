@@ -77,6 +77,9 @@ void Game::iteration()
         lastSaveTime = std::time(0);
         save();
     }
+
+    // Save when pressing space or when you left click
+    if (keys[SDLK_SPACE] || mouseButtons[SDL_BUTTON_LEFT]) save();
 }
 
 #ifdef __EMSCRIPTEN__
