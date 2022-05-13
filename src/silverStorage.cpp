@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <string>
-#include <ctime>
+#include <chrono>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -53,7 +53,7 @@ void SilverStorage::readSave(const std::string& save)
 
 }
 
-void SilverStorage::updateFrame(const std::time_t& seconds)
+void SilverStorage::updateFrame(const uint64_t& seconds)
 {
     
 }

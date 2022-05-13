@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <chrono>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -63,12 +64,13 @@ bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
     return pChecked == renderPos.w;
 }
 
-void Building::update(const std::time_t time)
+void Building::update(const uint64_t time)
 {
     // Being built timer
     if (beingBuilt)
     {
         int upgradeTime = data[std::to_string(level)]["upgradeTime"];
+        upgradeTime *= 1000; // Converting to milliseconds
 
         if ((int)time >= (int)timeAtPlace + upgradeTime)
         {
@@ -77,7 +79,7 @@ void Building::update(const std::time_t time)
         }
         else
         {
-            percentComplete = (float)(time - timeAtPlace) / upgradeTime;
+            percentComplete = 1 - ((float)(time - timeAtPlace) / upgradeTime);
         }
     }
 
@@ -112,9 +114,15 @@ std::string Building::buildingGetSave()
 {
     std::string save = "";
 
-    save += std::to_string(beingBuilt)    + "," + 
-            std::to_string(timeAtPlace)   + "," + 
-            std::to_string(level)         + "#"; // Divider
+    save += std::to_string(beingBuilt) + "," +
+            std::to_string(level); 
+
+    // Only saving timeAtPlace if it's still being built 
+    if (beingBuilt)
+        save += "," + std::to_string(timeAtPlace) + "#";
+    else 
+        save += "#"; // Divider
+        
 
     return save;
 }
@@ -123,14 +131,15 @@ std::string Building::buildingReadSave(const std::string& save)
 {
     std::vector<std::string> data = util::split(save, ",");
 
-    beingBuilt =  std::stoi(data[0]);
-    timeAtPlace = std::stoi(data[1]);
-    level =       std::stoi(data[2]);
+    beingBuilt = std::stoi(data[0]);
+    level =      std::stoi(data[1]);
+
+    if (beingBuilt) timeAtPlace = std::stoull(data[2]);
 
     return save.substr(save.find("#") + 1);
 }
 
-void Building::placeDown(const std::time_t time)
+void Building::placeDown(const uint64_t time)
 {
     beingBuilt = true;
     timeAtPlace = time;

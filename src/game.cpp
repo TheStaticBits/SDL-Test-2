@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <cmath>
-#include <ctime>
+#include <chrono>
 
 #ifdef __EMSCRIPTEN__
     #include <emscripten.h>

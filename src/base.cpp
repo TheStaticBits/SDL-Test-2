@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <cmath>
-#include <ctime>
+#include <chrono>
 #include <memory>
 
 #include <SDL2/SDL.h>
@@ -37,7 +37,9 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                   Vect<int>& mousePos,
                   Vect<int>& renderOffset)
 {
-    std::time_t timeAtUpdate = std::time(0);
+    uint64_t timeAtUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch()
+    ).count();
 
     if (!placing)
     {

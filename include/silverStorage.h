@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <string>
-#include <ctime>
+#include <chrono>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -25,8 +25,8 @@ public:
     std::string getSave() override;
     void readSave(const std::string& save) override;
 
-    void updateFrame(const std::time_t& seconds) override;
+    void updateFrame(const uint64_t& seconds) override;
 
 private:
-    
+
 };

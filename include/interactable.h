@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
-#include <ctime>
+#include <chrono>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -33,9 +33,9 @@ public:
     virtual bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) = 0;
     bool genCanPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size);
 
-    virtual void update(const std::time_t seconds) = 0;
+    virtual void update(const uint64_t seconds) = 0;
     virtual void render(Window& window, const Vect<int> renderOffset) = 0;
-    virtual void placeDown(const std::time_t time) = 0; // Called when placed down
+    virtual void placeDown(const uint64_t time) = 0; // Called when placed down
 
     std::string genGetSave(); // General save data for the object
     virtual std::string getSave() = 0;
@@ -48,7 +48,7 @@ public:
     inline void setPlacable(bool canPlace) { placable = canPlace; }
     inline Vect<int>& getTileSize() { return tileSize; }
     inline void setPos(Vect<int> pos) { renderPos.x = pos.x; renderPos.y = pos.y; }
-    inline void completePlace(const std::time_t time) { placing = false; placeDown(time); }
+    inline void completePlace(const uint64_t time) { placing = false; placeDown(time); }
     inline SDL_Rect& getRect() { return renderPos; }
     inline const ObjType& getType() { return type; }
 

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include <ctime>
+#include <chrono>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -26,18 +26,18 @@ public:
 
     bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) override;
 
-    virtual void updateFrame(const std::time_t& time) = 0;
-    void update(const std::time_t time) override; // Calls update in child class
+    virtual void updateFrame(const uint64_t& time) = 0;
+    void update(const uint64_t time) override; // Calls update in child class
     void render(Window& window, const Vect<int> renderOffset) override;
 
     std::string buildingGetSave();
     std::string buildingReadSave(const std::string& save);
 
-    void placeDown(const std::time_t time) override;
+    void placeDown(const uint64_t time) override;
 
 protected:
     bool beingBuilt;
-    std::time_t timeAtPlace; // Time when the building is placed
+    uint64_t timeAtPlace; // Time when the building is placed
     float percentComplete;
     int level; 
 

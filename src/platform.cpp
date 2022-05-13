@@ -37,7 +37,7 @@ bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
     return Interactable::genCanPlace(pos, objects, size);
 }
 
-void Platform::update(const std::time_t seconds)
+void Platform::update(const uint64_t seconds)
 {
 
 }
@@ -66,7 +66,7 @@ void Platform::readSave(const std::string& save)
     renderPos.h = tileSize.y * TILE_SIZE;
 }
 
-void Platform::placeDown(const std::time_t time)
+void Platform::placeDown(const uint64_t time)
 {
 
 }

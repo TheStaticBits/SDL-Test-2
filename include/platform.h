@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include <ctime>
+#include <chrono>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -25,13 +25,13 @@ public:
 
     bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) override;
 
-    void update(const std::time_t seconds) override;
+    void update(const uint64_t seconds) override;
     void render(Window& window, const Vect<int> renderOffset) override;
 
     std::string getSave() override;
     void readSave(const std::string& save) override;
     
-    void placeDown(const std::time_t time) override;
+    void placeDown(const uint64_t time) override;
 
 private:
     static const ObjType type = Platform_T;
