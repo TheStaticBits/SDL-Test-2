@@ -107,7 +107,7 @@ void Building::render(Window& window, Vect<int> renderOffset)
 
 std::string Building::buildingGetSave()
 {
-    std::string save = Interactable::genGetSave();
+    std::string save = "";
 
     save += std::to_string(beingBuilt)    + "," + 
             std::to_string(timeAtPlace)   + "," + 
