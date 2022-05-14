@@ -31,7 +31,7 @@ Building::~Building()
 
 bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
 {
-    if (!Interactable::genCanPlace(pos, objects, size)) return false;
+    if (!Interactable::canPlace(pos, objects, size)) return false;
     if (pos.y + renderPos.h == size.y) return true; // Bottom of map
 
     int pChecked = 0; // Tiles of the building base with a platform below
@@ -64,7 +64,7 @@ bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
     return pChecked == renderPos.w;
 }
 
-void Building::update(const uint64_t time)
+void Building::update(const uint64_t& time)
 {
     // Being built timer
     if (beingBuilt)
@@ -86,7 +86,7 @@ void Building::update(const uint64_t time)
     updateFrame(time);
 }
 
-void Building::render(Window& window, Vect<int> renderOffset)
+void Building::render(Window& window, const Vect<int>& renderOffset)
 {
     if (beingBuilt)
     {
@@ -107,10 +107,17 @@ void Building::render(Window& window, Vect<int> renderOffset)
         window.drawRect(renderRect, renderColor);
     }
     else
-        Interactable::genRender(window, renderOffset);
+        Interactable::render(window, renderOffset);
 }
 
-std::string Building::buildingGetSave()
+void Building::placeDown(const uint64_t& time)
+{
+    beingBuilt = true;
+    timeAtPlace = time;
+    percentComplete = 0;
+}
+
+std::string Building::getSave()
 {
     std::string save = "";
 
@@ -123,11 +130,10 @@ std::string Building::buildingGetSave()
     else 
         save += "#"; // Divider
         
-
     return save;
 }
 
-std::string Building::buildingReadSave(const std::string& save)
+std::string Building::readSave(std::string& save)
 {
     std::vector<std::string> data = util::split(save, ",");
 
@@ -137,11 +143,4 @@ std::string Building::buildingReadSave(const std::string& save)
     if (beingBuilt) timeAtPlace = std::stoull(data[2]);
 
     return save.substr(save.find("#") + 1);
-}
-
-void Building::placeDown(const uint64_t time)
-{
-    beingBuilt = true;
-    timeAtPlace = time;
-    percentComplete = 0;
 }

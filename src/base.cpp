@@ -136,9 +136,9 @@ void Base::readSave(std::string save)
 
         for (std::string& obj : saveList)
         {
-            if (Interactable::checkSavePart(obj, Platform_T))
+            if (objCheckSavePart(obj, Platform_T))
                 objects.push_back(std::make_unique<Platform>(obj));
-            else if (Interactable::checkSavePart(obj, SilverStorage_T))
+            else if (objCheckSavePart(obj, SilverStorage_T))
                 objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames[SilverStorage_T]], obj));
         }
     }

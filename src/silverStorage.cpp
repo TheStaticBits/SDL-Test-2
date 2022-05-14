@@ -26,8 +26,8 @@ SilverStorage::SilverStorage(const nlohmann::json& data, std::string save)
 {
     placing = false;
     
-    save = Interactable::genReadSave(save);
-    save = Building::buildingReadSave(save);
+    save = Interactable::readSave(save);
+    save = Building::readSave(save);
     readSave(save);
 }
 
@@ -36,22 +36,22 @@ SilverStorage::~SilverStorage()
 
 }
 
+void SilverStorage::updateFrame(const uint64_t& seconds)
+{
+    
+}
+
 std::string SilverStorage::getSave()
 {
-    std::string save = Interactable::genGetSave();
-    save += Building::buildingGetSave();
+    std::string save = Interactable::getSave();
+    save += Building::getSave();
     
     // Add anything nessecary
 
     return save;
 }
 
-void SilverStorage::readSave(const std::string& save)
+std::string SilverStorage::readSave(std::string& save)
 {
-
-}
-
-void SilverStorage::updateFrame(const uint64_t& seconds)
-{
-    
+    return ""; // No more data to parse
 }

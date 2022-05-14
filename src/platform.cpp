@@ -23,7 +23,8 @@ Platform::Platform(std::string save)
     : Interactable(Platform_T)
 {
     renderColor = {0, 255, 0};
-    save = genReadSave(save);
+
+    save = Interactable::readSave(save);
     readSave(save);
 }
 
@@ -34,39 +35,36 @@ Platform::~Platform()
 
 bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
 {
-    return Interactable::genCanPlace(pos, objects, size);
+    return Interactable::canPlace(pos, objects, size);
 }
 
-void Platform::update(const uint64_t seconds)
+void Platform::update(const uint64_t& seconds)
 {
 
 }
 
-void Platform::render(Window& window, const Vect<int> renderOffset)
+void Platform::render(Window& window, const Vect<int>& renderOffset)
 {
     // Add rendering for the supports of the platform
-    Interactable::genRender(window, renderOffset);
+    Interactable::render(window, renderOffset);
 }
 
 std::string Platform::getSave()
 {
-    std::string save = Interactable::genGetSave();
+    std::string save = Interactable::getSave();
 
     save += std::to_string(tileSize.x);
 
     return save;
 }
 
-void Platform::readSave(const std::string& save)
+std::string Platform::readSave(std::string& save)
 {
     tileSize.y = 1; // Height of platform is always 1
     tileSize.x = std::stoi(save);
 
     renderPos.w = tileSize.x * TILE_SIZE;
     renderPos.h = tileSize.y * TILE_SIZE;
-}
 
-void Platform::placeDown(const uint64_t time)
-{
-
+    return ""; // No more save to read
 }

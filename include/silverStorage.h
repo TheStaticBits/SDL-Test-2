@@ -21,11 +21,11 @@ public:
     ~SilverStorage();
 
     void operator=(const SilverStorage&) = delete;
+    
+    void updateFrame(const uint64_t& seconds) override;
 
     std::string getSave() override;
-    void readSave(const std::string& save) override;
-
-    void updateFrame(const uint64_t& seconds) override;
+    std::string readSave(std::string& save) override;
 
 private:
 

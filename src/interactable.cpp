@@ -11,6 +11,7 @@
 #include "utility.h"
 #include "base.h"
 
+
 Interactable::Interactable(const Vect<int> tileSize, const std::vector<uint8_t> color, const ObjType type)
     : tileSize(tileSize), renderColor(color),
       renderPos{0, 0, tileSize.x * TILE_SIZE, tileSize.y * TILE_SIZE}, 
@@ -31,7 +32,7 @@ Interactable::~Interactable()
 }
 
 // General canPlace function that every canPlace function should use somewhere
-bool Interactable::genCanPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
+bool Interactable::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
 {
     // If the platform is touching any other object besides itself
     for (std::unique_ptr<Interactable>& obj : objects)
@@ -49,7 +50,7 @@ bool Interactable::genCanPlace(const Vect<int>& pos, std::vector<std::unique_ptr
 }
 
 
-void Interactable::genRender(Window& window, const Vect<int>& renderOffset)
+void Interactable::render(Window& window, const Vect<int>& renderOffset)
 {
     SDL_Rect render = renderPos;
     render.x -= renderOffset.x;
@@ -71,7 +72,7 @@ void Interactable::genRender(Window& window, const Vect<int>& renderOffset)
     window.drawRect(render, color);
 }
 
-std::string Interactable::genGetSave()
+std::string Interactable::getSave()
 {
     if (placing) return RemoveObj; // Removes this because it's placing
 
@@ -83,7 +84,7 @@ std::string Interactable::genGetSave()
     return save;
 }
 
-std::string Interactable::genReadSave(std::string save)
+std::string Interactable::readSave(std::string& save)
 {
     // Remove name
     save = save.substr(objTNames.at(type).size());
@@ -95,4 +96,10 @@ std::string Interactable::genReadSave(std::string save)
     renderPos.y = std::stoi(data[1]);
 
     return save.substr(save.find("#") + 1); // Removing everything before the divider
+}
+
+void Interactable::completePlace(const uint64_t time)
+{
+    placing = false; 
+    placeDown(time); 
 }

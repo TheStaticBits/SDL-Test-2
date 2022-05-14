@@ -32,8 +32,7 @@ public:
 
     void updateRect();
     
-    inline Vect<int> getRenderOffset() const { return Vect<int>(static_cast<int>(renderOffset.x),
-                                                                static_cast<int>(renderOffset.y)); }
+    inline const Vect<int> getRenderOffset() const { return renderOffset.cast<int>(); }
 
 private:
     inline static const std::string saveName = "Player";

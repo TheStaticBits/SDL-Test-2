@@ -20,6 +20,12 @@ inline std::unordered_map<ObjType, std::string> objTNames = {
     { SilverStorage_T, "SilverStor"}
 };
 
+// If the first of a string is the same name as the object
+inline bool objCheckSavePart(const std::string part, const ObjType objType) 
+{ 
+    return part.substr(0, objTNames.at(objType).length()) == objTNames.at(objType); 
+}
+
 // Objects in the home base that can be interacted with
 class Interactable
 {
@@ -30,32 +36,28 @@ public:
 
     void operator=(const Interactable&) = delete;
 
-    virtual bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) = 0;
-    bool genCanPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size);
+    virtual bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size);
+    void completePlace(const uint64_t time);
 
-    virtual void update(const uint64_t seconds) = 0;
-    virtual void render(Window& window, const Vect<int> renderOffset) = 0;
-    virtual void placeDown(const uint64_t time) = 0; // Called when placed down
+    virtual void update(const uint64_t& seconds) { };
+    virtual void render(Window& window, const Vect<int>& renderOffset);
 
-    std::string genGetSave(); // General save data for the object
-    virtual std::string getSave() = 0;
-    std::string genReadSave(std::string save);
-    virtual void readSave(const std::string& save) = 0;
+    // Called when object is placed down; does not need to be overridden
+    virtual void placeDown(const uint64_t& time) { };
 
-    void genRender(Window& window, const Vect<int>& renderOffset);
+    // Save functions
+    virtual std::string getSave();
+    virtual std::string readSave(std::string& save);
+    
+    // Getter functions
+    inline bool isPlacing() const   { return placing;   }
+    inline Vect<int>& getTileSize() { return tileSize;  }
+    inline SDL_Rect& getRect()      { return renderPos; }
+    inline const ObjType& getType() { return type;      }
 
-    inline bool isPlacing() const { return placing; }
+    // Setter functions
     inline void setPlacable(bool canPlace) { placable = canPlace; }
-    inline Vect<int>& getTileSize() { return tileSize; }
-    inline void setPos(Vect<int> pos) { renderPos.x = pos.x; renderPos.y = pos.y; }
-    inline void completePlace(const uint64_t time) { placing = false; placeDown(time); }
-    inline SDL_Rect& getRect() { return renderPos; }
-    inline const ObjType& getType() { return type; }
-
-    static inline bool checkSavePart(const std::string part, const ObjType objType) 
-    { 
-        return part.substr(0, objTNames.at(objType).length()) == objTNames.at(objType); 
-    }
+    inline void setPos(Vect<int> pos)      { renderPos.x = pos.x; renderPos.y = pos.y; }
 
 protected:
     static constexpr int alpha = 150;
