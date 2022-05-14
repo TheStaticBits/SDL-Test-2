@@ -19,7 +19,7 @@
 class Building : public Interactable
 {
 public:
-    Building(const nlohmann::json& data, const std::vector<Uint8> color, const ObjType type);
+    Building(const nlohmann::json& data, const std::vector<uint8_t> color, const ObjType type);
     ~Building();
 
     void operator=(const Building&) = delete;

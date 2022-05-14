@@ -17,11 +17,11 @@
 #include "utility.h"
 
 Building::Building(const nlohmann::json& data, const std::vector<uint8_t> color, const ObjType type)
-    : Interactable(tileSize, color, type), 
+    : Interactable({data["size"][0], data["size"][1]}, color, type), 
       beingBuilt(false), timeAtPlace(0), percentComplete(0),
       level(1), data(data)
 {
-
+    
 }
 
 Building::~Building()
