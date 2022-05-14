@@ -11,7 +11,7 @@
 #include "utility.h"
 #include "base.h"
 
-Interactable::Interactable(const Vect<int> tileSize, const std::vector<Uint8> color, const ObjType type)
+Interactable::Interactable(const Vect<int> tileSize, const std::vector<uint8_t> color, const ObjType type)
     : tileSize(tileSize), renderColor(color),
       renderPos{0, 0, tileSize.x * TILE_SIZE, tileSize.y * TILE_SIZE}, 
       placing(true), placable(true), hovering(false), type(type)
@@ -55,7 +55,7 @@ void Interactable::genRender(Window& window, const Vect<int>& renderOffset)
     render.x -= renderOffset.x;
     render.y -= renderOffset.y;
 
-    std::vector<Uint8> color = renderColor;
+    std::vector<uint8_t> color = renderColor;
     if (placing) // Alphafied
     {
         color.push_back(alpha);

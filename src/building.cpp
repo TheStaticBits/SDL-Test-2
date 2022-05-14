@@ -16,9 +16,9 @@
 #include "interactable.h"
 #include "utility.h"
 
-Building::Building(const nlohmann::json& data, const Vect<int> tileSize, const std::vector<Uint8> color, const ObjType type)
+Building::Building(const nlohmann::json& data, const Vect<int> tileSize, const std::vector<uint8_t> color, const ObjType type)
     : Interactable(tileSize, color, type), 
-      beingBuilt(false), timeAtPlace(0), percentComplete(100),
+      beingBuilt(false), timeAtPlace(0), percentComplete(0),
       level(1), data(data)
 {
 
@@ -96,7 +96,7 @@ void Building::render(Window& window, Vect<int> renderOffset)
         };
 
         // Drawing transparent part
-        std::vector<Uint8> color = renderColor;
+        std::vector<uint8_t> color = renderColor;
         color.push_back(alpha);
         window.drawRect(renderRect, color);
 

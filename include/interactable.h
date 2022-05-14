@@ -24,7 +24,7 @@ inline std::unordered_map<ObjType, std::string> objTNames = {
 class Interactable
 {
 public:
-    Interactable(const Vect<int> tileSize, const std::vector<Uint8> color, const ObjType type);
+    Interactable(const Vect<int> tileSize, const std::vector<uint8_t> color, const ObjType type);
     Interactable(const ObjType type); // For loading from save
     virtual ~Interactable();
 
@@ -62,7 +62,7 @@ protected:
 
     // SDL_Texture* image; // Add image later
     Vect<int> tileSize; // Amount of tiles it takes up
-    std::vector<Uint8> renderColor;
+    std::vector<uint8_t> renderColor;
     SDL_Rect renderPos; // Top left corner
 
     bool placing;

@@ -37,7 +37,7 @@ private:
 
     std::unordered_map<SDL_Keycode, bool> keys;
     std::unordered_map<SDL_Keycode, bool> oneTimeKeys;
-    std::unordered_map<Uint8, bool> mouseButtons;
+    std::unordered_map<uint8_t, bool> mouseButtons;
     Vect<int> mousePos;
 
     Window window;

@@ -32,7 +32,7 @@ public:
     void render(SDL_Texture* texture, SDL_Rect& pos);
     void render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& pos);
 
-    void drawRect(SDL_Rect& rect, std::vector<Uint8> color);
+    void drawRect(SDL_Rect& rect, std::vector<uint8_t> color);
 
 private:
     static constexpr char* TITLE = (char*)"Game again";

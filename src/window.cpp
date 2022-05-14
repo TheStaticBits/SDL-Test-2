@@ -81,7 +81,7 @@ void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& pos)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
-void Window::drawRect(SDL_Rect& rect, std::vector<Uint8> color)
+void Window::drawRect(SDL_Rect& rect, std::vector<uint8_t> color)
 {
     if (color.size() == 4)
         SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], color[3]);
