@@ -16,8 +16,8 @@
 #include "interactable.h"
 #include "utility.h"
 
-Building::Building(const nlohmann::json& data, const Vect<int> tileSize, const std::vector<Uint8> color, const ObjType type)
-    : Interactable(tileSize, color, type), 
+Building::Building(const nlohmann::json& data, const std::vector<Uint8> color, const ObjType type)
+    : Interactable({data["size"][0], data["size"][1]}, color, type), 
       beingBuilt(false), timeAtPlace(0), percentComplete(100),
       level(1), data(data)
 {

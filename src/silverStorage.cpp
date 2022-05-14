@@ -15,16 +15,14 @@
 
 // Create a new building
 SilverStorage::SilverStorage(const nlohmann::json& data)
-    : Building(data, {data["size"][0], data["size"][1]}, 
-               {148, 148, 148}, SilverStorage_T)
+    : Building(data, {148, 148, 148}, SilverStorage_T)
 {
 
 }
 
 // Loads from save file
 SilverStorage::SilverStorage(const nlohmann::json& data, std::string save)
-    : Building(data, {data["size"][0], data["size"][1]}, 
-               {148, 148, 148}, SilverStorage_T)
+    : Building(data, {148, 148, 148}, SilverStorage_T)
 {
     placing = false;
     
