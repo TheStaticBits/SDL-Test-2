@@ -62,7 +62,7 @@ void Window::update()
     SDL_RenderPresent(renderer); // Presenting frame
 
     // Clearing windows
-    SDL_RenderClear(renderer); // Clearing the renderer
+    // SDL_RenderClear(renderer); // Cause of flickering...
     SDL_SetRenderTarget(renderer, mini); // Setting to mini window
     SDL_RenderClear(renderer); // Clearing the mini window
 
