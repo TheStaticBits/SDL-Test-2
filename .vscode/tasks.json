@@ -13,7 +13,7 @@
             "label": "C++ Compile (Debug)",
             "detail": "Compiles the project with the Makefile",
             "type": "shell",
-            "command": "make"
+            "command": "make -j6"
         },
         {
             "label": "C++ Compile & Run (Debug)",
@@ -40,7 +40,7 @@
             "label": "C++ Compile (Release)",
             "detail": "Compiles the project with the Makefile",
             "type": "shell",
-            "command": "make release"
+            "command": "make release -j6"
         },
         {
             "label": "C++ Compile & Run (Release)",
@@ -56,7 +56,7 @@
             "label": "C++ Compile (Emscripten)",
             "detail": "Compiles the project with the Makefile and Emscripten",
             "type": "shell",
-            "command": "make emscripten"
+            "command": "make emscripten -j6"
         },
         {
             "label": "C++ Clean Intermediates",
