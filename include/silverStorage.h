@@ -22,7 +22,7 @@ public:
 
     void operator=(const SilverStorage&) = delete;
     
-    void updateFrame(const uint64_t& seconds) override;
+    void update(const uint64_t& time) override;
 
     std::string getSave() override;
     std::string readSave(std::string& save) override;

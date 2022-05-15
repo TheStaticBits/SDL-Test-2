@@ -91,8 +91,6 @@ void Building::update(const uint64_t& time)
             percentComplete = 1 - ((float)(time - timeAtPlace) / upgradeTime);
         }
     }
-
-    updateFrame(time);
 }
 
 void Building::render(Window& window, const Vect<int>& renderOffset)

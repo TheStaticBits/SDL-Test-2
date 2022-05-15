@@ -36,9 +36,14 @@ SilverStorage::~SilverStorage()
 
 }
 
-void SilverStorage::updateFrame(const uint64_t& seconds)
+void SilverStorage::update(const uint64_t& time)
 {
-    
+    Building::update(time);
+
+    if (!beingBuilt)
+    {
+        // Functionality
+    }
 }
 
 std::string SilverStorage::getSave()
