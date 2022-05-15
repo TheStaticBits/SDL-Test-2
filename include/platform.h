@@ -25,7 +25,7 @@ public:
 
     bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) override;
 
-    void update(const uint64_t& seconds) override;
+    // void update(const uint64_t& seconds) override;
     void render(Window& window, const Vect<int>& renderOffset) override;
 
     std::string getSave() override;

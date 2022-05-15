@@ -38,10 +38,10 @@ bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
     return Interactable::canPlace(pos, objects, size);
 }
 
-void Platform::update(const uint64_t& seconds)
-{
+// void Platform::update(const uint64_t& seconds)
+// {
 
-}
+// }
 
 void Platform::render(Window& window, const Vect<int>& renderOffset)
 {
