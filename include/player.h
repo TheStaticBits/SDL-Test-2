@@ -28,7 +28,7 @@ public:
 
     std::string getSave();
     void readSave(std::string save);
-    inline bool checkSavePart(std::string save) { return save.substr(0, saveName.size()) == saveName; }
+    inline bool checkSavePart(std::string save) { return save.substr(0, saveName.length()) == saveName; }
 
     void updateRect();
     

@@ -3,16 +3,16 @@
 
 #include "game.h"
 
-Game game;
+int main(int argc, char* args[]) 
+{
+    if (!Game::initSDL())
+        return -1;
+    
+    Game game;
 
 #ifdef __EMSCRIPTEN__
 void it() { game.iteration(); }
 #endif
-
-int main(int argc, char* args[]) 
-{
-    if (!game.initSDL())
-        return -1;
 
     game.loop();
     game.save();

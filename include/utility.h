@@ -6,15 +6,24 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "vector.h"
 
 namespace util
 {
-    inline Vect<int> getImgSize(SDL_Texture* texture)
+    inline Vect<int> getSize(SDL_Texture* texture)
     {
         Vect<int> result(0, 0);
         SDL_QueryTexture(texture, NULL, NULL, &result.x, &result.y);
+
+        return result;
+    }
+
+    inline Vect<int> getSize(TTF_Font*& font, std::string text)
+    {
+        Vect<int> result(0, 0);
+        TTF_SizeText(font, text.c_str(), &result.x, &result.y);
 
         return result;
     }

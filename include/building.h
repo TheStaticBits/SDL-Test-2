@@ -32,6 +32,8 @@ public:
 
     std::string getSave() override;
     std::string readSave(std::string& save) override;
+    
+    inline const int getMax(const int coreLvl) const { return data["max"]["Core L" + std::to_string(coreLvl)]; }
 
 protected:
     bool beingBuilt;

@@ -15,6 +15,7 @@
 #include "interactable.h"
 #include "platform.h"
 #include "building.h"
+#include "shop.h"
 
 inline const int TILE_SIZE = 20;
 inline const std::string RemoveObj = "Remove";
@@ -22,7 +23,7 @@ inline const std::string RemoveObj = "Remove";
 class Base
 {
 public:
-    Base();
+    Base(Window& window);
     ~Base();
 
     void operator=(const Base&) = delete;
@@ -39,18 +40,19 @@ public:
 
     std::string getSave();
     void readSave(std::string save);
-    inline bool checkSavePart(std::string save) { return save.substr(0, saveName.size()) == saveName; }
+    inline bool checkSavePart(std::string save) { return save.substr(0, SAVE_NAME.length()) == SAVE_NAME; }
 
 
 private:
-    inline static const std::string saveName = "Base";
+    inline static const std::string SAVE_NAME = "Base";
 
-    static constexpr char* bDataPath = (char*)"data/buildings.json";
+    static constexpr char* B_DATA_PATH = (char*)"res/buildings.json";
     nlohmann::json buildingData;
 
     Vect<int> size;
 
     std::vector<std::unique_ptr<Interactable>> objects;
+    Shop shop;
 
     bool placing;
 };

@@ -19,10 +19,11 @@
 #include "building.h"
 #include "utility.h"
 #include "silverStorage.h"
+#include "shop.h"
 
-Base::Base()
-    : buildingData(nlohmann::json::parse(std::ifstream(bDataPath))), 
-      size{R_WIN_WIDTH, R_WIN_HEIGHT}, placing(false)
+Base::Base(Window& window)
+    : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
+      size{R_WIN_WIDTH, R_WIN_HEIGHT}, shop(window), placing(false)
 {
 
 }
@@ -104,11 +105,13 @@ void Base::render(Window& window, Vect<int> renderOffset)
 
     for (std::unique_ptr<Interactable>& obj : objects)
         obj->render(window, renderOffset);
+    
+    shop.render(window);
 }
 
 std::string Base::getSave()
 {
-    std::string save = saveName;
+    std::string save = SAVE_NAME;
 
     // Add money related stuff here
 
@@ -121,7 +124,7 @@ std::string Base::getSave()
             save += saveSection;
     }
     
-    if (save.size() > saveName.length())
+    if (save.length() > SAVE_NAME.length())
         save = save.substr(0, save.length() - 1); // Removing last divider
     
     return save;
@@ -129,9 +132,9 @@ std::string Base::getSave()
 
 void Base::readSave(std::string save)
 {
-    if (save.size() > saveName.length())
+    if (save.length() > SAVE_NAME.length())
     {
-        save = save.substr(saveName.length());
+        save = save.substr(SAVE_NAME.length());
         std::vector<std::string> saveList = util::split(save, "|");
 
         for (std::string& obj : saveList)

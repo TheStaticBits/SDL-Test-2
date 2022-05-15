@@ -91,7 +91,7 @@ std::string Interactable::getSave()
 std::string Interactable::readSave(std::string& save)
 {
     // Remove name
-    save = save.substr(objTNames.at(type).size());
+    save = save.substr(objTNames.at(type).length());
 
     // Basically inverting what is done in the genSaveData function
     std::vector<std::string> data = util::split(save, ",");

@@ -13,6 +13,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "window.h"
 #include "player.h"
@@ -22,7 +23,10 @@
 #include "utility.h"
 
 Game::Game()
-    : mousePos{0, 0}, player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), quit(false), lastTime(0), deltaTime(0.0f), lastSaveTime(0)
+    : mousePos{0, 0}, 
+    player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), 
+    base(window),
+    quit(false), lastTime(0), deltaTime(0.0f), lastSaveTime(0)
 {
     // Loading save if the person has one
     if (hasSave("save"))
@@ -39,16 +43,29 @@ Game::Game()
 
 Game::~Game()
 {
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 }
 
-bool Game::initSDL() const
+bool Game::initSDL()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0 || !IMG_Init(IMG_INIT_PNG))
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         std::cout << "[Error] SDL failed to initialize: " << SDL_GetError() << std::endl;
         
+        return false;
+    }
+    
+    if (!IMG_Init(IMG_INIT_PNG))
+    {
+        std::cout << "[Error] SDL_image failed to initialize: " << IMG_GetError() << std::endl;
+        return false;
+    }
+    
+    if (TTF_Init() == -1)
+    {
+        std::cout << "[Error] SDL_ttf failed to initialize: " << TTF_GetError() << std::endl;
         return false;
     }
 

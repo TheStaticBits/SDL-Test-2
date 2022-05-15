@@ -5,6 +5,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "vector.h"
 #include "utility.h"
@@ -13,19 +14,29 @@ Window::Window()
     : window(NULL), renderer(NULL)
 {
     // Setting up window
-    window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, R_WIN_WIDTH, R_WIN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow(TITLE, 
+                              SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
+                              R_WIN_WIDTH, R_WIN_HEIGHT, SDL_WINDOW_SHOWN);
 
     if (window == NULL)
         std::cout << "[Error] Window creation failed: " << SDL_GetError() << std::endl;
     
     // Setting up renderer
     if (VSYNC)
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+        renderer = SDL_CreateRenderer(window, -1, 
+                                      SDL_RENDERER_ACCELERATED | 
+                                      SDL_RENDERER_PRESENTVSYNC | 
+                                      SDL_RENDERER_TARGETTEXTURE);
     else
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+        renderer = SDL_CreateRenderer(window, -1, 
+                                      SDL_RENDERER_ACCELERATED | 
+                                      SDL_RENDERER_TARGETTEXTURE);
 
     // Setting up mini window
-    mini = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WIN_WIDTH, WIN_HEIGHT);
+    mini = SDL_CreateTexture(renderer, 
+                             SDL_PIXELFORMAT_RGBA8888, 
+                             SDL_TEXTUREACCESS_TARGET, 
+                             WIN_WIDTH, WIN_HEIGHT);
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetTextureBlendMode(mini, SDL_BLENDMODE_BLEND);
@@ -47,9 +58,43 @@ SDL_Texture* Window::loadTexture(const char* path)
     texture = IMG_LoadTexture(renderer, path);
 
     if (texture == NULL)
-        std::cout << "[Error] Texture loading failed: " << SDL_GetError() << std::endl;
+        std::cout << "[Error] Texture loading failed: " << IMG_GetError() << std::endl;
 
     return texture;
+}
+
+TTF_Font* Window::font(const int size)
+{
+    if (fonts.find(size) != fonts.end())
+        return fonts.at(size);
+    
+    TTF_Font* font = TTF_OpenFont(FONT_PATH, size);
+
+    if (!font)
+        std::cout << "[Error] Font loading failed: " << TTF_GetError() << std::endl;
+    
+    fonts[size] = font;
+
+    return font;
+}
+
+SDL_Texture* Window::getTextImg(TTF_Font* font, std::string text, SDL_Color color)
+{
+    SDL_Texture* textTexture = NULL;
+    SDL_Surface* textSurf = TTF_RenderText_Blended(font, text.c_str(), color);
+
+    if (!textSurf)
+        std::cout << "[Error] Unable to render font: " << TTF_GetError() << std::endl;
+    else
+    {
+        textTexture = SDL_CreateTextureFromSurface(renderer, textSurf);
+        SDL_FreeSurface(textSurf);
+    }
+    
+    if (!textTexture)
+        std::cout << "[Error] Unable to create texture from surf: " << SDL_GetError() << std::endl;
+    
+    return textTexture;
 }
 
 void Window::update()
