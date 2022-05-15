@@ -49,6 +49,10 @@ bool Interactable::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<In
     return true;
 }
 
+void Interactable::completePlace(const uint64_t& time)
+{
+    placing = false; 
+}
 
 void Interactable::render(Window& window, const Vect<int>& renderOffset)
 {
@@ -96,10 +100,4 @@ std::string Interactable::readSave(std::string& save)
     renderPos.y = std::stoi(data[1]);
 
     return save.substr(save.find("#") + 1); // Removing everything before the divider
-}
-
-void Interactable::completePlace(const uint64_t time)
-{
-    placing = false; 
-    placeDown(time); 
 }

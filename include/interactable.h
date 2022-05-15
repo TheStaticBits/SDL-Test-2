@@ -37,13 +37,10 @@ public:
     void operator=(const Interactable&) = delete;
 
     virtual bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size);
-    void completePlace(const uint64_t time);
+    virtual void completePlace(const uint64_t& time);
 
     virtual void update(const uint64_t& seconds) { };
     virtual void render(Window& window, const Vect<int>& renderOffset);
-
-    // Called when object is placed down; does not need to be overridden
-    virtual void placeDown(const uint64_t& time) { };
 
     // Save functions
     virtual std::string getSave();
@@ -57,7 +54,8 @@ public:
 
     // Setter functions
     inline void setPlacable(bool canPlace) { placable = canPlace; }
-    inline void setPos(Vect<int> pos)      { renderPos.x = pos.x; renderPos.y = pos.y; }
+    inline void setPos(Vect<int> pos)      { renderPos.x = pos.x; 
+                                             renderPos.y = pos.y; }
 
 protected:
     static constexpr int alpha = 150;

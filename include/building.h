@@ -25,14 +25,13 @@ public:
     void operator=(const Building&) = delete;
 
     bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) override;
+    void completePlace(const uint64_t& time) override;
 
     // Called in update function for child class update functionality
     virtual void updateFrame(const uint64_t& time) { };
 
     void update(const uint64_t& time) override; // Calls update in child class
     void render(Window& window, const Vect<int>& renderOffset) override;
-    
-    void placeDown(const uint64_t& time) override;
 
     std::string getSave() override;
     std::string readSave(std::string& save) override;

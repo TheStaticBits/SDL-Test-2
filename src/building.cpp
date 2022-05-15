@@ -64,6 +64,15 @@ bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
     return pChecked == renderPos.w;
 }
 
+void Building::completePlace(const uint64_t& time)
+{
+    Interactable::completePlace(time);
+    
+    beingBuilt = true;
+    timeAtPlace = time;
+    percentComplete = 0;
+}
+
 void Building::update(const uint64_t& time)
 {
     // Being built timer
@@ -108,13 +117,6 @@ void Building::render(Window& window, const Vect<int>& renderOffset)
     }
     else
         Interactable::render(window, renderOffset);
-}
-
-void Building::placeDown(const uint64_t& time)
-{
-    beingBuilt = true;
-    timeAtPlace = time;
-    percentComplete = 0;
 }
 
 std::string Building::getSave()
