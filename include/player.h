@@ -37,7 +37,7 @@ public:
 private:
     inline static const std::string saveName = "Player";
 
-    static constexpr uint32_t SPEED = 120; // Pixels per second
+    static constexpr float SPEED = 120.0f; // Pixels per second
     static constexpr float CAM_TIGHTNESS = 3.75f; // How tight the camera is on the player (higher is tighter)
     inline static const Vect<int32_t> CAM_OFFSET = {(int32_t)round(WIN_WIDTH / 2), (int32_t)round(WIN_HEIGHT / 1.5)}; // Camera offset from player
 

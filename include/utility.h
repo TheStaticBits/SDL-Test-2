@@ -14,18 +14,18 @@ namespace util
 {
     inline Vect<uint32_t> getSize(SDL_Texture* texture)
     {
-        Vect<uint32_t> result(0, 0);
+        Vect<int> result(0, 0);
         SDL_QueryTexture(texture, NULL, NULL, &result.x, &result.y);
 
-        return result;
+        return result.cast<uint32_t>();
     }
 
     inline Vect<uint32_t> getSize(TTF_Font*& font, std::string text)
     {
-        Vect<uint32_t> result(0, 0);
+        Vect<int> result(0, 0);
         TTF_SizeText(font, text.c_str(), &result.x, &result.y);
 
-        return result;
+        return result.cast<uint32_t>();
     }
 
     template <typename T>

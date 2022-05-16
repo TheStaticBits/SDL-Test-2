@@ -89,7 +89,9 @@ void Player::readSave(std::string save)
 
 void Player::updateRect()
 {
-    rect = {static_cast<int32_t>(pos.x), static_cast<int32_t>(pos.y), size.x,size.y};
+    Vect<int> posInt = pos.cast<int>();
+    Vect<int> sizeInt = size.cast<int>();
+    rect = {posInt.x, posInt.y, sizeInt.x, sizeInt.y };
 }
 
 Vect<float> Player::getOffset() // Percise offset for rendering the player, not moving one
@@ -135,7 +137,7 @@ void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys,
         canJump = false;
         pos.y += velocity.y * deltaTime;
     }
-          
+
     pos.x += velocity.x;
 
     pos.lock(base.getSize().cast<float>() - size.cast<float>(), Vect<float>(0.0f, 0.0f));

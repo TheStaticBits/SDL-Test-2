@@ -63,7 +63,7 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     if (placing)
     {
         // Getting the tile the mouse is hovering over
-        Vect<int32_t> placeTile = (mousePos + renderOffset) / TILE_SIZE;
+        Vect<int32_t> placeTile = ((mousePos + renderOffset) / TILE_SIZE).cast<int32_t>();
 
         // Changing floor to ceil for negatives
         if (mousePos.x + renderOffset.x < 0)
@@ -75,9 +75,9 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
         {
             if (obj->isPlacing())
             {
-                placeTile -= obj->getTileSize() / 2;
+                placeTile -= (obj->getTileSize() / 2).cast<int32_t>();
 
-                Vect<int64_t> screenPos = placeTile * TILE_SIZE;
+                Vect<int64_t> screenPos = placeTile.cast<int64_t>() * TILE_SIZE;
                 obj->setPos(screenPos);
 
                 if (obj->canPlace(screenPos, objects, size))
@@ -100,7 +100,9 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
 
 void Base::render(Window& window, Vect<int64_t> renderOffset)
 {
-    SDL_Rect background = {-renderOffset.x, -renderOffset.y, size.x, size.y};
+    Vect<int> rendInt = renderOffset.cast<int>();
+    Vect<int> sizeInt = size.cast<int>();
+    SDL_Rect background = {-rendInt.x, -rendInt.y, sizeInt.x, sizeInt.y};
     window.drawRect(background, {0, 0, 255, 255});
 
     for (std::unique_ptr<Interactable>& obj : objects)

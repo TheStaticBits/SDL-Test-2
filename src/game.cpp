@@ -165,9 +165,10 @@ void Game::inputs()
         }
     }
 
-    SDL_GetMouseState(&mousePos.x, &mousePos.y);
+    Vect<int> mouseRetrieve;
+    SDL_GetMouseState(&mouseRetrieve.x, &mouseRetrieve.y);
     // Adjusting based on the scale of the screen
-    mousePos /= WIN_SCALE;
+    mousePos = mouseRetrieve.cast<int64_t>() / WIN_SCALE;
 }
 
 void Game::handleKey(SDL_Keycode& key, Uint32& type)
