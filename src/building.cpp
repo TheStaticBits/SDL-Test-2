@@ -29,12 +29,12 @@ Building::~Building()
     
 }
 
-bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
+bool Building::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size)
 {
     if (!Interactable::canPlace(pos, objects, size)) return false;
     if (pos.y + renderPos.h == size.y) return true; // Bottom of map
 
-    int pChecked = 0; // Tiles of the building base with a platform below
+    uint32_t pChecked = 0; // Tiles of the building base with a platform below
 
     for (std::unique_ptr<Interactable>& obj : objects)
     {
@@ -47,7 +47,7 @@ bool Building::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
                 // If the platform is at least partially in the building
                 if (objRect.x + objRect.w > pos.x && objRect.x < pos.x + renderPos.w)
                 {
-                    int pixelsBeneath = obj->getRect().w;
+                    uint32_t pixelsBeneath = obj->getRect().w;
 
                     // Removing pixels off the side
                     if (objRect.x < pos.x)
@@ -78,7 +78,7 @@ void Building::update(const uint64_t& time)
     // Being built timer
     if (beingBuilt)
     {
-        int upgradeTime = data[std::to_string(level)]["upgradeTime"];
+        uint64_t upgradeTime = data[std::to_string(level)]["upgradeTime"];
         upgradeTime *= 1000; // Converting to milliseconds
 
         if ((int)time >= (int)timeAtPlace + upgradeTime)
@@ -93,7 +93,7 @@ void Building::update(const uint64_t& time)
     }
 }
 
-void Building::render(Window& window, const Vect<int>& renderOffset)
+void Building::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     if (beingBuilt)
     {
@@ -108,7 +108,7 @@ void Building::render(Window& window, const Vect<int>& renderOffset)
         window.drawRect(renderRect, color);
 
         // Drawing solid part
-        const int solidHeight = static_cast<int>(percentComplete * renderPos.h);
+        const uint32_t solidHeight = static_cast<uint32_t>(percentComplete * renderPos.h);
         renderRect.y += solidHeight;
         renderRect.h -= solidHeight;
         window.drawRect(renderRect, renderColor);

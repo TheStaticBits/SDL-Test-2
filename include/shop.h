@@ -23,5 +23,5 @@ public:
 
 private:
     SDL_Texture* text;
-    Vect<int> textSize;
+    Vect<uint32_t> textSize;
 };

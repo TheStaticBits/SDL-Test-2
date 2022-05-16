@@ -27,8 +27,6 @@ public:
     std::string getSave() override;
     std::string readSave(std::string& save) override;
 
-    inline static int getAmount() { return amount; }
-
 private:
-    static int amount; // Amount of these buildings
+
 };

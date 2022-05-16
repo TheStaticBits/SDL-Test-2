@@ -79,7 +79,7 @@ void Game::iteration()
 
     // Updating
     player.update(keys, base, deltaTime);
-    Vect<int> renderOffset = player.getRenderOffset();
+    Vect<int64_t> renderOffset = player.getRenderOffset();
     base.update(keys, mouseButtons, mousePos, renderOffset);
 
     // Rendering
@@ -138,7 +138,7 @@ void Game::readSave(const std::string save)
 
 void Game::calcDeltaTime()
 {
-    int currentTime = SDL_GetTicks();
+    uint32_t currentTime = SDL_GetTicks();
     deltaTime = (currentTime - lastTime) / 1000.0f;
     lastTime = currentTime;
 }

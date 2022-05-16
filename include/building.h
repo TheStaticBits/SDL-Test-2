@@ -24,22 +24,22 @@ public:
 
     void operator=(const Building&) = delete;
 
-    bool canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size) override;
+    bool canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size) override;
     void completePlace(const uint64_t& time) override;
 
     void update(const uint64_t& time) override;
-    void render(Window& window, const Vect<int>& renderOffset) override;
+    void render(Window& window, const Vect<int64_t>& renderOffset) override;
 
     std::string getSave() override;
     std::string readSave(std::string& save) override;
     
-    inline const int getMax(const int coreLvl) const { return data["max"]["Core L" + std::to_string(coreLvl)]; }
+    inline const uint32_t getMax(const uint32_t coreLvl) const { return data["max"]["Core L" + std::to_string(coreLvl)]; }
 
 protected:
     bool beingBuilt;
     uint64_t timeAtPlace; // Time when the building is placed
     float percentComplete;
-    int level; 
+    uint32_t level; 
 
     const nlohmann::json& data; // Data for the specific building
 };

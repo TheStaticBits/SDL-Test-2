@@ -39,7 +39,7 @@ private:
     std::unordered_map<SDL_Keycode, bool> keys;
     std::unordered_map<SDL_Keycode, bool> oneTimeKeys;
     std::unordered_map<uint8_t, bool> mouseButtons;
-    Vect<int> mousePos;
+    Vect<int64_t> mousePos;
 
     Window window;
     Player player;
@@ -47,11 +47,11 @@ private:
 
     bool quit;
 
-    int lastTime;
+    uint32_t lastTime;
     float deltaTime;
 
-    int lastSaveTime;
-    static constexpr int SAVE_INTERVAL = 5; // Save every 5 seconds
+    uint32_t lastSaveTime;
+    static constexpr uint32_t SAVE_INTERVAL = 5; // Save every 5 seconds
 
     void calcDeltaTime();
 

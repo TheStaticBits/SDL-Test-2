@@ -35,8 +35,8 @@ Base::~Base()
 
 void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                   std::unordered_map<uint8_t, bool>& mouseButtons, 
-                  Vect<int>& mousePos,
-                  Vect<int>& renderOffset)
+                  Vect<int64_t>& mousePos,
+                  Vect<int64_t>& renderOffset)
 {
     uint64_t timeAtUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now().time_since_epoch()
@@ -63,7 +63,7 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     if (placing)
     {
         // Getting the tile the mouse is hovering over
-        Vect<int> placeTile = (mousePos + renderOffset) / TILE_SIZE;
+        Vect<int32_t> placeTile = (mousePos + renderOffset) / TILE_SIZE;
 
         // Changing floor to ceil for negatives
         if (mousePos.x + renderOffset.x < 0)
@@ -77,7 +77,7 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
             {
                 placeTile -= obj->getTileSize() / 2;
 
-                Vect<int> screenPos = placeTile * TILE_SIZE;
+                Vect<int64_t> screenPos = placeTile * TILE_SIZE;
                 obj->setPos(screenPos);
 
                 if (obj->canPlace(screenPos, objects, size))
@@ -98,7 +98,7 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     }
 }
 
-void Base::render(Window& window, Vect<int> renderOffset)
+void Base::render(Window& window, Vect<int64_t> renderOffset)
 {
     SDL_Rect background = {-renderOffset.x, -renderOffset.y, size.x, size.y};
     window.drawRect(background, {0, 0, 255, 255});

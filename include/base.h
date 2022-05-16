@@ -17,7 +17,7 @@
 #include "building.h"
 #include "shop.h"
 
-inline const int TILE_SIZE = 20;
+inline const uint16_t TILE_SIZE = 20;
 inline const std::string RemoveObj = "Remove";
 
 class Base
@@ -30,12 +30,12 @@ public:
 
     void update(std::unordered_map<SDL_Keycode, bool>& keys,
                 std::unordered_map<uint8_t, bool>& mouseButtons, 
-                Vect<int>& mousePos,
-                Vect<int>& renderOffset);
+                Vect<int64_t>& mousePos,
+                Vect<int64_t>& renderOffset);
 
-    void render(Window& window, Vect<int> renderOffset);
+    void render(Window& window, Vect<int64_t> renderOffset);
 
-    inline Vect<int> getSize() const { return size; }
+    inline Vect<uint32_t> getSize() const { return size; }
     inline std::vector<std::unique_ptr<Interactable>>& getObjects() { return objects; }
 
     std::string getSave();
@@ -49,7 +49,7 @@ private:
     static constexpr char* B_DATA_PATH = (char*)"res/buildings.json";
     nlohmann::json buildingData;
 
-    Vect<int> size;
+    Vect<uint32_t> size;
 
     std::vector<std::unique_ptr<Interactable>> objects;
     Shop shop;

@@ -12,17 +12,17 @@
 
 namespace util
 {
-    inline Vect<int> getSize(SDL_Texture* texture)
+    inline Vect<uint32_t> getSize(SDL_Texture* texture)
     {
-        Vect<int> result(0, 0);
+        Vect<uint32_t> result(0, 0);
         SDL_QueryTexture(texture, NULL, NULL, &result.x, &result.y);
 
         return result;
     }
 
-    inline Vect<int> getSize(TTF_Font*& font, std::string text)
+    inline Vect<uint32_t> getSize(TTF_Font*& font, std::string text)
     {
-        Vect<int> result(0, 0);
+        Vect<uint32_t> result(0, 0);
         TTF_SizeText(font, text.c_str(), &result.x, &result.y);
 
         return result;

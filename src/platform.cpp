@@ -13,7 +13,7 @@
 #include "interactable.h"
 #include "utility.h"
 
-Platform::Platform(const int tileWidth)
+Platform::Platform(const uint32_t tileWidth)
     : Interactable({tileWidth, 1}, {0, 255, 0}, Platform_T)
 {
 
@@ -33,7 +33,7 @@ Platform::~Platform()
 
 }
 
-bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
+bool Platform::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size)
 {
     return Interactable::canPlace(pos, objects, size);
 }
@@ -43,7 +43,7 @@ bool Platform::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Intera
 
 // }
 
-void Platform::render(Window& window, const Vect<int>& renderOffset)
+void Platform::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     // Add rendering for the supports of the platform
     Interactable::render(window, renderOffset);

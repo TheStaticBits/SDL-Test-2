@@ -12,7 +12,7 @@
 #include "base.h"
 
 
-Interactable::Interactable(const Vect<int> tileSize, const std::vector<uint8_t> color, const ObjType type)
+Interactable::Interactable(const Vect<uint32_t> tileSize, const std::vector<uint8_t> color, const ObjType type)
     : tileSize(tileSize), renderColor(color),
       renderPos{0, 0, tileSize.x * TILE_SIZE, tileSize.y * TILE_SIZE}, 
       placing(true), placable(true), hovering(false), type(type)
@@ -32,7 +32,7 @@ Interactable::~Interactable()
 }
 
 // General canPlace function that every canPlace function should use somewhere
-bool Interactable::canPlace(const Vect<int>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<int>& size)
+bool Interactable::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size);
 {
     // If the platform is touching any other object besides itself
     for (std::unique_ptr<Interactable>& obj : objects)
@@ -54,7 +54,7 @@ void Interactable::completePlace(const uint64_t& time)
     placing = false; 
 }
 
-void Interactable::render(Window& window, const Vect<int>& renderOffset)
+void Interactable::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     SDL_Rect render = renderPos;
     render.x -= renderOffset.x;

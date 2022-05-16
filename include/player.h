@@ -24,7 +24,7 @@ public:
     void operator=(const Player&) = delete;
 
     void update(std::unordered_map<SDL_Keycode, bool>& keys, Base& base, float deltaTime);
-    void render(Window& window, Vect<int> renderOffset);
+    void render(Window& window, Vect<int64_t> renderOffset);
 
     std::string getSave();
     void readSave(std::string save);
@@ -32,22 +32,20 @@ public:
 
     void updateRect();
     
-    inline const Vect<int> getRenderOffset() const { return renderOffset.cast<int>(); }
+    inline const Vect<int64_t> getRenderOffset() const { return renderOffset.cast<int64_t>(); }
 
 private:
     inline static const std::string saveName = "Player";
 
-    static constexpr int SPEED = 120; // Pixels per second
+    static constexpr uint32_t SPEED = 120; // Pixels per second
     static constexpr float CAM_TIGHTNESS = 3.75f; // How tight the camera is on the player (higher is tighter)
-    inline static const Vect<int> CAM_OFFSET = {(int)round(WIN_WIDTH / 2), (int)round(WIN_HEIGHT / 1.5)}; // Camera offset from player
+    inline static const Vect<int32_t> CAM_OFFSET = {(int32_t)round(WIN_WIDTH / 2), (int32_t)round(WIN_HEIGHT / 1.5)}; // Camera offset from player
 
-    static constexpr int JUMP_SPEED = -400; 
-    static constexpr int GRAVITY = -800; 
-
-    static constexpr int PLT_FALL_OFF_GAP = 4; // The multiplier for the gap between when the player gets onto the platform and where it still can get onto the platform from the side 
+    static constexpr int32_t JUMP_SPEED = -400; 
+    static constexpr int32_t GRAVITY = -800; 
 
     Vect<float> pos;
-    Vect<int> size;
+    Vect<uint32_t> size;
     Vect<float> renderOffset;
     Vect<float> velocity;
     SDL_Rect rect;
@@ -60,5 +58,5 @@ private:
     Vect<float> getOffset();
 
     void collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys, float deltaTime);
-    int platformCollide(std::vector<std::unique_ptr<Interactable>>& objects, float deltaTime);
+    int32_t platformCollide(std::vector<std::unique_ptr<Interactable>>& objects, float deltaTime);
 };

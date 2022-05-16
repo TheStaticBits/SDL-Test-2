@@ -13,13 +13,11 @@
 #include "interactable.h"
 #include "vector.h"
 
-int SilverStorage::amount = 0;
-
 // Create a new building
 SilverStorage::SilverStorage(const nlohmann::json& data)
     : Building(data, {148, 148, 148}, SilverStorage_T)
 {
-    amount++;
+    
 }
 
 // Loads from save file

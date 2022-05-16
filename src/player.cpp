@@ -47,7 +47,7 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, Base& base, flo
     renderOffset.lock(base.getSize().cast<float>() - Vect<float>(WIN_WIDTH, WIN_HEIGHT), Vect<float>(0.0f, 0.0f));
 }
 
-void Player::render(Window& window, Vect<int> renderOffset)
+void Player::render(Window& window, Vect<int64_t> renderOffset)
 {
     SDL_Rect renderTo = rect;
     renderTo.x -= renderOffset.x;
@@ -89,7 +89,7 @@ void Player::readSave(std::string save)
 
 void Player::updateRect()
 {
-    rect = {static_cast<int>(pos.x), static_cast<int>(pos.y), size.x,size.y};
+    rect = {static_cast<int32_t>(pos.x), static_cast<int32_t>(pos.y), size.x,size.y};
 }
 
 Vect<float> Player::getOffset() // Percise offset for rendering the player, not moving one
@@ -115,7 +115,7 @@ void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys,
         {
             updateRect();
             
-            int result = platformCollide(base.getObjects(), deltaTime);
+            int32_t result = platformCollide(base.getObjects(), deltaTime);
             if (result != -1)
             {
                 pos.y = result;
@@ -152,7 +152,7 @@ void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys,
     updateRect();
 }
 
-int Player::platformCollide(std::vector<std::unique_ptr<Interactable>>& objects, float deltaTime)
+int32_t Player::platformCollide(std::vector<std::unique_ptr<Interactable>>& objects, float deltaTime)
 {
     for (std::unique_ptr<Interactable>& obj : objects)
         if (obj->getType() == Platform_T && !obj->isPlacing())

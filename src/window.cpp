@@ -63,7 +63,7 @@ SDL_Texture* Window::loadTexture(const char* path)
     return texture;
 }
 
-TTF_Font* Window::font(const int size)
+TTF_Font* Window::font(const uint32_t size)
 {
     if (fonts.find(size) != fonts.end())
         return fonts.at(size);
