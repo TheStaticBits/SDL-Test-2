@@ -48,11 +48,13 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
         if (keys[SDLK_p]) // Platform
         {
             placing = true;
+            count[Platform_T]++;
             objects.push_back(std::make_unique<Platform>(4));
         } 
         if (keys[SDLK_b]) // Building
         {
             placing = true;
+            count[SilverStorage_T]++;
             objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames[SilverStorage_T]]));
         }
     }
@@ -142,9 +144,15 @@ void Base::readSave(std::string save)
         for (std::string& obj : saveList)
         {
             if (objCheckSavePart(obj, Platform_T))
+            {
+                count[Platform_T]++;
                 objects.push_back(std::make_unique<Platform>(obj));
+            }
             else if (objCheckSavePart(obj, SilverStorage_T))
+            {
+                count[SilverStorage_T]++;
                 objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames[SilverStorage_T]], obj));
+            }
         }
     }
 }

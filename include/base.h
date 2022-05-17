@@ -52,6 +52,7 @@ private:
     Vect<uint32_t> size;
 
     std::vector<std::unique_ptr<Interactable>> objects;
+    std::unordered_map<ObjType, uint64_t> count;
     Shop shop;
 
     bool placing;
