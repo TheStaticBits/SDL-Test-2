@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <unordered_map>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -18,7 +19,8 @@ public:
 
     void operator=(const Shop&) = delete;
 
-    void update();
+    void update(const Vect<int64_t>& mousePos,    
+                std::unordered_map<uint8_t, bool> mouseButtons);
     void render(Window& window);
 
     inline const bool isActive() const { return active; }
@@ -26,6 +28,9 @@ public:
 private:
     SDL_Texture* text;
     Vect<uint32_t> textSize;
+
+    int64_t l1PosX;
+    int64_t l2PosX;
     
     bool active;
 };
