@@ -45,8 +45,6 @@ Window::Window()
 
 Window::~Window()
 {
-    std::cout << "[Info] Window destroyed" << std::endl;
-
     SDL_DestroyTexture(mini);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

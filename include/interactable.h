@@ -54,7 +54,7 @@ public:
 
     // Setter functions
     inline void setPlacable(bool canPlace) { placable = canPlace; }
-    inline void setPos(Vect<int64_t> pos)      { renderPos.x = pos.x; 
+    inline void setPos(Vect<int64_t> pos)  { renderPos.x = pos.x; 
                                              renderPos.y = pos.y; }
 
 protected:

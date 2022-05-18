@@ -44,7 +44,7 @@ application.exe: $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/play
 $(CPATH)/main.o: $(SPATH)/main.cpp $(IPATH)/game.h
 	$(CC) -c $(SPATH)/main.cpp $(FLAGS) -o $(CPATH)/main.o
 
-$(CPATH)/game.o: $(SPATH)/game.cpp $(IPATH)/game.h $(IPATH)/window.h $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/base.h $(IPATH)/save.h $(IPATH)/utility.h
+$(CPATH)/game.o: $(SPATH)/game.cpp $(IPATH)/game.h $(IPATH)/window.h $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/base.h $(IPATH)/save.h $(IPATH)/utility.h $(IPATH)/shop.h
 	$(CC) -c $(SPATH)/game.cpp $(FLAGS) -o $(CPATH)/game.o
 
 $(CPATH)/window.o: $(SPATH)/window.cpp $(IPATH)/window.h $(IPATH)/vector.h $(IPATH)/utility.h
@@ -56,7 +56,7 @@ $(CPATH)/player.o: $(SPATH)/player.cpp $(IPATH)/player.h $(IPATH)/vector.h $(IPA
 $(CPATH)/interactable.o: $(SPATH)/interactable.cpp $(IPATH)/interactable.h $(IPATH)/vector.h $(IPATH)/window.h $(IPATH)/utility.h $(IPATH)/base.h
 	$(CC) -c $(SPATH)/interactable.cpp $(FLAGS) -o $(CPATH)/interactable.o
 
-$(CPATH)/base.o: $(SPATH)/base.cpp $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/window.h $(IPATH)/interactable.h $(IPATH)/platform.h $(IPATH)/building.h $(IPATH)/utility.h $(IPATH)/silverStorage.h $(IPATH)/shop.h
+$(CPATH)/base.o: $(SPATH)/base.cpp $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/window.h $(IPATH)/interactable.h $(IPATH)/platform.h $(IPATH)/building.h $(IPATH)/utility.h $(IPATH)/silverStorage.h
 	$(CC) -c $(SPATH)/base.cpp $(FLAGS) -o $(CPATH)/base.o
 
 $(CPATH)/platform.o: $(SPATH)/platform.cpp $(IPATH)/platform.h $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/interactable.h $(IPATH)/window.h $(IPATH)/utility.h

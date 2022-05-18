@@ -40,7 +40,7 @@ public:
 
 private:
     static constexpr char* TITLE = (char*)"Game again";
-    static constexpr char* FONT_PATH = (char*)"res/font.ttf";
+    static constexpr char* FONT_PATH = (char*)"res/font/font.ttf";
     static constexpr bool VSYNC = true;
 
     SDL_Window* window;

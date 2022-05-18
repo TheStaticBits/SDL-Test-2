@@ -44,12 +44,12 @@ private:
     Window window;
     Player player;
     Base base;
+    Shop shop;
 
     bool quit;
 
-    uint32_t lastTime;
     float deltaTime;
-
+    uint32_t lastTime;
     uint32_t lastSaveTime;
     static constexpr uint32_t SAVE_INTERVAL = 5; // Save every 5 seconds
 

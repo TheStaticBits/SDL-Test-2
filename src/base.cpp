@@ -19,11 +19,10 @@
 #include "building.h"
 #include "utility.h"
 #include "silverStorage.h"
-#include "shop.h"
 
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
-      size{R_WIN_WIDTH, R_WIN_HEIGHT}, shop(window), placing(false)
+      size{R_WIN_WIDTH, R_WIN_HEIGHT}, placing(false)
 {
 
 }
@@ -109,8 +108,6 @@ void Base::render(Window& window, Vect<int64_t> renderOffset)
 
     for (std::unique_ptr<Interactable>& obj : objects)
         obj->render(window, renderOffset);
-    
-    shop.render(window);
 }
 
 std::string Base::getSave()

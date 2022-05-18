@@ -21,7 +21,11 @@ public:
     void update();
     void render(Window& window);
 
+    inline const bool isActive() const { return active; }
+
 private:
     SDL_Texture* text;
     Vect<uint32_t> textSize;
+    
+    bool active;
 };

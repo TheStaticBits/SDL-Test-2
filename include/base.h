@@ -15,7 +15,6 @@
 #include "interactable.h"
 #include "platform.h"
 #include "building.h"
-#include "shop.h"
 
 inline const uint16_t TILE_SIZE = 20;
 inline const std::string RemoveObj = "Remove";
@@ -53,7 +52,6 @@ private:
 
     std::vector<std::unique_ptr<Interactable>> objects;
     std::unordered_map<ObjType, uint64_t> count;
-    Shop shop;
 
     bool placing;
 };

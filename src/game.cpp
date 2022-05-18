@@ -25,8 +25,9 @@
 Game::Game()
     : mousePos{0, 0}, 
     player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), 
-    base(window),
-    quit(false), lastTime(0), deltaTime(0.0f), lastSaveTime(0)
+    base(window), shop(window),
+    quit(false), deltaTime(0.0f), 
+    lastTime(0), lastSaveTime(0)
 {
     // Loading save if the person has one
     if (hasSave("save"))
@@ -81,10 +82,12 @@ void Game::iteration()
     player.update(keys, base, deltaTime);
     Vect<int64_t> renderOffset = player.getRenderOffset();
     base.update(keys, mouseButtons, mousePos, renderOffset);
+    shop.update();
 
     // Rendering
     base.render(window, renderOffset);
     player.render(window, renderOffset);
+    shop.render(window);
 
     window.update();
 

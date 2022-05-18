@@ -12,7 +12,7 @@
 
 Shop::Shop(Window& window)
     : text(window.getTextImg(window.font(16), "Shop", {255, 255, 255})),
-      textSize(util::getSize(text))
+      textSize(util::getSize(text)), active(false)
 {
 
 }
@@ -29,6 +29,9 @@ void Shop::update()
 
 void Shop::render(Window& window)
 {
-    SDL_Rect dest = {50, 120, textSize.x, textSize.y};
-    window.render(text, dest);
+    if (active)
+    {
+        SDL_Rect dest = {50, 120, textSize.x, textSize.y};
+        window.render(text, dest);
+    }
 }
