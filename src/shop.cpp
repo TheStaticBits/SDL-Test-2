@@ -14,7 +14,7 @@ Shop::Shop(Window& window)
     : text(window.getTextImg(window.font(16), "Shop", {255, 255, 255})),
       textSize(util::getSize(text)), active(false)
 {
-
+    
 }
 
 Shop::~Shop()
@@ -31,7 +31,8 @@ void Shop::render(Window& window)
 {
     if (active)
     {
-        SDL_Rect dest = {50, 120, textSize.x, textSize.y};
+        Vect<int> textSizeInt = textSize.cast<int>();
+        SDL_Rect dest = {50, 120, textSizeInt.x, textSizeInt.y};
         window.render(text, dest);
     }
 }

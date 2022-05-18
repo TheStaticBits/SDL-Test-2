@@ -12,6 +12,7 @@
 #include "player.h"
 #include "vector.h"
 #include "base.h"
+#include "shop.h"
 
 class Game
 {

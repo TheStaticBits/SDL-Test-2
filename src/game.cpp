@@ -21,6 +21,7 @@
 #include "base.h"
 #include "save.h"
 #include "utility.h"
+#include "shop.h"
 
 Game::Game()
     : mousePos{0, 0}, 

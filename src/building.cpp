@@ -61,7 +61,7 @@ bool Building::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<In
         }
     }
     
-    return pChecked == renderPos.w;
+    return pChecked == static_cast<uint32_t>(renderPos.w);
 }
 
 void Building::completePlace(const uint64_t& time)
@@ -81,7 +81,7 @@ void Building::update(const uint64_t& time)
         uint64_t upgradeTime = data[std::to_string(level)]["upgradeTime"];
         upgradeTime *= 1000; // Converting to milliseconds
 
-        if ((int)time >= (int)timeAtPlace + upgradeTime)
+        if (time >= timeAtPlace + upgradeTime)
         {
             beingBuilt = false;
             percentComplete = 100;
@@ -97,8 +97,9 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     if (beingBuilt)
     {
+        Vect<int> renderOffsetInt = renderOffset.cast<int>();
         SDL_Rect renderRect = {
-            renderPos.x - renderOffset.x, renderPos.y - renderOffset.y,
+            renderPos.x - renderOffsetInt.x, renderPos.y - renderOffsetInt.y,
             renderPos.w, renderPos.h
         };
 
