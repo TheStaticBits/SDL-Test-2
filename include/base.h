@@ -41,11 +41,10 @@ public:
     void readSave(std::string save);
     inline bool checkSavePart(std::string save) { return save.substr(0, SAVE_NAME.length()) == SAVE_NAME; }
 
-
 private:
     inline static const std::string SAVE_NAME = "Base";
 
-    static constexpr char* B_DATA_PATH = (char*)"res/buildings.json";
+    static constexpr char* B_DATA_PATH = (char*)"res/data/buildings.json";
     nlohmann::json buildingData;
 
     Vect<uint32_t> size;

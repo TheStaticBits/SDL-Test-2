@@ -43,6 +43,14 @@ namespace util
                 rect2.y < rect1.y + rect1.h);
     }
 
+    inline bool collide(const SDL_Rect& rect, const Vect<int64_t> point)
+    {
+        return (point.x >= rect.x          &&
+                point.x <= rect.x + rect.w &&
+                point.y >= rect.y          &&
+                point.y <= rect.y + rect.h);
+    }
+
     inline std::vector<std::string> split(std::string str, const std::string& delim)
     {
         std::vector<std::string> result;

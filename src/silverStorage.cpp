@@ -25,9 +25,6 @@ SilverStorage::SilverStorage(const nlohmann::json& data, std::string save)
     : Building(data, {148, 148, 148}, SilverStorage_T)
 {
     placing = false;
-    
-    save = Interactable::readSave(save);
-    save = Building::readSave(save);
     readSave(save);
 }
 
@@ -51,12 +48,33 @@ std::string SilverStorage::getSave()
     std::string save = Interactable::getSave();
     save += Building::getSave();
     
-    // Add anything nessecary
+    save += std::to_string(capacity);
 
     return save;
 }
 
 std::string SilverStorage::readSave(std::string& save)
 {
-    return ""; // No more data to parse
+    save = Interactable::readSave(save);
+    save = Building::readSave(save);
+
+    capacity = std::stoull(save);
+
+    return "" // Nothing else to parse
+}
+
+const uint64_t SilverStorage::addSilver(uint64_t add)
+{
+    capacity += add;
+
+    uint64_t amountOver = 0;
+    uint64_t max = getLvlData()["storage"];
+    
+    if (capacity > max)
+    {
+        amountOver = capacity - max;
+        capacity = max;
+    }
+
+    return amountOver;
 }

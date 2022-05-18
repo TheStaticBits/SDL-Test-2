@@ -20,7 +20,7 @@ public:
     void operator=(const Shop&) = delete;
 
     void update(const Vect<int64_t>& mousePos,    
-                std::unordered_map<uint8_t, bool> mouseButtons);
+                const std::unordered_map<uint8_t, bool>& mouseButtons);
     void render(Window& window);
 
     inline const bool isActive() const { return active; }

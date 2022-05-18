@@ -34,6 +34,7 @@ public:
     std::string readSave(std::string& save) override;
     
     inline const uint32_t getMax(const uint32_t coreLvl) const { return data["max"]["Core L" + std::to_string(coreLvl)]; }
+    inline nlohmann::json& getLvlData() { return data[std::to_string(level)]; }
 
 protected:
     bool beingBuilt;

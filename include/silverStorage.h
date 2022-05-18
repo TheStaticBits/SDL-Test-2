@@ -27,6 +27,10 @@ public:
     std::string getSave() override;
     std::string readSave(std::string& save) override;
 
-private:
+    inline const uint64_t getSilver() { return capacity; }
+    
+    const uint64_t addSilver(uint64_t add);
 
+private:
+    uint64_t capacity;
 };

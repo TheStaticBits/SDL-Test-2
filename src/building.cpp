@@ -78,7 +78,7 @@ void Building::update(const uint64_t& time)
     // Being built timer
     if (beingBuilt)
     {
-        uint64_t upgradeTime = data[std::to_string(level)]["upgradeTime"];
+        uint64_t upgradeTime = getLvlData()["upgradeTime"];
         upgradeTime *= 1000; // Converting to milliseconds
 
         if (time >= timeAtPlace + upgradeTime)
