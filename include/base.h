@@ -29,8 +29,8 @@ public:
 
     void update(std::unordered_map<SDL_Keycode, bool>& keys,
                 std::unordered_map<uint8_t, bool>& mouseButtons, 
-                Vect<int64_t>& mousePos,
-                Vect<int64_t>& renderOffset);
+                const Vect<int64_t>& mousePos,
+                const Vect<int64_t>& renderOffset);
 
     void render(Window& window, Vect<int64_t> renderOffset);
 

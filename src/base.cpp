@@ -34,8 +34,8 @@ Base::~Base()
 
 void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                   std::unordered_map<uint8_t, bool>& mouseButtons, 
-                  Vect<int64_t>& mousePos,
-                  Vect<int64_t>& renderOffset)
+                  const Vect<int64_t>& mousePos,
+                  const Vect<int64_t>& renderOffset)
 {
     uint64_t timeAtUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now().time_since_epoch()

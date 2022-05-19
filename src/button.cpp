@@ -10,10 +10,12 @@
 #include "vector.h"
 #include "utility.h"
 
+std::unordered_map<bTextures, std::unordered_map<std::string, SDL_Texture*>> Button::textures = {};
+
 Button::Button(Window& window, bTextures texType, 
                Vect<int64_t> pos, std::string text,
                const uint32_t fontSize, SDL_Color textColor)
-    : texType(texType), pos(pos),
+    : texType(texType), textImg(NULL), pos(pos),
       hovering(false), pressed(false), activated(false)
 {
     if (text != "")
@@ -21,6 +23,8 @@ Button::Button(Window& window, bTextures texType,
         TTF_Font* font = window.font(fontSize);
         textImg = window.getTextImg(font, text, textColor);
         TTF_CloseFont(font);
+
+        textSize = util::getSize(textImg);
     }
 
     if (textures.find(texType) == textures.end())
@@ -48,7 +52,7 @@ Button::~Button()
 }
 
 void Button::update(const Vect<int64_t>& mousePos,    
-                    const std::unordered_map<uint8_t, bool>& mouseButtons)
+                    std::unordered_map<uint8_t, bool>& mouseHeldButtons)
 {
     updateRect();
 
@@ -57,7 +61,7 @@ void Button::update(const Vect<int64_t>& mousePos,
     
     if (hovering)
     {
-        if (mouseButtons.at(SDL_BUTTON_LEFT))
+        if (mouseHeldButtons[SDL_BUTTON_LEFT])
             pressed = true;
         else if (pressed)
         {
@@ -69,11 +73,27 @@ void Button::update(const Vect<int64_t>& mousePos,
         pressed = false;
 }
 
-void Button::render(Window& window)
+void Button::render(Window& window, Vect<int64_t> textOffset)
 {
-    if (hovering)     window.render(textures[texType]["hovering"], rect);
-    else if (pressed) window.render(textures[texType]["pressed"],  rect);
-    else              window.render(textures[texType]["idle"],     rect);
+    // Draw button
+    if (hovering && !pressed) window.render(textures[texType]["hovering"], rect);
+    else if (pressed)         window.render(textures[texType]["pressed"],  rect);
+    else                      window.render(textures[texType]["idle"],     rect);
+    
+    // Draw text
+    if (textImg != NULL)
+    {   
+        Vect<int> sizeInt = size.cast<int>();
+        Vect<int> textSizeInt = textSize.cast<int>();
+        Vect<int> textOffsetInt = textOffset.cast<int>();
+        Vect<int> posInt = pos.cast<int>();
+        
+        SDL_Rect textRect = { posInt.x + (sizeInt.x / 2) - (textSizeInt.x / 2) + textOffsetInt.x, 
+                              posInt.y + (sizeInt.y / 2) - (textSizeInt.y / 2) + textOffsetInt.y, 
+                              textSizeInt.x, textSizeInt.y };
+
+        window.render(textImg, textRect);
+    }
 }
 
 void Button::updateRect()

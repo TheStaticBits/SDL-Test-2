@@ -21,7 +21,8 @@ public:
     void operator=(const Shop&) = delete;
 
     void update(const Vect<int64_t>& mousePos,    
-                const std::unordered_map<uint8_t, bool>& mouseButtons);
+                std::unordered_map<uint8_t, bool>& mouseButtons,
+                std::unordered_map<uint8_t, bool>& mouseHeldButtons);
     void render(Window& window);
 
     inline const bool isActive() const { return active; }
@@ -29,6 +30,8 @@ public:
 private:
     SDL_Texture* text;
     Vect<uint32_t> textSize;
+
+    Button button;
     
     bool active;
 

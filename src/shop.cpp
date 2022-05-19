@@ -13,8 +13,9 @@
 
 Shop::Shop(Window& window)
     : text(window.getTextImg(window.font(16), "Shop", {255, 255, 255})),
-      textSize(util::getSize(text)), active(false),
-      l1PosX(WIN_WIDTH), l2PosX(WIN_WIDTH)
+      textSize(util::getSize(text)), 
+      button(window, ButtonBlue, Vect<int64_t>(60, 80), "Buy", 10),
+      active(false), l1PosX(WIN_WIDTH), l2PosX(WIN_WIDTH)
 {
     
 }
@@ -25,9 +26,10 @@ Shop::~Shop()
 }
 
 void Shop::update(const Vect<int64_t>& mousePos,    
-                  const std::unordered_map<uint8_t, bool>& mouseButtons)
+                  std::unordered_map<uint8_t, bool>& mouseButtons,
+                  std::unordered_map<uint8_t, bool>& mouseHeldButtons)
 {
-
+    button.update(mousePos, mouseHeldButtons);
 }
 
 void Shop::render(Window& window)
@@ -38,4 +40,6 @@ void Shop::render(Window& window)
         SDL_Rect dest = {50, 120, textSizeInt.x, textSizeInt.y};
         window.render(text, dest);
     }
+
+    button.render(window, Vect<int64_t>{1, 0});
 }

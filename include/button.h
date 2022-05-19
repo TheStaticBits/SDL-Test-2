@@ -32,8 +32,8 @@ public:
     void setupText(std::string text, const uint32_t fontSize, SDL_Color color);
 
     void update(const Vect<int64_t>& mousePos,    
-                const std::unordered_map<uint8_t, bool>& mouseButtons);
-    void render(Window& window);
+                std::unordered_map<uint8_t, bool>& mouseHeldButtons);
+    void render(Window& window, Vect<int64_t> textOffset = {0, 0});
     
     inline void setPos(Vect<int64_t> pos) { pos = pos; }
 
@@ -43,9 +43,11 @@ private:
     static std::unordered_map<bTextures, std::unordered_map<std::string, SDL_Texture*>> textures;
     
     bTextures texType;
+    Vect<uint32_t> size;
+
     SDL_Texture* textImg;
-    
-    Vect<uint32_t> size; 
+    Vect<uint32_t> textSize;
+
     Vect<int64_t> pos;
 
     SDL_Rect rect;

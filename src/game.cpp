@@ -83,7 +83,7 @@ void Game::iteration()
     player.update(keys, base, deltaTime);
     Vect<int64_t> renderOffset = player.getRenderOffset();
     base.update(keys, mouseButtons, mousePos, renderOffset);
-    shop.update(mousePos, mouseButtons);
+    shop.update(mousePos, mouseButtons, mouseHeldButtons);
 
     // Rendering
     base.render(window, renderOffset);
@@ -162,7 +162,12 @@ void Game::inputs()
                 quit = true; break;
             
             case SDL_MOUSEBUTTONDOWN:
-                mouseButtons[event.button.button] = true; break;
+                mouseButtons[event.button.button] = true; 
+                mouseHeldButtons[event.button.button] = true;
+                break;
+
+            case SDL_MOUSEBUTTONUP:
+                mouseHeldButtons[event.button.button] = false; break;
             
             default:
                 handleKey(event.key.keysym.sym, event.type); break;
