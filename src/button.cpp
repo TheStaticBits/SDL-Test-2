@@ -10,11 +10,11 @@
 #include "vector.h"
 #include "utility.h"
 
-Button::Button(Window& window, bTextures textureColor, 
+Button::Button(Window& window, bTextures texType, 
                Vect<int64_t> pos, std::string text,
                const uint32_t fontSize, SDL_Color textColor)
-    : pos(pos),
-      hovering(false), clicking(false), activated(false)
+    : texType(texType), pos(pos),
+      hovering(false), pressed(false), activated(false)
 {
     if (text != "")
     {
@@ -23,7 +23,20 @@ Button::Button(Window& window, bTextures textureColor,
         TTF_CloseFont(font);
     }
 
-    // Button loading code, check if the color is loaded, if not, load it
+    if (textures.find(texType) == textures.end())
+    {
+        textures[texType] = {}; // Test to see if this is needed!
+        
+        for (std::string& state : bImgStates)
+        {
+            textures[texType][state] = window.loadTexture((std::string("res/") + 
+                                                            bFolderNames.at(texType) +
+                                                            std::string("/") + state + 
+                                                            std::string(".png")).c_str());
+        }
+    }
+
+    size = util::getSize(textures[texType]["idle"]);
 }
 
 Button::~Button()
@@ -44,20 +57,22 @@ void Button::update(const Vect<int64_t>& mousePos,
     if (hovering)
     {
         if (mouseButtons.at(SDL_BUTTON_LEFT))
-            clicking = true;
-        else if (clicking)
+            pressed = true;
+        else if (pressed)
         {
-            clicking = false;
+            pressed = false;
             activated = true;
         }
     }
     else
-        clicking = false;
+        pressed = false;
 }
 
 void Button::render(Window& window)
 {
-
+    if (hovering)     window.render(textures[texType]["hovering"], rect);
+    else if (pressed) window.render(textures[texType]["pressed"],  rect);
+    else              window.render(textures[texType]["idle"],     rect);
 }
 
 void Button::updateRect()

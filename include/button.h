@@ -16,11 +16,12 @@ enum bTextures { ButtonBlue };
 inline std::unordered_map<bTextures, std::string> bFolderNames = {
     { ButtonBlue, "blue" }
 };
+inline std::vector<std::string> bImgStates = { "idle", "hovering", "pressed" };
 
 class Button
 {
 public:
-    Button(Window& window, bTextures textureColor, 
+    Button(Window& window, bTextures texType, 
            Vect<int64_t> pos, std::string text = "",
            const uint32_t fontSize = 0,
            SDL_Color textColor = {255, 255, 255, 255});
@@ -36,11 +37,12 @@ public:
     
     inline void setPos(Vect<int64_t> pos) { pos = pos; }
 
-    inline const bool getPressed() const { return activated; }
+    inline const bool isPressed() const { return activated; }
 
 private:
     static std::unordered_map<bTextures, std::unordered_map<std::string, SDL_Texture*>> textures;
-
+    
+    bTextures texType;
     SDL_Texture* textImg;
     
     Vect<uint32_t> size; 
@@ -50,6 +52,6 @@ private:
     void updateRect();
 
     bool hovering;
-    bool clicking;
+    bool pressed;
     bool activated;
 };
