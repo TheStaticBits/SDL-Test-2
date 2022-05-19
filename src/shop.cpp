@@ -24,7 +24,7 @@ Shop::~Shop()
 }
 
 void Shop::update(const Vect<int64_t>& mousePos,    
-                  std::unordered_map<uint8_t, bool> mouseButtons)
+                  const std::unordered_map<uint8_t, bool>& mouseButtons)
 {
 
 }

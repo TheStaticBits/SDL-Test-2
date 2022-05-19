@@ -28,9 +28,9 @@ public:
 private:
     SDL_Texture* text;
     Vect<uint32_t> textSize;
+    
+    bool active;
 
     int64_t l1PosX;
     int64_t l2PosX;
-    
-    bool active;
 };

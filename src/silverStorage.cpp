@@ -60,7 +60,7 @@ std::string SilverStorage::readSave(std::string& save)
 
     capacity = std::stoull(save);
 
-    return "" // Nothing else to parse
+    return ""; // Nothing else to parse
 }
 
 const uint64_t SilverStorage::addSilver(uint64_t add)

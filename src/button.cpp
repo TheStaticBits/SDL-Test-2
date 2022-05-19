@@ -13,7 +13,7 @@
 Button::Button(Window& window, bTextures textureColor, 
                Vect<int64_t> pos, std::string text,
                const uint32_t fontSize, SDL_Color textColor)
-      pos(pos),
+    : pos(pos),
       hovering(false), clicking(false), activated(false)
 {
     if (text != "")
@@ -43,7 +43,7 @@ void Button::update(const Vect<int64_t>& mousePos,
     
     if (hovering)
     {
-        if (mouseButtons[SDL_BUTTON_LEFT])
+        if (mouseButtons.at(SDL_BUTTON_LEFT))
             clicking = true;
         else if (clicking)
         {
@@ -63,6 +63,6 @@ void Button::render(Window& window)
 void Button::updateRect()
 {
     Vect<int> sizeInt = size.cast<int>();
-    Vect<int> posInt = Size.cast<int>();
+    Vect<int> posInt = pos.cast<int>();
     rect = { posInt.x, posInt.y, sizeInt.x, sizeInt.y };
 }

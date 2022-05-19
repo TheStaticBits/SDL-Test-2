@@ -89,7 +89,6 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                     {
                         placing = false;
                         obj->completePlace(timeAtUpdate);
-                        std::cout << "complete" << std::endl;
                     }
                 }
                 else
