@@ -37,7 +37,7 @@ public:
     
     inline void setPos(Vect<int64_t> pos) { pos = pos; }
 
-    inline const bool isPressed() const { return activated; }
+    inline const bool isActivated() const { return activated; }
 
 private:
     static std::unordered_map<bTextures, std::unordered_map<std::string, SDL_Texture*>> textures;

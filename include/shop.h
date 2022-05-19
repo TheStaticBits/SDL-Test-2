@@ -10,6 +10,7 @@
 #include "window.h"
 #include "vector.h"
 #include "utility.h"
+#include "button.h"
 
 class Shop
 {

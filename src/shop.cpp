@@ -9,6 +9,7 @@
 #include "window.h"
 #include "vector.h"
 #include "utility.h"
+#include "button.h"
 
 Shop::Shop(Window& window)
     : text(window.getTextImg(window.font(16), "Shop", {255, 255, 255})),

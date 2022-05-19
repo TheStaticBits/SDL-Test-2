@@ -29,10 +29,10 @@ Button::Button(Window& window, bTextures texType,
         
         for (std::string& state : bImgStates)
         {
-            textures[texType][state] = window.loadTexture((std::string("res/") + 
-                                                            bFolderNames.at(texType) +
-                                                            std::string("/") + state + 
-                                                            std::string(".png")).c_str());
+            textures[texType][state] = window.loadTexture((std::string("res/buttons/") + 
+                                                           bFolderNames.at(texType)    +
+                                                           std::string("/") + state    + 
+                                                           std::string(".png")).c_str());
         }
     }
 
