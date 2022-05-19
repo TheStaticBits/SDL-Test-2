@@ -43,7 +43,8 @@ Button::~Button()
 {
     if (textImg != NULL) SDL_DestroyTexture(textImg);
     
-    // Destroy images 
+    for (std::string& state : bImgStates)
+        SDL_DestroyTexture(textures[texType][state]);
 }
 
 void Button::update(const Vect<int64_t>& mousePos,    
