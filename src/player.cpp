@@ -26,7 +26,8 @@ Player::~Player()
     // Destroy image/animations (currently none)
 }
 
-void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, Base& base, float deltaTime)
+void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, 
+                    Base& base, float deltaTime)
 {
     velocity.x = (keys[SDLK_d] - keys[SDLK_a]) * SPEED * deltaTime;
 

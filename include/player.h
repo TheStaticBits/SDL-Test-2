@@ -23,7 +23,8 @@ public:
 
     void operator=(const Player&) = delete;
 
-    void update(std::unordered_map<SDL_Keycode, bool>& keys, Base& base, float deltaTime);
+    void update(std::unordered_map<SDL_Keycode, bool>& keys, 
+                Base& base, float deltaTime);
     void render(Window& window, Vect<int64_t> renderOffset);
 
     std::string getSave();
