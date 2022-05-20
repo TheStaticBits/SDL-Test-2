@@ -12,9 +12,10 @@
 #include "vector.h"
 #include "utility.h"
 
-enum bTextures { ButtonBlue };
+enum bTextures { BlueB, ShopB };
 inline std::unordered_map<bTextures, std::string> bFolderNames = {
-    { ButtonBlue, "blue" }
+    { BlueB, "blue" },
+    { ShopB, "shop" }
 };
 inline std::vector<std::string> bImgStates = { "idle", "hovering", "pressed" };
 
@@ -35,9 +36,10 @@ public:
                 std::unordered_map<uint8_t, bool>& mouseHeldButtons);
     void render(Window& window, Vect<int64_t> textOffset = {0, 0});
     
-    inline void setPos(Vect<int64_t> pos) { pos = pos; }
+    inline void setPos(Vect<int64_t> newPos) { pos = newPos;}
 
     inline const bool isActivated() const { return activated; }
+    inline const Vect<uint32_t> getSize() const { return size; }
 
 private:
     static std::unordered_map<bTextures, std::unordered_map<std::string, SDL_Texture*>> textures;

@@ -13,13 +13,17 @@
 #include "button.h"
 
 Shop::Shop(Window& window)
-    : text(window.getTextImg(window.font(10), "Shop", {255, 255, 255})),
+    : l1Bg(window.loadTexture("res/shop/l1Bg.png")),
+      l1Size(util::getSize(l1Bg)),
+      text(window.getTextImg(window.font(10), "Shop", {0, 0, 0, 255})),
       textSize(util::getSize(text)), 
-      l1Size(Vect<uint32_t>(80, WIN_HEIGHT)),
-      BShop(window, ButtonBlue, Vect<int64_t>(60, 80)),
-      active(false), l1PosX(WIN_WIDTH), l2PosX(WIN_WIDTH)
+      shopButton(window, ShopB, Vect<int64_t>()),
+      active(false), 
+      l1Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l1Size.y / 2)
+      // l2Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l1Size.y / 2)
 {
-    
+    const Vect<uint32_t> shopSize = shopButton.getSize();
+    shopButton.setPos(Vect<int64_t>(WIN_WIDTH - shopSize.x - 1, 1));
 }
 
 Shop::~Shop()
@@ -32,8 +36,8 @@ void Shop::update(const Vect<int64_t>& mousePos,
                   std::unordered_map<uint8_t, bool>& mouseHeldButtons,
                   float deltaTime)
 {
-    BShop.update(mousePos, mouseHeldButtons);
-    if (BShop.isActivated()) active = !active;
+    shopButton.update(mousePos, mouseHeldButtons);
+    if (shopButton.isActivated()) active = !active;
 
     // Shop sliding graphics
     int64_t moveTo;
@@ -43,22 +47,26 @@ void Shop::update(const Vect<int64_t>& mousePos,
     else
         moveTo = WIN_WIDTH;
     
-    l1PosX -= (l1PosX - moveTo) * MOV_SPEED * deltaTime;
-    if ((int64_t)round(l1PosX) == moveTo) l1PosX = moveTo;
+    l1Pos.x -= (l1Pos.x - moveTo) * MOV_SPEED * deltaTime;
+    if ((int64_t)round(l1Pos.x) == moveTo) l1Pos.x = moveTo;
 }
 
 void Shop::render(Window& window)
 {
-    BShop.render(window); // Shop button
-
-    if (active)
-    {
-        Vect<int> textSizeInt = textSize.cast<int>();
-        SDL_Rect dest = {50, 120, textSizeInt.x, textSizeInt.y};
-        window.render(text, dest);
-    }
+    shopButton.render(window); // Shop button
 
     Vect<int> l1SizeInt = l1Size.cast<int>();
-    SDL_Rect dest = {static_cast<int>(l1PosX), 0, l1SizeInt.x, l1SizeInt.y};
-    window.drawRect(dest, {255, 255, 255});
+    Vect<int> l1PosInt = l1Pos.cast<int>();
+    Vect<int> textSizeInt = textSize.cast<int>();
+
+    SDL_Rect dest;
+
+    // Rendering shop background
+    dest = {l1PosInt.x, l1PosInt.y, l1SizeInt.x, l1SizeInt.y};
+    window.render(l1Bg, dest);
+
+    // Rendering text
+    dest = {l1PosInt.x + (l1SizeInt.x / 2) - (textSizeInt.x / 2), 
+            l1PosInt.y + 5, textSizeInt.x, textSizeInt.y};
+    window.render(text, dest);
 }

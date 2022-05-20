@@ -32,15 +32,16 @@ private:
     static constexpr float MIN_SPEED = 50.0f; // tweak these
     static constexpr float MOV_SPEED = 8.0f;
 
+    SDL_Texture* l1Bg;
+    Vect<uint32_t> l1Size;
+
     SDL_Texture* text;
     Vect<uint32_t> textSize;
 
-    Vect<uint32_t> l1Size;
-
-    Button BShop;
+    Button shopButton;
     
     bool active;
 
-    float l1PosX;
-    float l2PosX;
+    Vect<float> l1Pos;
+    Vect<float> l2Pos;
 };
