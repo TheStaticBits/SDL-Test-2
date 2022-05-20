@@ -29,8 +29,6 @@ Button::Button(Window& window, bTextures texType,
 
     if (textures.find(texType) == textures.end())
     {
-        textures[texType] = {}; // Test to see if this is needed!
-        
         for (std::string& state : bImgStates)
         {
             textures[texType][state] = window.loadTexture((std::string("res/buttons/") + 
