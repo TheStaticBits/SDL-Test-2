@@ -126,10 +126,10 @@ void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& pos)
 
 void Window::drawRect(SDL_Rect& rect, std::vector<uint8_t> color)
 {
-    if (color.size() == 4)
-        SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], color[3]);
-    else
-        SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], 255);
+    if (color.size() == 3)
+        color.push_back(255);
+
+    SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], color[3]);
 
     if (SDL_RenderFillRect(renderer, &rect) != 0)
         std::cout << "[Error] Rendering rect failed: " << SDL_GetError() << std::endl;
