@@ -30,7 +30,7 @@ public:
 
 private:
     static constexpr float MIN_SPEED = 50.0f; // tweak these
-    static constexpr float MOV_SPEED = 8.0f;
+    static constexpr float MOV_SPEED = 8.5f;
 
     SDL_Texture* l1Bg;
     Vect<uint32_t> l1Size;
