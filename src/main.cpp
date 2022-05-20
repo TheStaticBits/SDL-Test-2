@@ -10,10 +10,6 @@ int main(int argc, char* args[])
     
     Game game;
 
-#ifdef __EMSCRIPTEN__
-void it() { game.iteration(); }
-#endif
-
     game.loop();
     game.save();
    

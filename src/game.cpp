@@ -25,10 +25,10 @@
 
 Game::Game()
     : mousePos{0, 0}, 
-    player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), 
-    base(window), shop(window),
-    quit(false), deltaTime(0.0f), 
-    lastTime(0), lastSaveTime(0)
+      player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), 
+      base(window), shop(window),
+      quit(false), deltaTime(0.0f), 
+      lastTime(0), lastSaveTime(0)
 {
     // Loading save if the person has one
     if (hasSave("save"))
@@ -104,13 +104,17 @@ void Game::iteration()
 }
 
 #ifdef __EMSCRIPTEN__
-void it(); // Calls Game::iteration() in main.cpp
+void it(void* void_game) 
+{ 
+    Game* game = (Game*)void_game; 
+    game->iteration(); 
+}
 #endif
 
 void Game::loop()
 {
 #ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(it, 0, 1);
+    emscripten_set_main_loop_arg(it, this, 0, 1);
 #else
     while (!quit) iteration();
     save();
