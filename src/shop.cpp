@@ -38,7 +38,7 @@ void Shop::update(const Vect<int64_t>& mousePos,
     else
         int64_t moveTo = WIN_WIDTH;
 
-    if (l1PosX - MIN_SPEED > moveTo || l1PosX + MIN_SPEED < moveTo)
+    if ((l1PosX > (moveTo - MIN_SPEED)) || (l1PosX < (moveTo + MIN_SPEED)))
         l1PosX -= (l1PosX - moveTo) * MOV_SPEED * deltaTime + MIN_SPEED * deltaTime;
     else
         l1PosX = moveTo;
