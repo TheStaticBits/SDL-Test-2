@@ -80,10 +80,14 @@ void Game::iteration()
     inputs();
 
     // Updating
-    player.update(keys, base, deltaTime);
     Vect<int64_t> renderOffset = player.getRenderOffset();
-    base.update(keys, mouseButtons, mousePos, renderOffset);
     shop.update(mousePos, mouseButtons, mouseHeldButtons, deltaTime);
+    if (!shop.isActive())
+    {
+        player.update(keys, base, deltaTime);
+        renderOffset = player.getRenderOffset();
+        base.update(keys, mouseButtons, mousePos, renderOffset);
+    }
 
     // Rendering
     base.render(window, renderOffset);

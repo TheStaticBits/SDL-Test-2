@@ -12,10 +12,11 @@
 #include "vector.h"
 #include "utility.h"
 
-enum bTextures { BlueB, ShopB };
+enum bTextures { BlueB, ShopB, BuildingsB};
 inline std::unordered_map<bTextures, std::string> bFolderNames = {
-    { BlueB, "blue" },
-    { ShopB, "shop" }
+    { BlueB,      "blue"      },
+    { ShopB,      "shop"      },
+    { BuildingsB, "buildingB" }
 };
 inline std::vector<std::string> bImgStates = { "idle", "hovering", "pressed" };
 
@@ -23,7 +24,7 @@ class Button
 {
 public:
     Button(Window& window, bTextures texType, 
-           Vect<int64_t> pos, std::string text = "",
+           Vect<int64_t> pos = {0, 0}, std::string text = "",
            const uint32_t fontSize = 0,
            SDL_Color textColor = {255, 255, 255, 255});
     ~Button();
@@ -36,10 +37,13 @@ public:
                 std::unordered_map<uint8_t, bool>& mouseHeldButtons);
     void render(Window& window, Vect<int64_t> textOffset = {0, 0});
     
-    inline void setPos(Vect<int64_t> newPos) { pos = newPos;}
+    inline void setPos(Vect<int64_t> newPos) { pos = newPos; }
+    inline void setX(int64_t x)              { pos.x = x;    }
+    inline void setY(int64_t y)              { pos.y = y;    }
 
-    inline const bool isActivated() const { return activated; }
-    inline const Vect<uint32_t> getSize() const { return size; }
+    inline const bool isActivated() const       { return activated; }
+    inline const Vect<uint32_t> getSize() const { return size;      }
+    inline const Vect<int64_t> getPos() const   { return pos;       }
 
 private:
     static std::unordered_map<bTextures, std::unordered_map<std::string, SDL_Texture*>> textures;

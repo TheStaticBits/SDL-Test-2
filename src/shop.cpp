@@ -15,51 +15,71 @@
 Shop::Shop(Window& window)
     : l1Bg(window.loadTexture("res/shop/l1Bg.png")),
       l1Size(util::getSize(l1Bg)),
+      l1Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l1Size.y / 2),
       l1OutX(static_cast<int64_t>(WIN_WIDTH - l1Size.x)),
+
+      l2Bg(window.loadTexture("res/shop/l2Bg.png")),
+      l2Size(util::getSize(l2Bg)),
+      l2Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l2Size.y / 2),
+      locked(true),
 
       text(window.getTextImg(window.font(10), "Shop", {0, 0, 0, 255})),
       textSize(util::getSize(text)), 
       
-      shopButton(window, ShopB, Vect<int64_t>()),
+      shopButton(window, ShopB),
+      buildingsButton(window, BuildingsB),
       
-      active(false), 
-      l1Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l1Size.y / 2)
-      // l2Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l1Size.y / 2)
+      active(false),
+      openCategory(NoneOpen)
 {
-    const Vect<uint32_t> shopSize = shopButton.getSize();
-    shopButton.setPos(Vect<int64_t>(WIN_WIDTH - shopSize.x - 1, 1));
+    shopButton.setPos(Vect<int64_t>(WIN_WIDTH - shopButton.getSize().x - 1, 1));
+
+    buildingsButton.setY(l1Pos.y + shopButton.getPos().y + 20);
 }
 
 Shop::~Shop()
 {
     SDL_DestroyTexture(text);
+    SDL_DestroyTexture(l1Bg);
+    SDL_DestroyTexture(l2Bg);
 }
 
 void Shop::update(const Vect<int64_t>& mousePos,    
                   std::unordered_map<uint8_t, bool>& mouseButtons,
                   std::unordered_map<uint8_t, bool>& mouseHeldButtons,
-                  float deltaTime)
+                  const float deltaTime)
 {
-    shopButton.update(mousePos, mouseHeldButtons);
-    if (shopButton.isActivated()) active = !active;
-
     // Shop sliding graphics
-    int64_t moveTo = active ? l1OutX : WIN_WIDTH;
-    l1Pos.x -= (l1Pos.x - moveTo) * MOV_SPEED * deltaTime;
-    if ((int64_t)round(l1Pos.x) == moveTo) l1Pos.x = moveTo;
+    moveL1(deltaTime);
+    moveL2(deltaTime);
+    
+    // Updating buttons
+    // Open/close menu
+    shopButton.update(mousePos, mouseHeldButtons);
+    if (shopButton.isActivated()) toggleShop();
+
+    buildingsButton.setX(l1Pos.x + (l1Size.x / 2)
+                         - (buildingsButton.getSize().x / 2));
+    buildingsButton.update(mousePos, mouseHeldButtons);
+    if (buildingsButton.isActivated()) switchCategory(Buildings);
 }
 
 void Shop::render(Window& window)
 {
     shopButton.render(window); // Shop button
 
-    Vect<int> l1SizeInt = l1Size.cast<int>();
-    Vect<int> l1PosInt = l1Pos.cast<int>();
+    Vect<int> l1SizeInt =   l1Size.cast<int>();
+    Vect<int> l1PosInt =    l1Pos.cast<int>();
+    Vect<int> l2PosInt =    l2Pos.cast<int>();
+    Vect<int> l2SizeInt =   l2Size.cast<int>();
     Vect<int> textSizeInt = textSize.cast<int>();
 
     SDL_Rect dest;
 
     // Rendering shop background
+    dest = {l2PosInt.x, l2PosInt.y, l2SizeInt.x, l2SizeInt.y};
+    window.render(l2Bg, dest);
+
     dest = {l1PosInt.x, l1PosInt.y, l1SizeInt.x, l1SizeInt.y};
     window.render(l1Bg, dest);
 
@@ -67,4 +87,51 @@ void Shop::render(Window& window)
     dest = {l1PosInt.x + (l1SizeInt.x / 2) - (textSizeInt.x / 2), 
             l1PosInt.y + 5, textSizeInt.x, textSizeInt.y};
     window.render(text, dest);
+    
+    // Layer 1 Buttons
+    buildingsButton.render(window);
+}
+
+void Shop::toggleShop()
+{
+    if (active) 
+    {
+        active = false;
+        if (openCategory != NoneOpen)
+        {
+            openCategory = NoneOpen;
+            locked = false;
+        }
+    }
+    else active = true;
+}
+
+void Shop::switchCategory(Category category)
+{
+    locked = false;
+    if (openCategory != category) 
+        openCategory = category;
+    else 
+        openCategory = NoneOpen;
+}
+
+void Shop::moveL1(const float& deltaTime)
+{
+    int64_t moveTo = active ? l1OutX : WIN_WIDTH;
+    if ((int64_t)round(l1Pos.x) != moveTo)
+        l1Pos.x -= (l1Pos.x - moveTo) * MOV_SPEED * deltaTime;
+    else
+        l1Pos.x = moveTo;
+}
+
+void Shop::moveL2(const float& deltaTime)
+{
+    int64_t moveTo = (openCategory == NoneOpen) ? l1Pos.x : l1Pos.x - l2Size.x;
+    if (!locked && ((int64_t)round(l2Pos.x) != moveTo))
+        l2Pos.x -= (l2Pos.x - moveTo) * MOV_SPEED * deltaTime;
+    else 
+    {
+        l2Pos.x = moveTo;
+        locked = true;
+    }
 }
