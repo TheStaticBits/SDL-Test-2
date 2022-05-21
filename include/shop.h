@@ -29,11 +29,11 @@ public:
     inline const bool isActive() const { return active; }
 
 private:
-    static constexpr float MIN_SPEED = 50.0f; // tweak these
-    static constexpr float MOV_SPEED = 8.5f;
+    static constexpr float MOV_SPEED = 9.0f;
 
     SDL_Texture* l1Bg;
     Vect<uint32_t> l1Size;
+    const int64_t l1OutX;
 
     SDL_Texture* text;
     Vect<uint32_t> textSize;

@@ -15,6 +15,7 @@
 Shop::Shop(Window& window)
     : l1Bg(window.loadTexture("res/shop/l1Bg.png")),
       l1Size(util::getSize(l1Bg)),
+      l1OutX(static_cast<int64_t>(WIN_WIDTH - l1Size.x)),
       text(window.getTextImg(window.font(10), "Shop", {0, 0, 0, 255})),
       textSize(util::getSize(text)), 
       shopButton(window, ShopB, Vect<int64_t>()),
@@ -40,13 +41,7 @@ void Shop::update(const Vect<int64_t>& mousePos,
     if (shopButton.isActivated()) active = !active;
 
     // Shop sliding graphics
-    int64_t moveTo;
-
-    if (active) 
-        moveTo = static_cast<int64_t>(WIN_WIDTH - l1Size.x);
-    else
-        moveTo = WIN_WIDTH;
-    
+    int64_t moveTo = active ? l1OutX : WIN_WIDTH;
     l1Pos.x -= (l1Pos.x - moveTo) * MOV_SPEED * deltaTime;
     if ((int64_t)round(l1Pos.x) == moveTo) l1Pos.x = moveTo;
 }
