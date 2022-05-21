@@ -28,13 +28,16 @@ Shop::Shop(Window& window)
       
       shopButton(window, ShopB),
       buildingsButton(window, BuildingsB),
+      platformsButton(window, BuildingsB), // Temporary
       
       active(false),
-      openCategory(NoneOpen)
+      openCategory(NoneOpen),
+      switchToCategory(NoneOpen)
 {
     shopButton.setPos(Vect<int64_t>(WIN_WIDTH - shopButton.getSize().x - 1, 1));
 
     buildingsButton.setY(l1Pos.y + shopButton.getPos().y + 20);
+    platformsButton.setY(l1Pos.y + shopButton.getPos().y + buildingsButton.getPos().y + 40);
 }
 
 Shop::~Shop()
@@ -62,6 +65,11 @@ void Shop::update(const Vect<int64_t>& mousePos,
                          - (buildingsButton.getSize().x / 2));
     buildingsButton.update(mousePos, mouseHeldButtons);
     if (buildingsButton.isActivated()) switchCategory(Buildings);
+
+    platformsButton.setX(l1Pos.x + (l1Size.x / 2)
+                         - (platformsButton.getSize().x / 2));
+    platformsButton.update(mousePos, mouseHeldButtons);
+    if (platformsButton.isActivated()) switchCategory(Platforms);
 }
 
 void Shop::render(Window& window)
@@ -90,6 +98,7 @@ void Shop::render(Window& window)
     
     // Layer 1 Buttons
     buildingsButton.render(window);
+    platformsButton.render(window);
 }
 
 void Shop::toggleShop()
@@ -110,7 +119,15 @@ void Shop::switchCategory(Category category)
 {
     locked = false;
     if (openCategory != category) 
-        openCategory = category;
+    {
+        if (openCategory != NoneOpen)
+        {
+            openCategory = NoneOpen;
+            switchToCategory = category;
+            locked = false;
+        }
+        else openCategory = category;
+    }
     else 
         openCategory = NoneOpen;
 }
@@ -132,6 +149,12 @@ void Shop::moveL2(const float& deltaTime)
     else 
     {
         l2Pos.x = moveTo;
-        locked = true;
+
+        if (switchToCategory != NoneOpen)
+        {
+            openCategory = switchToCategory;
+            switchToCategory = NoneOpen;
+        }
+        else locked = true;
     }
 }

@@ -48,9 +48,11 @@ private:
 
     Button shopButton;
     Button buildingsButton;
+    Button platformsButton;
     
     bool active;
     Category openCategory;
+    Category switchToCategory;
 
     void toggleShop();
     void switchCategory(Category category);
