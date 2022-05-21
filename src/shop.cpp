@@ -16,9 +16,12 @@ Shop::Shop(Window& window)
     : l1Bg(window.loadTexture("res/shop/l1Bg.png")),
       l1Size(util::getSize(l1Bg)),
       l1OutX(static_cast<int64_t>(WIN_WIDTH - l1Size.x)),
+
       text(window.getTextImg(window.font(10), "Shop", {0, 0, 0, 255})),
       textSize(util::getSize(text)), 
+      
       shopButton(window, ShopB, Vect<int64_t>()),
+      
       active(false), 
       l1Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l1Size.y / 2)
       // l2Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l1Size.y / 2)
