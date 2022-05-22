@@ -33,6 +33,7 @@ EM_JS(char*, getSave, (const char* saveName), {
 #else
 
 #include <fstream>
+#include <filesystem>
 
 bool hasSave(std::string saveName)
 {

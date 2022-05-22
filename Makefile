@@ -5,14 +5,20 @@ IPATH = include
 SPATH = src
 CPATH = bin/intermediates
 
-IFLAGS = -IC:/SDL2/include -IC:/JSON_Parse -I$(IPATH)
-LFLAGS = -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
+WIN_IFLAGS = -IC:/SDL2/include -IC:/JSON_Parse -I$(IPATH)
+WIN_LFLAGS = -LC:/SDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
+
+LINUX_IFLAGS = -I$(IPATH)
+LINUX_LFLAGS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
+
 DFLAGS = -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread
-OFLAGS = -Wall -std=c++20
+OFLAGS = -Wall -std=c++17
 EFLAGS = -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -sSDL2_IMAGE_FORMATS=["png"]
 EFFLAGS = -sASYNCIFY=1 --preload-file res
 FFLAGS =
-FLAGS = $(OFLAGS) $(IFLAGS)
+FLAGS = $(OFLAGS) $(WIN_IFLAGS)
+
+LD_DEBUG = all make
 
 # --------------------------------
 
@@ -35,6 +41,9 @@ emscripten: FLAGS += $(EFLAGS)
 emscripten: FFLAGS += $(EFFLAGS)
 emscripten: OUTPUT = bin/web/game.html
 emscripten: application.exe
+
+linux: FLAGS = $(OFLAGS) $(LINUX_IFLAGS) $(LINUX_LFLAGS)
+linux: application.exe
 
 # --------------------------------
 
