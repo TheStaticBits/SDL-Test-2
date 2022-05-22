@@ -24,11 +24,11 @@ LD_DEBUG = all make
 
 # Debug build
 default: FLAGS += -g
-default: FLAGS += $(LFLAGS)
+default: FLAGS += $(WIN_LFLAGS)
 default: application.exe
 
 # Release build
-release: FLAGS += $(LFLAGS)
+release: FLAGS += $(WIN_LFLAGS)
 release: FLAGS += $(DFLAGS)
 release: FLAGS += -O3
 release: OUTPUT = bin/release/application.exe
