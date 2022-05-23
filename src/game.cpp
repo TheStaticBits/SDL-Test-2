@@ -92,6 +92,7 @@ void Game::iteration()
     // Rendering
     base.render(window, renderOffset);
     player.render(window, renderOffset);
+    base.renderMinimap(window);
     shop.render(window);
 
     window.update();

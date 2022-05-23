@@ -20,23 +20,23 @@ Window::Window()
 
     if (window == NULL)
         std::cout << "[Error] Window creation failed: " << SDL_GetError() << std::endl;
+
+    uint32_t flags;
     
     // Setting up renderer
     if (VSYNC)
-        renderer = SDL_CreateRenderer(window, -1, 
-                                      SDL_RENDERER_ACCELERATED | 
-                                      SDL_RENDERER_PRESENTVSYNC | 
-                                      SDL_RENDERER_TARGETTEXTURE);
+        flags = ( SDL_RENDERER_ACCELERATED | 
+                  SDL_RENDERER_PRESENTVSYNC | 
+                  SDL_RENDERER_TARGETTEXTURE );
     else
-        renderer = SDL_CreateRenderer(window, -1, 
-                                      SDL_RENDERER_ACCELERATED | 
-                                      SDL_RENDERER_TARGETTEXTURE);
+        flags = ( SDL_RENDERER_ACCELERATED | 
+                  SDL_RENDERER_TARGETTEXTURE );
+
+
+    renderer = SDL_CreateRenderer(window, -1, flags);
 
     // Setting up mini window
-    mini = SDL_CreateTexture(renderer, 
-                             SDL_PIXELFORMAT_RGBA8888, 
-                             SDL_TEXTUREACCESS_TARGET, 
-                             WIN_WIDTH, WIN_HEIGHT);
+    mini = createTex(WIN_WIDTH, WIN_HEIGHT);
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetTextureBlendMode(mini, SDL_BLENDMODE_BLEND);
@@ -74,6 +74,19 @@ TTF_Font* Window::font(const uint32_t size)
     fonts[size] = font;
 
     return font;
+}
+
+SDL_Texture* Window::createTex(const uint32_t width, const uint32_t height)
+{
+    SDL_Texture* tex = NULL;
+    tex = SDL_CreateTexture(renderer, 
+                            SDL_PIXELFORMAT_RGBA8888, 
+                            SDL_TEXTUREACCESS_TARGET, 
+                            width, height);
+    if (tex == NULL)
+        std::cout << "[Error] Texture creation failed: " << SDL_GetError() << std::endl;
+    
+    return tex;
 }
 
 SDL_Texture* Window::getTextImg(TTF_Font* font, std::string text, SDL_Color color)
@@ -135,4 +148,15 @@ void Window::drawRect(SDL_Rect& rect, std::vector<uint8_t> color)
         std::cout << "[Error] Rendering rect failed: " << SDL_GetError() << std::endl;
     
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+
+void Window::setTarget(SDL_Texture* texture)
+{
+    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);   
+    SDL_SetRenderTarget(renderer, texture);
+}
+
+void Window::resetTarget()
+{
+    SDL_SetRenderTarget(renderer, mini);
 }

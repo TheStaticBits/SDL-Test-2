@@ -22,7 +22,8 @@
 
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
-      size{R_WIN_WIDTH, R_WIN_HEIGHT}, placing(false)
+      size{R_WIN_WIDTH, R_WIN_HEIGHT}, placing(false),
+      minimap(window.createTex(WIN_WIDTH, WIN_HEIGHT))
 {
 
 }
@@ -105,6 +106,18 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
             }
         }
     }
+}
+
+void Base::renderMinimap(Window& window)
+{
+    window.setTarget(minimap);
+    render(window, Vect<int64_t>(0, 0));
+    window.resetTarget();
+
+    Vect<int> minimapSize = { WIN_WIDTH / minimapScale, 
+                              WIN_HEIGHT / minimapScale };
+    SDL_Rect dest = { WIN_HEIGHT - minimapSize.y - 5, 5, minimapSize.x, minimapSize.y };
+    window.render(minimap, dest);
 }
 
 void Base::render(Window& window, Vect<int64_t> renderOffset)

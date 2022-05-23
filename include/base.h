@@ -17,7 +17,7 @@
 #include "building.h"
 
 inline const uint16_t TILE_SIZE = 20;
-inline const std::string RemoveObj = "Remove";
+inline const std::string RemoveObj = "Remove"; // Used for not saving objects that have not been placed
 
 class Base
 {
@@ -32,6 +32,7 @@ public:
                 const Vect<int64_t>& mousePos,
                 const Vect<int64_t>& renderOffset);
 
+    void renderMinimap(Window& window);
     void render(Window& window, Vect<int64_t> renderOffset);
 
     inline Vect<uint32_t> getSize() const { return size; }
@@ -51,6 +52,9 @@ private:
 
     std::vector<std::unique_ptr<Interactable>> objects;
     std::unordered_map<ObjType, uint64_t> count;
+
+    inline static const float minimapScale = 0.1f;
+    SDL_Texture* minimap;
 
     bool placing;
 };

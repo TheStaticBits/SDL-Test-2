@@ -28,6 +28,7 @@ public:
 
     SDL_Texture* loadTexture(const char* path);
     TTF_Font* font(const uint32_t size);
+    SDL_Texture* createTex(const uint32_t width, const uint32_t height);
     SDL_Texture* getTextImg(TTF_Font* font, std::string text, SDL_Color color);
 
     void update();
@@ -37,6 +38,9 @@ public:
     void render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& pos);
     
     void drawRect(SDL_Rect& rect, std::vector<uint8_t> color);
+
+    void setTarget(SDL_Texture* texture);
+    void resetTarget();
 
 private:
     static constexpr char* TITLE = (char*)"Game again";
