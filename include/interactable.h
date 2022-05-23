@@ -16,8 +16,8 @@
 
 enum ObjType { Platform_T, SilverStorage_T};
 inline std::unordered_map<ObjType, std::string> objTNames = {
-    { Platform_T,      "Platform"  },
-    { SilverStorage_T, "SilverStor"}
+    { Platform_T,      "Platform"      },
+    { SilverStorage_T, "Silver Storage"}
 };
 
 // If the first of a string is the same name as the object
@@ -40,7 +40,11 @@ public:
     virtual void completePlace(const uint64_t& time);
 
     virtual void update(const uint64_t& seconds) { };
+    virtual void checkMenu(const Vect<int64_t>& mousePos,
+                           std::unordered_map<uint8_t, bool>& mouseButtons, 
+                           const Vect<int64_t>& renderOffset);
     virtual void render(Window& window, const Vect<int64_t>& renderOffset);
+    virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset);
 
     // Save functions
     virtual std::string getSave();
@@ -56,6 +60,8 @@ public:
     inline void setPlacable(bool canPlace) { placable = canPlace; }
     inline void setPos(Vect<int64_t> pos)  { renderPos.x = pos.x; 
                                              renderPos.y = pos.y; }
+    inline void removeMenu()               { hovering = false;
+                                             clicked = false;     }
 
 protected:
     static constexpr uint8_t alpha = 150;
@@ -67,7 +73,12 @@ protected:
 
     bool placing;
     bool placable;
+
     bool hovering;
+    bool clicked;
+    Vect<uint32_t> menuSize;
+    SDL_Rect menuPos;
+    void setMenuRect();
 
     const ObjType type;
 };

@@ -56,10 +56,19 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
             count[SilverStorage_T]++;
             objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames[SilverStorage_T]]));
         }
+
+        // Clear any menues open
+        if (placing)
+            for (std::unique_ptr<Interactable>& obj : objects)
+                obj->removeMenu();
     }
 
     for (std::unique_ptr<Interactable>& obj : objects)
+    {
         obj->update(timeAtUpdate);
+
+        if (!placing) obj->checkMenu(mousePos, mouseButtons, renderOffset);
+    }
 
     if (placing)
     {
@@ -107,6 +116,11 @@ void Base::render(Window& window, Vect<int64_t> renderOffset)
 
     for (std::unique_ptr<Interactable>& obj : objects)
         obj->render(window, renderOffset);
+    
+    // Render any menues on top of everything
+    if (!placing)
+        for (std::unique_ptr<Interactable>& obj : objects)
+            obj->renderMenu(window, renderOffset);
 }
 
 std::string Base::getSave()

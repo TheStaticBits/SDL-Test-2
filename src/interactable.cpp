@@ -11,18 +11,19 @@
 #include "utility.h"
 #include "base.h"
 
-
 Interactable::Interactable(const Vect<uint32_t> tileSize, const std::vector<uint8_t> color, const ObjType type)
     : tileSize(tileSize), renderColor(color),
       renderPos{ 0, 0, static_cast<int>(tileSize.x * TILE_SIZE), 
                        static_cast<int>(tileSize.y * TILE_SIZE) }, 
-      placing(true), placable(true), hovering(false), type(type)
+      placing(true), placable(true), hovering(false), clicked(false),
+      type(type)
 {
 
 }
 
 Interactable::Interactable(const ObjType type)
-    : placing(false), placable(false), hovering(false), type(type)
+    : placing(false), placable(false), hovering(false), clicked(false),
+      type(type)
 {
 
 }
@@ -54,6 +55,31 @@ void Interactable::completePlace(const uint64_t& time)
     placing = false; 
 }
 
+void Interactable::checkMenu(const Vect<int64_t>& mousePos,
+                             std::unordered_map<uint8_t, bool>& mouseButtons, 
+                             const Vect<int64_t>& renderOffset)
+{
+
+    if (!placing)
+    {
+        if (util::collide(renderPos, mousePos + renderOffset))
+        {
+            if (mouseButtons[SDL_BUTTON_LEFT])
+                clicked = true;
+            else if (clicked)
+            {
+                clicked = false;
+                hovering = !hovering;
+            }
+        }
+        else if (mouseButtons[SDL_BUTTON_LEFT])
+            if (!util::collide(menuPos, mousePos + renderOffset))
+                hovering = false;
+    }
+    else
+        hovering = false;
+}
+
 void Interactable::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     SDL_Rect render = renderPos;
@@ -74,6 +100,20 @@ void Interactable::render(Window& window, const Vect<int64_t>& renderOffset)
     }
 
     window.drawRect(render, color);
+}
+
+void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
+{
+    if (hovering)
+    {
+        setMenuRect();
+
+        SDL_Rect render = menuPos;
+        render.x -= renderOffset.x;
+        render.y -= renderOffset.y;
+        
+        window.drawRect(render, { 255, 255, 255 });
+    }
 }
 
 std::string Interactable::getSave()
@@ -100,4 +140,15 @@ std::string Interactable::readSave(std::string& save)
     renderPos.y = std::stoi(data[1]);
 
     return save.substr(save.find("#") + 1); // Removing everything before the divider
+}
+
+void Interactable::setMenuRect()
+{
+    Vect<int> menuSizeInt = menuSize.cast<int>();
+    if (renderPos.y + renderPos.w + menuSizeInt.y > static_cast<int>(WIN_HEIGHT))
+        menuPos.y = renderPos.y - menuSizeInt.y;
+    else
+        menuPos.y = renderPos.y + renderPos.w;
+    
+    menuPos.x = renderPos.x + (renderPos.w / 2) - (menuSizeInt.x / 2);
 }
