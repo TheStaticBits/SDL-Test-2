@@ -23,7 +23,7 @@
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
       size{R_WIN_WIDTH, R_WIN_HEIGHT}, placing(false),
-      minimap(window.createTex(WIN_WIDTH, WIN_HEIGHT))
+      minimap(window.createTex(size.x, size.y))
 {
 
 }
@@ -111,16 +111,18 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
 void Base::renderMinimap(Window& window)
 {
     window.setTarget(minimap);
-    render(window, Vect<int64_t>(0, 0));
+    renderTiles(window, Vect<int64_t>(0, 0));
     window.resetTarget();
 
-    Vect<int> minimapSize = { WIN_WIDTH / minimapScale, 
-                              WIN_HEIGHT / minimapScale };
-    SDL_Rect dest = { WIN_HEIGHT - minimapSize.y - 5, 5, minimapSize.x, minimapSize.y };
+    Vect<int> minimapSize = { static_cast<int>(size.x * minimapScale), 
+                              static_cast<int>(size.y * minimapScale) };
+    
+    SDL_Rect dest = { 5, static_cast<int>(WIN_HEIGHT - minimapSize.y - 5),
+                      minimapSize.x, minimapSize.y };
     window.render(minimap, dest);
 }
 
-void Base::render(Window& window, Vect<int64_t> renderOffset)
+void Base::renderTiles(Window& window, Vect<int64_t> renderOffset)
 {
     Vect<int> rendInt = renderOffset.cast<int>();
     Vect<int> sizeInt = size.cast<int>();
@@ -129,7 +131,10 @@ void Base::render(Window& window, Vect<int64_t> renderOffset)
 
     for (std::unique_ptr<Interactable>& obj : objects)
         obj->render(window, renderOffset);
-    
+}
+
+void Base::renderMenues(Window& window, Vect<int64_t> renderOffset)
+{
     // Render any menues on top of everything
     if (!placing)
         for (std::unique_ptr<Interactable>& obj : objects)

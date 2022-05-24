@@ -33,7 +33,8 @@ public:
                 const Vect<int64_t>& renderOffset);
 
     void renderMinimap(Window& window);
-    void render(Window& window, Vect<int64_t> renderOffset);
+    void renderTiles  (Window& window, Vect<int64_t> renderOffset);
+    void renderMenues (Window& window, Vect<int64_t> renderOffset);
 
     inline Vect<uint32_t> getSize() const { return size; }
     inline std::vector<std::unique_ptr<Interactable>>& getObjects() { return objects; }
@@ -52,9 +53,9 @@ private:
 
     std::vector<std::unique_ptr<Interactable>> objects;
     std::unordered_map<ObjType, uint64_t> count;
+    
+    bool placing;
 
     inline static const float minimapScale = 0.1f;
     SDL_Texture* minimap;
-
-    bool placing;
 };
