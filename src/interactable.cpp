@@ -59,10 +59,12 @@ void Interactable::checkMenu(const Vect<int64_t>& mousePos,
                              std::unordered_map<uint8_t, bool>& mouseButtons, 
                              const Vect<int64_t>& renderOffset)
 {
+    setMenuRect();
 
     if (!placing)
     {
-        if (util::collide(renderPos, mousePos + renderOffset))
+        const Vect<int64_t> mouseMapPos = mousePos + renderOffset;
+        if (util::collide(renderPos, mouseMapPos))
         {
             if (mouseButtons[SDL_BUTTON_LEFT])
                 clicked = true;
@@ -73,7 +75,7 @@ void Interactable::checkMenu(const Vect<int64_t>& mousePos,
             }
         }
         else if (mouseButtons[SDL_BUTTON_LEFT])
-            if (!util::collide(menuPos, mousePos + renderOffset))
+            if (!util::collide(menuPos, mouseMapPos))
                 hovering = false;
     }
     else
@@ -106,8 +108,6 @@ void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
 {
     if (hovering)
     {
-        setMenuRect();
-
         SDL_Rect render = menuPos;
         render.x -= renderOffset.x;
         render.y -= renderOffset.y;

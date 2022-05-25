@@ -92,10 +92,13 @@ void Game::iteration()
     // Rendering
     base.renderTiles(window, renderOffset);
     player.render(window, renderOffset);
+
     base.renderMenues(window, renderOffset);
     base.renderMinimap(window);
+    
     shop.render(window);
 
+    // Scale up and display frame
     window.update();
 
     // Saving every 5 seconds
