@@ -21,7 +21,7 @@ Building::Building(const nlohmann::json& data, const std::vector<uint8_t> color,
       beingBuilt(false), timeAtPlace(0), percentComplete(0),
       level(1), data(data)
 {
-    
+    Interactable::menuSize = {70, 50};
 }
 
 Building::~Building()

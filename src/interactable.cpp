@@ -57,16 +57,17 @@ void Interactable::completePlace(const uint64_t& time)
 
 void Interactable::checkMenu(const Vect<int64_t>& mousePos,
                              std::unordered_map<uint8_t, bool>& mouseButtons, 
+                             std::unordered_map<uint8_t, bool>& mouseHeldButtons, 
                              const Vect<int64_t>& renderOffset)
 {
-    setMenuRect();
+    setMenuRect(renderOffset);
 
     if (!placing)
     {
         const Vect<int64_t> mouseMapPos = mousePos + renderOffset;
         if (util::collide(renderPos, mouseMapPos))
         {
-            if (mouseButtons[SDL_BUTTON_LEFT])
+            if (mouseHeldButtons[SDL_BUTTON_LEFT])
                 clicked = true;
             else if (clicked)
             {
@@ -111,7 +112,7 @@ void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
         SDL_Rect render = menuPos;
         render.x -= renderOffset.x;
         render.y -= renderOffset.y;
-        
+
         window.drawRect(render, { 255, 255, 255 });
     }
 }
@@ -142,13 +143,20 @@ std::string Interactable::readSave(std::string& save)
     return save.substr(save.find("#") + 1); // Removing everything before the divider
 }
 
-void Interactable::setMenuRect()
+void Interactable::setMenuRect(const Vect<int64_t>& renderOffset)
 {
     Vect<int> menuSizeInt = menuSize.cast<int>();
-    if (renderPos.y + renderPos.w + menuSizeInt.y > static_cast<int>(WIN_HEIGHT))
+    menuPos.w = menuSizeInt.x;
+    menuPos.h = menuSizeInt.y;
+
+    SDL_Rect renderScreenPos = renderPos;
+    renderScreenPos.x -= renderOffset.x;
+    renderScreenPos.y -= renderOffset.y;
+
+    if (renderScreenPos.y + renderScreenPos.h + menuPos.h > static_cast<int>(WIN_HEIGHT))
         menuPos.y = renderPos.y - menuSizeInt.y;
     else
-        menuPos.y = renderPos.y + renderPos.w;
+        menuPos.y = renderPos.y + renderPos.h;
     
     menuPos.x = renderPos.x + (renderPos.w / 2) - (menuSizeInt.x / 2);
 }

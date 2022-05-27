@@ -42,6 +42,7 @@ public:
     virtual void update(const uint64_t& seconds) { };
     virtual void checkMenu(const Vect<int64_t>& mousePos,
                            std::unordered_map<uint8_t, bool>& mouseButtons, 
+                           std::unordered_map<uint8_t, bool>& mouseHeldButtons, 
                            const Vect<int64_t>& renderOffset);
     virtual void render(Window& window, const Vect<int64_t>& renderOffset);
     virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset);
@@ -78,7 +79,7 @@ protected:
     bool clicked;
     Vect<uint32_t> menuSize;
     SDL_Rect menuPos;
-    void setMenuRect();
+    void setMenuRect(const Vect<int64_t>& renderOffset);
 
     const ObjType type;
 };

@@ -34,7 +34,8 @@ Base::~Base()
 }
 
 void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
-                  std::unordered_map<uint8_t, bool>& mouseButtons, 
+                  std::unordered_map<uint8_t, bool>& mouseButtons,
+                  std::unordered_map<uint8_t, bool>& mouseHeldButtons, 
                   const Vect<int64_t>& mousePos,
                   const Vect<int64_t>& renderOffset)
 {
@@ -68,7 +69,7 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     {
         obj->update(timeAtUpdate);
 
-        if (!placing) obj->checkMenu(mousePos, mouseButtons, renderOffset);
+        if (!placing) obj->checkMenu(mousePos, mouseButtons, mouseHeldButtons, renderOffset);
     }
 
     if (placing)

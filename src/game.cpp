@@ -86,7 +86,7 @@ void Game::iteration()
     {
         player.update(keys, base, deltaTime);
         renderOffset = player.getRenderOffset();
-        base.update(keys, mouseButtons, mousePos, renderOffset);
+        base.update(keys, mouseButtons, mouseHeldButtons, mousePos, renderOffset);
     }
 
     // Rendering
