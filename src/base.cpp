@@ -22,7 +22,8 @@
 
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
-      size{R_WIN_WIDTH, R_WIN_HEIGHT}, placing(false),
+      size{900, 600}, // TEMPORARY, will change in the future
+      placing(false),
       minimap(window.createTex(size.x, size.y))
 {
 
@@ -33,7 +34,8 @@ Base::~Base()
 
 }
 
-void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
+void Base::update(const Window& window,
+                  std::unordered_map<SDL_Keycode, bool>& keys,
                   std::unordered_map<uint8_t, bool>& mouseButtons,
                   std::unordered_map<uint8_t, bool>& mouseHeldButtons, 
                   const Vect<int64_t>& mousePos,
@@ -68,14 +70,14 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
     // Updating the menu that is open before others
     for (std::unique_ptr<Interactable>& obj : objects)
         if (obj->menuOpen())
-            obj->checkMenu(mousePos, mouseButtons, mouseHeldButtons, renderOffset);
+            obj->checkMenu(window, mousePos, mouseButtons, mouseHeldButtons, renderOffset);
 
     for (std::unique_ptr<Interactable>& obj : objects)
     {
         obj->update(timeAtUpdate);
 
         if (!obj->menuOpen())
-            obj->checkMenu(mousePos, mouseButtons, mouseHeldButtons, renderOffset);
+            obj->checkMenu(window, mousePos, mouseButtons, mouseHeldButtons, renderOffset);
     }
 
     if (placing)
@@ -124,7 +126,7 @@ void Base::renderMinimap(Window& window)
     Vect<int> minimapSize = { static_cast<int>(size.x * minimapScale), 
                               static_cast<int>(size.y * minimapScale) };
     
-    SDL_Rect dest = { 5, static_cast<int>(WIN_HEIGHT - minimapSize.y - 5),
+    SDL_Rect dest = { 5, static_cast<int>(window.getSize().y - minimapSize.y - 5),
                       minimapSize.x, minimapSize.y };
     window.render(minimap, dest);
 }

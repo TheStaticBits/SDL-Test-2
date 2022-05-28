@@ -25,7 +25,7 @@
 
 Game::Game()
     : mousePos{0, 0}, 
-      player(Vect<float>(WIN_WIDTH / 2, WIN_HEIGHT)), 
+      player(window), 
       base(window), shop(window),
       quit(false), deltaTime(0.0f), 
       lastTime(0), lastSaveTime(0)
@@ -81,12 +81,12 @@ void Game::iteration()
 
     // Updating
     Vect<int64_t> renderOffset = player.getRenderOffset();
-    shop.update(mousePos, mouseButtons, mouseHeldButtons, deltaTime);
+    shop.update(window, mousePos, mouseButtons, mouseHeldButtons, deltaTime);
     if (!shop.isActive())
     {
-        player.update(keys, base, deltaTime);
+        player.update(keys, base, deltaTime, window);
         renderOffset = player.getRenderOffset();
-        base.update(keys, mouseButtons, mouseHeldButtons, mousePos, renderOffset);
+        base.update(window, keys, mouseButtons, mouseHeldButtons, mousePos, renderOffset);
     }
 
     // Rendering
@@ -147,7 +147,7 @@ void Game::readSave(const std::string save)
     for (std::string part : saveParts)
     {
         if (player.checkSavePart(part))
-            player.readSave(part);
+            player.readSave(part, window);
         else if (base.checkSavePart(part))
             base.readSave(part);
     }
@@ -181,6 +181,20 @@ void Game::inputs()
 
             case SDL_MOUSEBUTTONUP:
                 mouseHeldButtons[event.button.button] = false; break;
+            
+            case SDL_WINDOWEVENT:
+                switch (event.window.event)
+                {
+                    case SDL_WINDOWEVENT_RESIZED:
+                        window.resize(event.window.data1, event.window.data2);
+                        shop.resize(window);
+                        player.resize(base, window);
+                        break;
+                    
+                    case SDL_WINDOWEVENT_MAXIMIZED:
+                        window.maximize();
+                }
+                break;
             
             default:
                 handleKey(event.key.keysym.sym, event.type); break;

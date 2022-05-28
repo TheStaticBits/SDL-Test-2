@@ -16,7 +16,7 @@ Interactable::Interactable(const Vect<uint32_t> tileSize, const std::vector<uint
       renderPos{ 0, 0, static_cast<int>(tileSize.x * TILE_SIZE), 
                        static_cast<int>(tileSize.y * TILE_SIZE) }, 
       placing(true), placable(true), hovering(false), clicked(false),
-      type(type)
+      menuSize{90, 70}, type(type)
 {
 
 }
@@ -55,12 +55,13 @@ void Interactable::completePlace(const uint64_t& time)
     placing = false; 
 }
 
-void Interactable::checkMenu(const Vect<int64_t>& mousePos,
+void Interactable::checkMenu(const Window& window,
+                             const Vect<int64_t>& mousePos,
                              std::unordered_map<uint8_t, bool>& mouseButtons, 
                              std::unordered_map<uint8_t, bool>& mouseHeldButtons, 
                              const Vect<int64_t>& renderOffset)
 {
-    setMenuRect(renderOffset);
+    setMenuRect(window, renderOffset);
 
     if (!placing)
     {
@@ -147,7 +148,7 @@ std::string Interactable::readSave(std::string& save)
     return save.substr(save.find("#") + 1); // Removing everything before the divider
 }
 
-void Interactable::setMenuRect(const Vect<int64_t>& renderOffset)
+void Interactable::setMenuRect(const Window& window, const Vect<int64_t>& renderOffset)
 {
     Vect<int> menuSizeInt = menuSize.cast<int>();
     menuPos.w = menuSizeInt.x;
@@ -157,7 +158,7 @@ void Interactable::setMenuRect(const Vect<int64_t>& renderOffset)
     renderScreenPos.x -= renderOffset.x;
     renderScreenPos.y -= renderOffset.y;
 
-    if (renderScreenPos.y + renderScreenPos.h + menuPos.h > static_cast<int>(WIN_HEIGHT))
+    if (renderScreenPos.y + renderScreenPos.h + menuPos.h > static_cast<int>(window.getSize().y))
         menuPos.y = renderPos.y - menuSizeInt.y;
     else
         menuPos.y = renderPos.y + renderPos.h;

@@ -16,7 +16,6 @@ namespace util
     {
         Vect<int> result(0, 0);
         SDL_QueryTexture(texture, NULL, NULL, &result.x, &result.y);
-
         return result.cast<uint32_t>();
     }
 
@@ -24,7 +23,6 @@ namespace util
     {
         Vect<int> result(0, 0);
         TTF_SizeText(font, text.c_str(), &result.x, &result.y);
-
         return result.cast<uint32_t>();
     }
 

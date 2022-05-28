@@ -11,15 +11,18 @@
 #include "utility.h"
 
 Window::Window()
-    : window(NULL), renderer(NULL)
+    : window(NULL), renderer(NULL), mini(NULL),
+      realWinSize(900, 600), winSize(realWinSize / WIN_SCALE)
 {
     // Setting up window
     window = SDL_CreateWindow(TITLE, 
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
-                              R_WIN_WIDTH, R_WIN_HEIGHT, SDL_WINDOW_SHOWN);
+                              realWinSize.x, realWinSize.y, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (window == NULL)
         std::cout << "[Error] Window creation failed: " << SDL_GetError() << std::endl;
+    
+    SDL_SetWindowMinimumSize(window, realWinSize.x, realWinSize.y);
 
     uint32_t flags;
     
@@ -35,11 +38,9 @@ Window::Window()
 
     renderer = SDL_CreateRenderer(window, -1, flags);
 
-    // Setting up mini window
-    mini = createTex(WIN_WIDTH, WIN_HEIGHT);
+    createMini();
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    SDL_SetTextureBlendMode(mini, SDL_BLENDMODE_BLEND);
     SDL_SetRenderTarget(renderer, mini); 
 }
 
@@ -112,8 +113,9 @@ void Window::update()
 {
     SDL_SetRenderTarget(renderer, NULL); // Setting to default renderer
 
+    Vect<int> rWinSizeInt = realWinSize.cast<int>();
     // Updating screen with the frame
-    SDL_Rect pos{0, 0, R_WIN_WIDTH, R_WIN_HEIGHT};
+    SDL_Rect pos{0, 0, rWinSizeInt.x, rWinSizeInt.y};
     render(mini, pos); // Rendering mini window to renderer
     SDL_RenderPresent(renderer); // Presenting frame
 
@@ -159,4 +161,28 @@ void Window::setTarget(SDL_Texture* texture)
 void Window::resetTarget()
 {
     SDL_SetRenderTarget(renderer, mini);
+}
+
+void Window::resize(int32_t width, int32_t height)
+{
+    realWinSize = Vect<uint32_t>(width, height);
+    winSize = realWinSize / WIN_SCALE;
+    createMini();
+    SDL_SetWindowSize(window, realWinSize.x, realWinSize.y);
+}
+
+void Window::maximize()
+{
+    SDL_MaximizeWindow(window);
+    SDL_DisplayMode DM;
+    SDL_GetCurrentDisplayMode(0, &DM);
+    resize(DM.w, DM.h);
+}
+
+void Window::createMini()
+{
+    if (mini != NULL) SDL_DestroyTexture(mini);
+
+    mini = createTex(winSize.x, winSize.y);
+    SDL_SetTextureBlendMode(mini, SDL_BLENDMODE_BLEND);
 }

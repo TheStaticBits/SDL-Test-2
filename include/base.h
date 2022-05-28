@@ -27,7 +27,8 @@ public:
 
     void operator=(const Base&) = delete;
 
-    void update(std::unordered_map<SDL_Keycode, bool>& keys,
+    void update(const Window& window,
+                std::unordered_map<SDL_Keycode, bool>& keys,
                 std::unordered_map<uint8_t, bool>& mouseButtons, 
                 std::unordered_map<uint8_t, bool>& mouseHeldButtons,
                 const Vect<int64_t>& mousePos,

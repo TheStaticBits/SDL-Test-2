@@ -15,8 +15,9 @@
 #include "base.h"
 #include "interactable.h"
 
-Player::Player(Vect<float> pos)
-    : pos(pos), size{20, 20}, renderOffset(getOffset()), velocity{0, 0}, jump(false), canJump(false)
+Player::Player(const Window& window)
+    : pos(Vect<float>(window.getSize().x / 2, window.getSize().y)), size{20, 20}, renderOffset(getOffset(window)), 
+    velocity{0, 0}, jump(false), canJump(false)
 {
 
 }
@@ -27,7 +28,7 @@ Player::~Player()
 }
 
 void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, 
-                    Base& base, float deltaTime)
+                    Base& base, float deltaTime, const Window& window)
 {
     velocity.x = (keys[SDLK_d] - keys[SDLK_a]) * SPEED * deltaTime;
 
@@ -43,9 +44,9 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys,
     collisions(base, keys, deltaTime);
 
     // Moving towards player's position
-    Vect<float> offset = getOffset();
+    Vect<float> offset = getOffset(window);
     renderOffset -= (renderOffset - offset) * CAM_TIGHTNESS * deltaTime;
-    renderOffset.lock(base.getSize().cast<float>() - Vect<float>(WIN_WIDTH, WIN_HEIGHT), Vect<float>(0.0f, 0.0f));
+    lockOffset(base, window);
 }
 
 void Player::render(Window& window, Vect<int64_t> renderOffset)
@@ -71,7 +72,7 @@ std::string Player::getSave()
     return save;
 }
 
-void Player::readSave(std::string save)
+void Player::readSave(std::string save, const Window& window)
 {
     save = save.substr(saveName.length()); // Skipping "Player"
 
@@ -85,7 +86,7 @@ void Player::readSave(std::string save)
     jump       = std::stoi(data[4]); 
     canJump    = std::stoi(data[5]);
 
-    renderOffset = getOffset(); // Updating renderOffset after pos is set
+    renderOffset = getOffset(window); // Updating renderOffset after pos is set
 }
 
 void Player::updateRect()
@@ -95,9 +96,22 @@ void Player::updateRect()
     rect = {posInt.x, posInt.y, sizeInt.x, sizeInt.y };
 }
 
-Vect<float> Player::getOffset() // Percise offset for rendering the player, not moving one
+void Player::resize(Base& base, const Window& window)
 {
-    return pos + (size.cast<float>() / 2) - CAM_OFFSET.cast<float>();
+    renderOffset = getOffset(window);
+    lockOffset(base, window);
+}
+
+Vect<float> Player::getOffset(const Window& window) // Percise offset for rendering the player, not moving one
+{
+    Vect<int32_t> camOffset = {(int32_t)round(window.getSize().x / 2), 
+                               (int32_t)round(window.getSize().y / 1.5)};
+    return pos + (size.cast<float>() / 2) - camOffset.cast<float>();
+}
+
+void Player::lockOffset(Base& base, const Window& window)
+{
+    renderOffset.lock(base.getSize().cast<float>() - window.getSize().cast<float>(), Vect<float>(0.0f, 0.0f));
 }
 
 void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys, float deltaTime)

@@ -15,12 +15,12 @@
 Shop::Shop(Window& window)
     : l1Bg(window.loadTexture("res/shop/l1Bg.png")),
       l1Size(util::getSize(l1Bg)),
-      l1Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l1Size.y / 2),
-      l1OutX(static_cast<int64_t>(WIN_WIDTH - l1Size.x)),
+      l1Pos(window.getSize().x, window.getSize().y / 2 - l1Size.y / 2),
+      l1OutX(static_cast<int64_t>(window.getSize().x - l1Size.x)),
 
       l2Bg(window.loadTexture("res/shop/l2Bg.png")),
       l2Size(util::getSize(l2Bg)),
-      l2Pos(WIN_WIDTH, WIN_HEIGHT / 2 - l2Size.y / 2),
+      l2Pos(window.getSize().x, window.getSize().y / 2 - l2Size.y / 2),
       locked(true),
 
       text(window.getTextImg(window.font(10), "Shop", {0, 0, 0, 255})),
@@ -34,10 +34,7 @@ Shop::Shop(Window& window)
       openCategory(NoneOpen),
       switchToCategory(NoneOpen)
 {
-    shopButton.setPos(Vect<int64_t>(WIN_WIDTH - shopButton.getSize().x - 1, 1));
-
-    buildingsButton.setY(l1Pos.y + shopButton.getPos().y + 20);
-    platformsButton.setY(l1Pos.y + shopButton.getPos().y + buildingsButton.getPos().y + 40);
+    updateUIPositions(window);
 }
 
 Shop::~Shop()
@@ -47,14 +44,15 @@ Shop::~Shop()
     SDL_DestroyTexture(l2Bg);
 }
 
-void Shop::update(const Vect<int64_t>& mousePos,    
+void Shop::update(const Window& window,
+                  const Vect<int64_t>& mousePos,    
                   std::unordered_map<uint8_t, bool>& mouseButtons,
                   std::unordered_map<uint8_t, bool>& mouseHeldButtons,
                   const float deltaTime)
 {
     // Shop sliding graphics
-    moveL1(deltaTime);
-    moveL2(deltaTime);
+    moveL1(window, deltaTime);
+    moveL2(window, deltaTime);
     
     // Updating buttons
     // Open/close menu
@@ -94,6 +92,19 @@ void Shop::render(Window& window)
     // Layer 1 Buttons
     buildingsButton.render(window);
     platformsButton.render(window);
+}
+
+void Shop::resize(const Window& window)
+{
+    Vect<uint32_t> winSize = window.getSize();
+
+    float xChange = winSize.x - l1OutX - l1Size.x;
+    l1OutX = winSize.x - l1Size.x;
+
+    l1Pos.y = winSize.y / 2 - l1Size.y / 2; l1Pos.x += xChange;
+    l2Pos.y = winSize.y / 2 - l2Size.y / 2; l2Pos.x += xChange;
+
+    updateUIPositions(window);
 }
 
 void Shop::toggleShop()
@@ -140,24 +151,32 @@ void Shop::updateRects()
                 l1PosInt.y + 5, textSizeInt.x, textSizeInt.y};
 }
 
-void Shop::moveL1(const float& deltaTime)
+void Shop::updateUIPositions(const Window& window)
 {
-    int64_t moveTo = active ? l1OutX : WIN_WIDTH;
+    shopButton.setPos(Vect<int64_t>(window.getSize().x - shopButton.getSize().x - 1, 1));
+
+    buildingsButton.setY(l1Pos.y + 20);
+    platformsButton.setY(buildingsButton.getPos().y + buildingsButton.getSize().y + 10);
+}
+
+void Shop::moveL1(const Window& window, const float& deltaTime)
+{
+    int64_t moveTo = active ? l1OutX : window.getSize().x;
     if ((int64_t)round(l1Pos.x) != moveTo)
         l1Pos.x -= (l1Pos.x - moveTo) * MOV_SPEED * deltaTime;
     else
         l1Pos.x = moveTo;
 }
 
-void Shop::moveL2(const float& deltaTime)
+void Shop::moveL2(const Window& window, const float& deltaTime)
 {
     int64_t moveTo;
     if (openCategory == NoneOpen)
     {
-        if (switchToCategory != NoneOpen) moveTo = WIN_WIDTH;
+        if (switchToCategory != NoneOpen) moveTo = window.getSize().x;
         else moveTo = l1Pos.x;
     }
-    else moveTo = WIN_WIDTH - l2Size.x;
+    else moveTo = window.getSize().x - l2Size.x;
 
     if (!locked && ((int64_t)round(l2Pos.x) != moveTo))
         l2Pos.x -= (l2Pos.x - moveTo) * MOV_SPEED * deltaTime;

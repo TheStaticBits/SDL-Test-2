@@ -11,11 +11,6 @@
 #include "vector.h"
 #include "utility.h"
 
-inline const uint32_t R_WIN_WIDTH = 900; // Real Window Width
-inline const uint32_t R_WIN_HEIGHT = 600; // Real Window Height
-
-inline const uint32_t WIN_WIDTH = 300; // Mini Window Width (Scaled up to real window)
-inline const uint32_t WIN_HEIGHT = 200; // Mini Window Height (Scaled up to real window)
 inline const uint32_t WIN_SCALE = 3;
 
 class Window
@@ -42,6 +37,12 @@ public:
     void setTarget(SDL_Texture* texture);
     void resetTarget();
 
+    void resize(int32_t width, int32_t height);
+    void maximize();
+
+    // Getters
+    inline Vect<uint32_t> getSize() const { return winSize; }
+
 private:
     static constexpr char* TITLE = (char*)"Game again";
     static constexpr char* FONT_PATH = (char*)"res/font/font.ttf";
@@ -51,4 +52,9 @@ private:
     SDL_Renderer* renderer;
     SDL_Texture* mini; // Scaled up to full size when before presenting
     std::unordered_map<uint32_t, TTF_Font*> fonts; // For different sizes
+
+    Vect<uint32_t> realWinSize;
+    Vect<uint32_t> winSize;
+
+    void createMini();
 };

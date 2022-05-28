@@ -18,20 +18,22 @@
 class Player
 {
 public:
-    Player(Vect<float> pos);
+    Player(const Window& window);
     ~Player();
 
     void operator=(const Player&) = delete;
 
     void update(std::unordered_map<SDL_Keycode, bool>& keys, 
-                Base& base, float deltaTime);
+                Base& base, float deltaTime, const Window& window);
     void render(Window& window, Vect<int64_t> renderOffset);
 
     std::string getSave();
-    void readSave(std::string save);
+    void readSave(std::string save, const Window& window);
     inline bool checkSavePart(std::string save) { return save.substr(0, saveName.length()) == saveName; }
 
     void updateRect();
+
+    void resize(Base& base, const Window& window);
     
     inline const Vect<int64_t> getRenderOffset() const { return renderOffset.cast<int64_t>(); }
 
@@ -40,7 +42,6 @@ private:
 
     static constexpr float SPEED = 120.0f; // Pixels per second
     static constexpr float CAM_TIGHTNESS = 3.75f; // How tight the camera is on the player (higher is tighter)
-    inline static const Vect<int32_t> CAM_OFFSET = {(int32_t)round(WIN_WIDTH / 2), (int32_t)round(WIN_HEIGHT / 1.5)}; // Camera offset from player
 
     static constexpr int32_t JUMP_SPEED = -400; 
     static constexpr int32_t GRAVITY = -800; 
@@ -56,7 +57,8 @@ private:
     float downCountdown; // Counter for going down a platform
     static constexpr float downCountdownMax = 0.2f; // Time before the hitbox kicks in again after pressing down
 
-    Vect<float> getOffset();
+    Vect<float> getOffset(const Window& window);
+    void lockOffset(Base& base, const Window& window);
 
     void collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys, float deltaTime);
     int32_t platformCollide(std::vector<std::unique_ptr<Interactable>>& objects, float deltaTime);

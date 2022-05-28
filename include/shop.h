@@ -22,11 +22,14 @@ public:
 
     void operator=(const Shop&) = delete;
 
-    void update(const Vect<int64_t>& mousePos,    
+    void update(const Window& window,
+                const Vect<int64_t>& mousePos,    
                 std::unordered_map<uint8_t, bool>& mouseButtons,
                 std::unordered_map<uint8_t, bool>& mouseHeldButtons,
                 const float deltaTime);
     void render(Window& window);
+
+    void resize(const Window& window);
 
     inline const bool isActive() const { return active; }
 
@@ -37,7 +40,7 @@ private:
     Vect<uint32_t> l1Size;
     Vect<float> l1Pos;
     SDL_Rect l1Rect;
-    const int64_t l1OutX;
+    int64_t l1OutX;
 
     SDL_Texture* l2Bg;
     Vect<uint32_t> l2Size;
@@ -61,7 +64,8 @@ private:
     void switchCategory(Category category);
 
     void updateRects();
+    void updateUIPositions(const Window& window);
 
-    void moveL1(const float& deltaTime);
-    void moveL2(const float& deltaTime);
+    void moveL1(const Window& window, const float& deltaTime);
+    void moveL2(const Window& window, const float& deltaTime);
 };
