@@ -70,31 +70,26 @@ void Shop::update(const Vect<int64_t>& mousePos,
                          - (platformsButton.getSize().x / 2));
     platformsButton.update(mousePos, mouseHeldButtons);
     if (platformsButton.isActivated()) switchCategory(Platforms);
+
+    updateRects();
+
+    if (active && mouseButtons[SDL_BUTTON_LEFT])
+        if (!util::collide(l1Rect, mousePos) && 
+            !util::collide(l2Rect, mousePos) && 
+            !util::collide(shopButton.getRect(), mousePos))
+            toggleShop();
 }
 
 void Shop::render(Window& window)
 {
     shopButton.render(window); // Shop button
 
-    Vect<int> l1SizeInt =   l1Size.cast<int>();
-    Vect<int> l1PosInt =    l1Pos.cast<int>();
-    Vect<int> l2PosInt =    l2Pos.cast<int>();
-    Vect<int> l2SizeInt =   l2Size.cast<int>();
-    Vect<int> textSizeInt = textSize.cast<int>();
-
-    SDL_Rect dest;
-
     // Rendering shop background
-    dest = {l2PosInt.x, l2PosInt.y, l2SizeInt.x, l2SizeInt.y};
-    window.render(l2Bg, dest);
-
-    dest = {l1PosInt.x, l1PosInt.y, l1SizeInt.x, l1SizeInt.y};
-    window.render(l1Bg, dest);
+    window.render(l2Bg, l2Rect);
+    window.render(l1Bg, l1Rect);
 
     // Rendering text
-    dest = {l1PosInt.x + (l1SizeInt.x / 2) - (textSizeInt.x / 2), 
-            l1PosInt.y + 5, textSizeInt.x, textSizeInt.y};
-    window.render(text, dest);
+    window.render(text, textRect);
     
     // Layer 1 Buttons
     buildingsButton.render(window);
@@ -118,18 +113,31 @@ void Shop::toggleShop()
 void Shop::switchCategory(Category category)
 {
     locked = false;
-    if (openCategory != category) 
-    {
-        if (openCategory != NoneOpen)
-        {
-            openCategory = NoneOpen;
-            switchToCategory = category;
-            locked = false;
-        }
-        else openCategory = category;
-    }
-    else 
+
+    if (openCategory == category) 
         openCategory = NoneOpen;
+    else if (openCategory == NoneOpen) 
+        openCategory = category;
+    else
+    {
+        openCategory = NoneOpen;
+        switchToCategory = category;
+    } 
+}
+
+void Shop::updateRects()
+{
+    Vect<int> l1SizeInt =   l1Size.cast<int>();
+    Vect<int> l1PosInt =    l1Pos.cast<int>();
+    Vect<int> l2PosInt =    l2Pos.cast<int>();
+    Vect<int> l2SizeInt =   l2Size.cast<int>();
+    Vect<int> textSizeInt = textSize.cast<int>();
+
+    l1Rect = {l1PosInt.x, l1PosInt.y, l1SizeInt.x, l1SizeInt.y};
+    l2Rect = {l2PosInt.x, l2PosInt.y, l2SizeInt.x, l2SizeInt.y};
+
+    textRect = {l1PosInt.x + (l1SizeInt.x / 2) - (textSizeInt.x / 2), 
+                l1PosInt.y + 5, textSizeInt.x, textSizeInt.y};
 }
 
 void Shop::moveL1(const float& deltaTime)

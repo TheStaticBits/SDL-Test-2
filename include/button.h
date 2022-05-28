@@ -41,9 +41,10 @@ public:
     inline void setX(int64_t x)              { pos.x = x;    }
     inline void setY(int64_t y)              { pos.y = y;    }
 
-    inline const bool isActivated() const       { return activated; }
+    inline const bool isActivated()       const { return activated; }
     inline const Vect<uint32_t> getSize() const { return size;      }
-    inline const Vect<int64_t> getPos() const   { return pos;       }
+    inline const Vect<int64_t> getPos()   const { return pos;       }
+    inline const SDL_Rect getRect()       const { return rect;      }
 
 private:
     static std::unordered_map<bTextures, std::unordered_map<std::string, SDL_Texture*>> textures;

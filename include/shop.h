@@ -36,15 +36,18 @@ private:
     SDL_Texture* l1Bg;
     Vect<uint32_t> l1Size;
     Vect<float> l1Pos;
+    SDL_Rect l1Rect;
     const int64_t l1OutX;
 
     SDL_Texture* l2Bg;
     Vect<uint32_t> l2Size;
     Vect<float> l2Pos;
+    SDL_Rect l2Rect;
     bool locked;
 
     SDL_Texture* text;
     Vect<uint32_t> textSize;
+    SDL_Rect textRect;
 
     Button shopButton;
     Button buildingsButton;
@@ -56,6 +59,8 @@ private:
 
     void toggleShop();
     void switchCategory(Category category);
+
+    void updateRects();
 
     void moveL1(const float& deltaTime);
     void moveL2(const float& deltaTime);
