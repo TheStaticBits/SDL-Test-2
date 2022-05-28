@@ -76,8 +76,12 @@ void Interactable::checkMenu(const Vect<int64_t>& mousePos,
             }
         }
         else if (mouseHeldButtons[SDL_BUTTON_LEFT])
+        {
             if (!util::collide(menuPos, mouseMapPos))
                 removeMenu();
+            else
+                mouseHeldButtons[SDL_BUTTON_LEFT] = false;
+        }
     }
     else
         hovering = false;

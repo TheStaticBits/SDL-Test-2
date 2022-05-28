@@ -65,11 +65,17 @@ void Base::update(std::unordered_map<SDL_Keycode, bool>& keys,
                 obj->removeMenu();
     }
 
+    // Updating the menu that is open before others
+    for (std::unique_ptr<Interactable>& obj : objects)
+        if (obj->menuOpen())
+            obj->checkMenu(mousePos, mouseButtons, mouseHeldButtons, renderOffset);
+
     for (std::unique_ptr<Interactable>& obj : objects)
     {
         obj->update(timeAtUpdate);
 
-        if (!placing) obj->checkMenu(mousePos, mouseButtons, mouseHeldButtons, renderOffset);
+        if (!obj->menuOpen())
+            obj->checkMenu(mousePos, mouseButtons, mouseHeldButtons, renderOffset);
     }
 
     if (placing)

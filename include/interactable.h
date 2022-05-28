@@ -56,6 +56,7 @@ public:
     inline Vect<uint32_t>& getTileSize() { return tileSize;  }
     inline SDL_Rect& getRect()           { return renderPos; }
     inline const ObjType& getType()      { return type;      }
+    inline const bool menuOpen()      { return hovering;  }
 
     // Setter functions
     inline void setPlacable(bool canPlace) { placable = canPlace; }
@@ -75,7 +76,7 @@ protected:
     bool placing;
     bool placable;
 
-    bool hovering;
+    bool hovering; // If menu is open or not
     bool clicked;
     Vect<uint32_t> menuSize;
     SDL_Rect menuPos;
