@@ -143,18 +143,27 @@ void Shop::moveL1(const float& deltaTime)
 
 void Shop::moveL2(const float& deltaTime)
 {
-    int64_t moveTo = (openCategory == NoneOpen) ? l1Pos.x : l1Pos.x - l2Size.x;
+    int64_t moveTo;
+    if (openCategory == NoneOpen)
+    {
+        if (switchToCategory != NoneOpen) moveTo = WIN_WIDTH;
+        else moveTo = l1Pos.x;
+    }
+    else moveTo = WIN_WIDTH - l2Size.x;
+
     if (!locked && ((int64_t)round(l2Pos.x) != moveTo))
         l2Pos.x -= (l2Pos.x - moveTo) * MOV_SPEED * deltaTime;
     else 
     {
         l2Pos.x = moveTo;
+        locked = true;
+    }
 
-        if (switchToCategory != NoneOpen)
-        {
-            openCategory = switchToCategory;
-            switchToCategory = NoneOpen;
-        }
-        else locked = true;
+    if ((switchToCategory != NoneOpen) && (l2Pos.x >= l1Pos.x))
+    {
+        l2Pos.x = l1Pos.x;
+        openCategory = switchToCategory;
+        switchToCategory = NoneOpen;
+        locked = false;
     }
 }
