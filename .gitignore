@@ -2,3 +2,4 @@
 *.exe
 bin/web/
 save.txt
+bin/*/res
