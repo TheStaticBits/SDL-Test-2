@@ -55,20 +55,16 @@ void Interactable::completePlace(const uint64_t& time)
     placing = false; 
 }
 
-void Interactable::checkMenu(const Window& window,
-                             const Vect<int64_t>& mousePos,
-                             std::unordered_map<uint8_t, bool>& mouseButtons, 
-                             std::unordered_map<uint8_t, bool>& mouseHeldButtons, 
-                             const Vect<int64_t>& renderOffset)
+void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset)
 {
     setMenuRect(window, renderOffset);
 
     if (!placing)
     {
-        const Vect<int64_t> mouseMapPos = mousePos + renderOffset;
+        const Vect<int64_t> mouseMapPos = window.getMousePos() + renderOffset;
         if (util::collide(renderPos, mouseMapPos))
         {
-            if (mouseHeldButtons[SDL_BUTTON_LEFT])
+            if (window.buttonHeld(SDL_BUTTON_LEFT))
                 clicked = true;
             else if (clicked)
             {
@@ -76,12 +72,12 @@ void Interactable::checkMenu(const Window& window,
                 hovering = !hovering;
             }
         }
-        else if (mouseHeldButtons[SDL_BUTTON_LEFT])
+        else if (window.buttonHeld(SDL_BUTTON_LEFT))
         {
             if (!util::collide(menuPos, mouseMapPos))
                 removeMenu();
             else
-                mouseHeldButtons[SDL_BUTTON_LEFT] = false;
+                window.setButtonHeld(SDL_BUTTON_LEFT, false);
         }
     }
     else

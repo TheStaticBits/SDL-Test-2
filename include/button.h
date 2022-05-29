@@ -33,8 +33,7 @@ public:
 
     void setupText(std::string text, const uint32_t fontSize, SDL_Color color);
 
-    void update(const Vect<int64_t>& mousePos,    
-                std::unordered_map<uint8_t, bool>& mouseHeldButtons);
+    void update(Window& window);
     void render(Window& window, Vect<int64_t> textOffset = {0, 0});
     
     inline void setPos(Vect<int64_t> newPos) { pos = newPos; }

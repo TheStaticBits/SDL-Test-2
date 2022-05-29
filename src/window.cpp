@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -11,7 +12,8 @@
 #include "utility.h"
 
 Window::Window()
-    : window(NULL), renderer(NULL), mini(NULL),
+    : quit(false), resizeWin(false), mousePos{0, 0}, 
+      window(NULL), renderer(NULL), mini(NULL),
       realWinSize(900, 600), winSize(realWinSize / WIN_SCALE)
 {
     // Setting up window
@@ -127,15 +129,76 @@ void Window::update()
     // Any rendering from here will render to the mini window
 }
 
-void Window::render(SDL_Texture* texture, SDL_Rect& pos)
+void Window::inputs()
 {
-    if (SDL_RenderCopy(renderer, texture, NULL, &pos) != 0)
+    // Resetting
+    mouseButtons.clear();
+    resizeWin = false;
+
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event))
+    {
+        switch (event.type)
+        {
+            case SDL_QUIT:
+                quit = true; break;
+            
+            case SDL_MOUSEBUTTONDOWN:
+                mouseButtons[event.button.button] = true; 
+                mouseHeldButtons[event.button.button] = true;
+                break;
+
+            case SDL_MOUSEBUTTONUP:
+                mouseHeldButtons[event.button.button] = false; break;
+            
+            case SDL_WINDOWEVENT:
+                switch (event.window.event)
+                {
+                    case SDL_WINDOWEVENT_RESIZED:
+                        resize(event.window.data1, event.window.data2);
+                        resizeWin = true;
+                        break;
+                    
+                    case SDL_WINDOWEVENT_MAXIMIZED:
+                        maximize();
+                }
+                break;
+            
+            default:
+                handleKey(event.key.keysym.sym, event.type); 
+                break;
+        }
+    }
+
+    Vect<int> mouseRetrieve;
+    SDL_GetMouseState(&mouseRetrieve.x, &mouseRetrieve.y);
+    // Adjusting based on the scale of the screen
+    mousePos = mouseRetrieve.cast<int64_t>() / WIN_SCALE;
+}
+
+void Window::modColor(SDL_Texture* texture, std::vector<uint8_t> color)
+{
+    if (SDL_SetTextureColorMod(texture, color[0], color[1], color[2]) != 0)
+        std::cout << "[Error] Unable to set texture mod color: " << SDL_GetError() << std::endl;
+}
+
+void Window::render(SDL_Texture* texture, SDL_Rect& dst)
+{
+    if (SDL_RenderCopy(renderer, texture, NULL, &dst) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
-void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& pos)
+void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst)
 {
-    if (SDL_RenderCopy(renderer, texture, &src, &pos) != 0)
+    if (SDL_RenderCopy(renderer, texture, &src, &dst) != 0)
+        std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
+}
+
+void Window::render(SDL_Texture* texture, SDL_Rect& dst, const double angle)
+{
+    SDL_Point center = {dst.w / 2, dst.h / 2};
+    if (SDL_RenderCopyEx(renderer, texture, NULL, &dst, angle, &center, SDL_FLIP_NONE) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
@@ -177,6 +240,12 @@ void Window::maximize()
     SDL_DisplayMode DM;
     SDL_GetCurrentDisplayMode(0, &DM);
     resize(DM.w, DM.h);
+}
+
+void Window::handleKey(SDL_Keycode& key, Uint32& type)
+{
+    if (std::find(allowedKeys.begin(), allowedKeys.end(), key) != allowedKeys.end())
+        keys[key] = (type == SDL_KEYDOWN);
 }
 
 void Window::createMini()

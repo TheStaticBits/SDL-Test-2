@@ -23,8 +23,7 @@ public:
 
     void operator=(const Player&) = delete;
 
-    void update(std::unordered_map<SDL_Keycode, bool>& keys, 
-                Base& base, float deltaTime, const Window& window);
+    void update(Window& window, float deltaTime, Base& base);
     void render(Window& window, Vect<int64_t> renderOffset);
 
     std::string getSave();
@@ -60,6 +59,6 @@ private:
     Vect<float> getOffset(const Window& window);
     void lockOffset(Base& base, const Window& window);
 
-    void collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys, float deltaTime);
+    void collisions(Window& window, Base& base, const float deltaTime);
     int32_t platformCollide(std::vector<std::unique_ptr<Interactable>>& objects, float deltaTime);
 };

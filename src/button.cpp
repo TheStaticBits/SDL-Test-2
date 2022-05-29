@@ -49,17 +49,16 @@ Button::~Button()
         SDL_DestroyTexture(textures[texType][state]);
 }
 
-void Button::update(const Vect<int64_t>& mousePos,    
-                    std::unordered_map<uint8_t, bool>& mouseHeldButtons)
+void Button::update(Window& window)
 {
     updateRect();
 
     activated = false;
-    hovering = util::collide(rect, mousePos);
+    hovering = util::collide(rect, window.getMousePos());
     
     if (hovering)
     {
-        if (mouseHeldButtons[SDL_BUTTON_LEFT])
+        if (window.button(SDL_BUTTON_LEFT))
             pressed = true;
         else if (pressed)
         {

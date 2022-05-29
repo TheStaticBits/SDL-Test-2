@@ -27,12 +27,11 @@ Player::~Player()
     // Destroy image/animations (currently none)
 }
 
-void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, 
-                    Base& base, float deltaTime, const Window& window)
+void Player::update(Window& window, float deltaTime, Base& base)
 {
-    velocity.x = (keys[SDLK_d] - keys[SDLK_a]) * SPEED * deltaTime;
+    velocity.x = (window.pKey(SDLK_d) - window.pKey(SDLK_a)) * SPEED * deltaTime;
 
-    if (keys[SDLK_w] && !jump && canJump)
+    if (window.pKey(SDLK_w) && !jump && canJump)
     {
         velocity.y += JUMP_SPEED;
         jump = true;
@@ -41,7 +40,7 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys,
 
     velocity.y -= GRAVITY * deltaTime;
 
-    collisions(base, keys, deltaTime);
+    collisions(window, base, deltaTime);
 
     // Moving towards player's position
     Vect<float> offset = getOffset(window);
@@ -114,16 +113,16 @@ void Player::lockOffset(Base& base, const Window& window)
     renderOffset.lock(base.getSize().cast<float>() - window.getSize().cast<float>(), Vect<float>(0.0f, 0.0f));
 }
 
-void Player::collisions(Base& base, std::unordered_map<SDL_Keycode, bool>& keys, float deltaTime)
+void Player::collisions(Window& window, Base& base, const float deltaTime)
 {
     // Managing downCountdown
-    if (keys[SDLK_s] && downCountdown == 0.0f)
+    if (window.pKey(SDLK_s) && downCountdown == 0.0f)
         downCountdown = downCountdownMax;
     if (downCountdown > 0.0f) downCountdown -= deltaTime;
     else downCountdown = 0.0f;
 
     // Collisions with platforms
-    if (velocity.y > 0 && !keys[SDLK_s] && downCountdown == 0.0f)
+    if (velocity.y > 0 && !window.pKey(SDLK_s) && downCountdown == 0.0f)
     {
         float origY = pos.y;
         bool onPlatform = false;

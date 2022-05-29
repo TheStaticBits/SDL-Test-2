@@ -44,11 +44,7 @@ Shop::~Shop()
     SDL_DestroyTexture(l2Bg);
 }
 
-void Shop::update(const Window& window,
-                  const Vect<int64_t>& mousePos,    
-                  std::unordered_map<uint8_t, bool>& mouseButtons,
-                  std::unordered_map<uint8_t, bool>& mouseHeldButtons,
-                  const float deltaTime)
+void Shop::update(Window& window, const float deltaTime)
 {
     // Shop sliding graphics
     moveL1(window, deltaTime);
@@ -56,22 +52,24 @@ void Shop::update(const Window& window,
     
     // Updating buttons
     // Open/close menu
-    shopButton.update(mousePos, mouseHeldButtons);
+    shopButton.update(window);
     if (shopButton.isActivated()) toggleShop();
 
     buildingsButton.setX(l1Pos.x + (l1Size.x / 2)
                          - (buildingsButton.getSize().x / 2));
-    buildingsButton.update(mousePos, mouseHeldButtons);
+    buildingsButton.update(window);
     if (buildingsButton.isActivated()) switchCategory(Buildings);
 
     platformsButton.setX(l1Pos.x + (l1Size.x / 2)
                          - (platformsButton.getSize().x / 2));
-    platformsButton.update(mousePos, mouseHeldButtons);
+    platformsButton.update(window);
     if (platformsButton.isActivated()) switchCategory(Platforms);
 
     updateRects();
 
-    if (active && mouseButtons[SDL_BUTTON_LEFT])
+    const Vect<int64_t> mousePos = window.getMousePos();
+    
+    if (active && window.button(SDL_BUTTON_LEFT))
         if (!util::collide(l1Rect, mousePos) && 
             !util::collide(l2Rect, mousePos) && 
             !util::collide(shopButton.getRect(), mousePos))

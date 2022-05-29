@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <unordered_map>
-#include <algorithm>
 #include <cmath>
 #include <chrono>
 
@@ -24,11 +23,9 @@
 #include "shop.h"
 
 Game::Game()
-    : mousePos{0, 0}, 
-      player(window), 
+    : player(window), 
       base(window), shop(window),
-      quit(false), deltaTime(0.0f), 
-      lastTime(0), lastSaveTime(0)
+      deltaTime(0.0f), lastTime(0), lastSaveTime(0)
 {
     // Loading save if the person has one
     if (hasSave("save"))
@@ -77,16 +74,23 @@ bool Game::initSDL()
 void Game::iteration()
 {
     calcDeltaTime();
-    inputs();
+
+    window.inputs();
+
+    if (window.getResize())
+    {
+        shop.resize(window);
+        player.resize(base, window);
+    }
 
     // Updating
     Vect<int64_t> renderOffset = player.getRenderOffset();
-    shop.update(window, mousePos, mouseButtons, mouseHeldButtons, deltaTime);
+    shop.update(window, deltaTime);
     if (!shop.isActive())
     {
-        player.update(keys, base, deltaTime, window);
+        player.update(window, deltaTime, base);
         renderOffset = player.getRenderOffset();
-        base.update(window, keys, mouseButtons, mouseHeldButtons, mousePos, renderOffset);
+        base.update(window, renderOffset);
     }
 
     // Rendering
@@ -109,7 +113,7 @@ void Game::iteration()
     }
 
     // Save when pressing space or when you left click
-    if (keys[SDLK_SPACE] || mouseButtons[SDL_BUTTON_LEFT]) save();
+    if (window.pKey(SDLK_SPACE) || window.button(SDL_BUTTON_LEFT)) save();
 }
 
 #ifdef __EMSCRIPTEN__
@@ -125,9 +129,9 @@ void Game::loop()
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(it, this, 0, 1);
 #else
-    while (!quit) iteration();
-    save();
+    while (!window.isClosed()) iteration();
 #endif
+    save();
 }
 
 void Game::save()
@@ -158,57 +162,4 @@ void Game::calcDeltaTime()
     uint32_t currentTime = SDL_GetTicks();
     deltaTime = (currentTime - lastTime) / 1000.0f;
     lastTime = currentTime;
-}
-
-void Game::inputs()
-{
-    // Resetting
-    mouseButtons.clear();
-
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event))
-    {
-        switch (event.type)
-        {
-            case SDL_QUIT:
-                quit = true; break;
-            
-            case SDL_MOUSEBUTTONDOWN:
-                mouseButtons[event.button.button] = true; 
-                mouseHeldButtons[event.button.button] = true;
-                break;
-
-            case SDL_MOUSEBUTTONUP:
-                mouseHeldButtons[event.button.button] = false; break;
-            
-            case SDL_WINDOWEVENT:
-                switch (event.window.event)
-                {
-                    case SDL_WINDOWEVENT_RESIZED:
-                        window.resize(event.window.data1, event.window.data2);
-                        shop.resize(window);
-                        player.resize(base, window);
-                        break;
-                    
-                    case SDL_WINDOWEVENT_MAXIMIZED:
-                        window.maximize();
-                }
-                break;
-            
-            default:
-                handleKey(event.key.keysym.sym, event.type); break;
-        }
-    }
-
-    Vect<int> mouseRetrieve;
-    SDL_GetMouseState(&mouseRetrieve.x, &mouseRetrieve.y);
-    // Adjusting based on the scale of the screen
-    mousePos = mouseRetrieve.cast<int64_t>() / WIN_SCALE;
-}
-
-void Game::handleKey(SDL_Keycode& key, Uint32& type)
-{
-    if (std::find(allowedKeys.begin(), allowedKeys.end(), key) != allowedKeys.end())
-        keys[key] = (type == SDL_KEYDOWN);
 }

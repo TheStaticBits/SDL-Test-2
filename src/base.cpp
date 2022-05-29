@@ -34,12 +34,7 @@ Base::~Base()
 
 }
 
-void Base::update(const Window& window,
-                  std::unordered_map<SDL_Keycode, bool>& keys,
-                  std::unordered_map<uint8_t, bool>& mouseButtons,
-                  std::unordered_map<uint8_t, bool>& mouseHeldButtons, 
-                  const Vect<int64_t>& mousePos,
-                  const Vect<int64_t>& renderOffset)
+void Base::update(Window& window, const Vect<int64_t>& renderOffset)
 {
     uint64_t timeAtUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now().time_since_epoch()
@@ -48,13 +43,13 @@ void Base::update(const Window& window,
     if (!placing)
     {
         // Temporary
-        if (keys[SDLK_p]) // Platform
+        if (window.pKey(SDLK_p)) // Platform
         {
             placing = true;
             count[Platform_T]++;
             objects.push_back(std::make_unique<Platform>(4));
         } 
-        if (keys[SDLK_b]) // Building
+        if (window.pKey(SDLK_b)) // Building
         {
             placing = true;
             count[SilverStorage_T]++;
@@ -70,18 +65,20 @@ void Base::update(const Window& window,
     // Updating the menu that is open before others
     for (std::unique_ptr<Interactable>& obj : objects)
         if (obj->menuOpen())
-            obj->checkMenu(window, mousePos, mouseButtons, mouseHeldButtons, renderOffset);
+            obj->checkMenu(window, renderOffset);
 
     for (std::unique_ptr<Interactable>& obj : objects)
     {
         obj->update(timeAtUpdate);
 
         if (!obj->menuOpen())
-            obj->checkMenu(window, mousePos, mouseButtons, mouseHeldButtons, renderOffset);
+            obj->checkMenu(window, renderOffset);
     }
 
     if (placing)
     {
+        const Vect<int64_t> mousePos = window.getMousePos();
+        
         // Getting the tile the mouse is hovering over
         Vect<int32_t> placeTile = ((mousePos + renderOffset) / TILE_SIZE).cast<int32_t>();
 
@@ -104,7 +101,7 @@ void Base::update(const Window& window,
                 {
                     obj->setPlacable(true);
 
-                    if (mouseButtons[SDL_BUTTON_LEFT])
+                    if (window.button(SDL_BUTTON_LEFT))
                     {
                         placing = false;
                         obj->completePlace(timeAtUpdate);

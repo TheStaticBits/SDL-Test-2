@@ -40,11 +40,7 @@ public:
     virtual void completePlace(const uint64_t& time);
 
     virtual void update(const uint64_t& seconds) { };
-    virtual void checkMenu(const Window& window,
-                           const Vect<int64_t>& mousePos,
-                           std::unordered_map<uint8_t, bool>& mouseButtons, 
-                           std::unordered_map<uint8_t, bool>& mouseHeldButtons, 
-                           const Vect<int64_t>& renderOffset);
+    virtual void checkMenu(Window& window, const Vect<int64_t>& renderOffset);
     virtual void render(Window& window, const Vect<int64_t>& renderOffset);
     virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset);
 

@@ -22,11 +22,7 @@ public:
 
     void operator=(const Shop&) = delete;
 
-    void update(const Window& window,
-                const Vect<int64_t>& mousePos,    
-                std::unordered_map<uint8_t, bool>& mouseButtons,
-                std::unordered_map<uint8_t, bool>& mouseHeldButtons,
-                const float deltaTime);
+    void update(Window& window, const float deltaTime);
     void render(Window& window);
 
     void resize(const Window& window);
