@@ -15,7 +15,7 @@ Window::Window()
     : quit(false), resizeWin(false), mousePos{0, 0}, 
       window(NULL), renderer(NULL), mini(NULL),
       realWinSize(900, 600), winSize(realWinSize / WIN_SCALE),
-      deltaTime(0.0f), lastTime(0)
+      deltaTime(0.0f), lastTime(0), fps(0)
 {
     // Setting up window
     window = SDL_CreateWindow(TITLE, 
@@ -185,12 +185,12 @@ void Window::calcDeltaTime()
 {
     uint32_t currentTime = SDL_GetTicks();
     
-    if ((lastTime % 1000) > (currentTime % 1000) )
+    if ((lastTime % 1000) > (currentTime % 1000)) // Every second
     {
         float total = 0.0f;
         for (auto& it : deltaTimes)
             total += it;
-        std::cout << "FPS: " << 1.0f / (total / deltaTimes.size()) << std::endl;
+        fps = 1.0f / (total / deltaTimes.size());
         deltaTimes.clear();
     }
     

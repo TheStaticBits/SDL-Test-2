@@ -15,7 +15,7 @@
 
 // Create a new building
 SilverStorage::SilverStorage(const nlohmann::json& data)
-    : Building(data, {148, 148, 148}, SilverStorage_T)
+    : Building(data, {148, 148, 148}, SilverStorage_T), capacity(0)
 {
     
 }
