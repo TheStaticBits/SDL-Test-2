@@ -14,7 +14,8 @@
 Window::Window()
     : quit(false), resizeWin(false), mousePos{0, 0}, 
       window(NULL), renderer(NULL), mini(NULL),
-      realWinSize(900, 600), winSize(realWinSize / WIN_SCALE)
+      realWinSize(900, 600), winSize(realWinSize / WIN_SCALE),
+      deltaTime(0.0f), lastTime(0)
 {
     // Setting up window
     window = SDL_CreateWindow(TITLE, 
@@ -178,6 +179,13 @@ void Window::inputs()
     SDL_GetMouseState(&mouseRetrieve.x, &mouseRetrieve.y);
     // Adjusting based on the scale of the screen
     mousePos = mouseRetrieve.cast<int64_t>() / WIN_SCALE;
+}
+
+void Window::calcDeltaTime()
+{
+    uint32_t currentTime = SDL_GetTicks();
+    deltaTime = (currentTime - lastTime) / 1000.0f;
+    lastTime = currentTime;
 }
 
 void Window::modColor(SDL_Texture* texture, std::vector<uint8_t> color)

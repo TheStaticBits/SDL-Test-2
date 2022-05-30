@@ -44,11 +44,11 @@ Shop::~Shop()
     SDL_DestroyTexture(l2Bg);
 }
 
-void Shop::update(Window& window, const float deltaTime)
+void Shop::update(Window& window)
 {
     // Shop sliding graphics
-    moveL1(window, deltaTime);
-    moveL2(window, deltaTime);
+    moveL1(window, window.getDeltaTime());
+    moveL2(window, window.getDeltaTime());
     
     // Updating buttons
     // Open/close menu

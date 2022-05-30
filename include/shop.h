@@ -22,7 +22,7 @@ public:
 
     void operator=(const Shop&) = delete;
 
-    void update(Window& window, const float deltaTime);
+    void update(Window& window);
     void render(Window& window);
 
     void resize(const Window& window);

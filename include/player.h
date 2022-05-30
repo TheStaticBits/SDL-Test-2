@@ -23,7 +23,7 @@ public:
 
     void operator=(const Player&) = delete;
 
-    void update(Window& window, float deltaTime, Base& base);
+    void update(Window& window, Base& base);
     void render(Window& window, Vect<int64_t> renderOffset);
 
     std::string getSave();

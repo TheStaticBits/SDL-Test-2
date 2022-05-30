@@ -28,6 +28,7 @@ public:
 
     void update();
     void inputs();
+    void calcDeltaTime();
 
     // Mod texture colors
     void modColor(SDL_Texture* tex, std::vector<uint8_t> color);
@@ -55,14 +56,16 @@ public:
     inline const bool button(const uint8_t button)     { return fMouseButtons[button];     }
     inline const bool buttonHeld(const uint8_t button) { return fMouseHeldButtons[button]; }
 
+    inline const Vect<int64_t> getMousePos() const { return mousePos; }
+
+    inline const float getDeltaTime() const { return deltaTime; }
+
     // Setters
     inline void setButton(const uint8_t button, const bool state)     
     {
         fMouseButtons[button] = state;
         fMouseHeldButtons[button] = state; 
     }
-    
-    inline const Vect<int64_t> getMousePos() const { return mousePos; }
     
 
 private:
@@ -98,4 +101,7 @@ private:
 
     Vect<uint32_t> realWinSize;
     Vect<uint32_t> winSize;
+
+    float deltaTime;
+    uint32_t lastTime;
 };

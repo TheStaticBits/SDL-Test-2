@@ -23,9 +23,8 @@
 #include "shop.h"
 
 Game::Game()
-    : player(window), 
-      base(window), shop(window),
-      deltaTime(0.0f), lastTime(0), lastSaveTime(0)
+    : lastSaveTime(0),
+      player(window), base(window), shop(window)
 {
     // Loading save if the person has one
     if (hasSave("save"))
@@ -73,8 +72,7 @@ bool Game::initSDL()
 
 void Game::iteration()
 {
-    calcDeltaTime();
-
+    window.calcDeltaTime();
     window.inputs();
 
     if (window.getResize())
@@ -84,8 +82,8 @@ void Game::iteration()
     }
 
     // Updating
-    shop.update(window, deltaTime);
-    player.update(window, deltaTime, base);
+    shop.update(window);
+    player.update(window, base);
     Vect<int64_t> renderOffset = player.getRenderOffset();
     base.update(window, renderOffset);
 
@@ -151,11 +149,4 @@ void Game::readSave(const std::string save)
         else if (base.checkSavePart(part))
             base.readSave(part);
     }
-}
-
-void Game::calcDeltaTime()
-{
-    uint32_t currentTime = SDL_GetTicks();
-    deltaTime = (currentTime - lastTime) / 1000.0f;
-    lastTime = currentTime;
 }

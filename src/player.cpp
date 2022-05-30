@@ -27,8 +27,10 @@ Player::~Player()
     // Destroy image/animations (currently none)
 }
 
-void Player::update(Window& window, float deltaTime, Base& base)
+void Player::update(Window& window, Base& base)
 {
+    const float deltaTime = window.getDeltaTime();
+
     velocity.x = (window.pKey(SDLK_d) - window.pKey(SDLK_a)) * SPEED * deltaTime;
 
     if (window.pKey(SDLK_w) && !jump && canJump)
