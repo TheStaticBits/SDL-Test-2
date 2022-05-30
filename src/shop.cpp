@@ -69,7 +69,7 @@ void Shop::update(Window& window, const float deltaTime)
 
     const Vect<int64_t> mousePos = window.getMousePos();
     
-    if (active && window.button(SDL_BUTTON_LEFT))
+    if (active && window.buttonHeld(SDL_BUTTON_LEFT))
     {
         if (!util::collide(l1Rect, mousePos) && 
             !util::collide(l2Rect, mousePos) && 
