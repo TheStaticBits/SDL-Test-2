@@ -77,7 +77,7 @@ void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset)
             if (!util::collide(menuPos, mouseMapPos))
                 removeMenu();
             else
-                window.setButtonHeld(SDL_BUTTON_LEFT, false);
+                window.setButton(SDL_BUTTON_LEFT, false);
         }
     }
     else

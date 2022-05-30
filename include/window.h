@@ -52,12 +52,15 @@ public:
 
     inline const bool pKey(const SDL_Keycode key)      { return keys[key];                }
     inline const bool pKeyOnce(const SDL_Keycode key)  { return oneTimeKeys[key];         }
-    inline const bool button(const uint8_t button)     { return mouseButtons[button];     }
-    inline const bool buttonHeld(const uint8_t button) { return mouseHeldButtons[button]; }
+    inline const bool button(const uint8_t button)     { return fMouseButtons[button];     }
+    inline const bool buttonHeld(const uint8_t button) { return fMouseHeldButtons[button]; }
 
     // Setters
-    inline void setButton(const uint8_t button, const bool state)     { mouseButtons[button] = state;     }
-    inline void setButtonHeld(const uint8_t button, const bool state) { mouseHeldButtons[button] = state; }
+    inline void setButton(const uint8_t button, const bool state)     
+    {
+        fMouseButtons[button] = state;
+        fMouseHeldButtons[button] = state; 
+    }
     
     inline const Vect<int64_t> getMousePos() const { return mousePos; }
     
@@ -83,6 +86,10 @@ private:
     std::unordered_map<uint8_t, bool> mouseButtons;
     std::unordered_map<uint8_t, bool> mouseHeldButtons;
     Vect<int64_t> mousePos;
+    
+    // Frame maps, can be modified so you can't click through things
+    std::unordered_map<uint8_t, bool> fMouseButtons;
+    std::unordered_map<uint8_t, bool> fMouseHeldButtons;
 
     SDL_Window* window;
     SDL_Renderer* renderer;

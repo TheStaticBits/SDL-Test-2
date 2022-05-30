@@ -171,6 +171,9 @@ void Window::inputs()
         }
     }
 
+    fMouseButtons = mouseButtons;
+    fMouseHeldButtons = mouseHeldButtons;
+
     Vect<int> mouseRetrieve;
     SDL_GetMouseState(&mouseRetrieve.x, &mouseRetrieve.y);
     // Adjusting based on the scale of the screen

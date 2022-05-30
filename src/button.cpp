@@ -58,8 +58,11 @@ void Button::update(Window& window)
     
     if (hovering)
     {
-        if (window.button(SDL_BUTTON_LEFT))
+        if (window.buttonHeld(SDL_BUTTON_LEFT))
+        {
             pressed = true;
+            window.setButton(SDL_BUTTON_LEFT, false);
+        }
         else if (pressed)
         {
             pressed = false;

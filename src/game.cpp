@@ -84,14 +84,10 @@ void Game::iteration()
     }
 
     // Updating
-    Vect<int64_t> renderOffset = player.getRenderOffset();
     shop.update(window, deltaTime);
-    if (!shop.isActive())
-    {
-        player.update(window, deltaTime, base);
-        renderOffset = player.getRenderOffset();
-        base.update(window, renderOffset);
-    }
+    player.update(window, deltaTime, base);
+    Vect<int64_t> renderOffset = player.getRenderOffset();
+    base.update(window, renderOffset);
 
     // Rendering
     base.renderTiles(window, renderOffset);
