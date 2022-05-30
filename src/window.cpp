@@ -184,7 +184,18 @@ void Window::inputs()
 void Window::calcDeltaTime()
 {
     uint32_t currentTime = SDL_GetTicks();
+    
+    if ((lastTime % 1000) > (currentTime % 1000) )
+    {
+        float total = 0.0f;
+        for (auto& it : deltaTimes)
+            total += it;
+        std::cout << "FPS: " << 1.0f / (total / deltaTimes.size()) << std::endl;
+        deltaTimes.clear();
+    }
+    
     deltaTime = (currentTime - lastTime) / 1000.0f;
+    deltaTimes.push_back(deltaTime);
     lastTime = currentTime;
 }
 

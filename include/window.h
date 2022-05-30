@@ -75,7 +75,7 @@ private:
 
     static constexpr char* TITLE = (char*)"Game again";
     static constexpr char* FONT_PATH = (char*)"res/font/font.ttf";
-    static constexpr bool VSYNC = true;
+    static constexpr bool VSYNC = false;
     inline static const std::vector<SDL_Keycode> allowedKeys = {
         SDLK_w, SDLK_s, SDLK_a, SDLK_d, SDLK_RETURN, SDLK_SPACE,
         SDLK_b, SDLK_p // Temporary, for placing buildings/platforms
@@ -104,4 +104,5 @@ private:
 
     float deltaTime;
     uint32_t lastTime;
+    std::vector<float> deltaTimes;
 };
