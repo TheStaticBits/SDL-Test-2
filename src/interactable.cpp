@@ -23,7 +23,7 @@ Interactable::Interactable(const Vect<uint32_t> tileSize, const std::vector<uint
 
 Interactable::Interactable(const ObjType type)
     : placing(false), placable(false), hovering(false), clicked(false),
-      type(type)
+      menuSize{90, 70}, type(type)
 {
 
 }
