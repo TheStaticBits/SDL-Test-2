@@ -72,7 +72,7 @@ void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset)
                 hovering = !hovering;
             }
         }
-        else if (window.buttonHeld(SDL_BUTTON_LEFT))
+        else if (window.buttonHeld(SDL_BUTTON_LEFT) && hovering)
         {
             if (!util::collide(menuPos, mouseMapPos))
                 removeMenu();
