@@ -52,3 +52,9 @@ void Animation::render(Window& window, const Vect<int64_t> pos)
     
     window.render(texture, src, dst);
 }
+
+void Animation::renderCenter(Window& window, const Vect<int64_t> center)
+{
+    Vect<int64_t> topLeft = center - (frameSize.cast<int64_t>() / 2);
+    render(window, topLeft);
+}

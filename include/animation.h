@@ -17,7 +17,8 @@ public:
     void operator=(const Animation&) = delete;
 
     void update(Window& window);
-    void render(Window& window, Vect<int64_t> pos);
+    void render(Window& window, const Vect<int64_t> pos);
+    void renderCenter(Window& window, const Vect<int64_t> center);
 
     const bool isFinished() const { return finished; }
 
