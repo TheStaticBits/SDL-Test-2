@@ -24,7 +24,7 @@ public:
     void operator=(const Player&) = delete;
 
     void update(Window& window, Base& base);
-    void render(Window& window, Vect<int64_t> renderOffset);
+    void render(Window& window, const Vect<int64_t> renderOffset);
 
     std::string getSave();
     void readSave(std::string save, const Window& window);

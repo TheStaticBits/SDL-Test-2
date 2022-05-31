@@ -50,7 +50,7 @@ void Player::update(Window& window, Base& base)
     lockOffset(base, window);
 }
 
-void Player::render(Window& window, Vect<int64_t> renderOffset)
+void Player::render(Window& window, const Vect<int64_t> renderOffset)
 {
     SDL_Rect renderTo = rect;
     renderTo.x -= renderOffset.x;

@@ -128,7 +128,7 @@ void Base::renderMinimap(Window& window)
     window.render(minimap, dest);
 }
 
-void Base::renderTiles(Window& window, Vect<int64_t> renderOffset)
+void Base::renderTiles(Window& window, const Vect<int64_t> renderOffset)
 {
     Vect<int> rendInt = renderOffset.cast<int>();
     Vect<int> sizeInt = size.cast<int>();
@@ -139,7 +139,7 @@ void Base::renderTiles(Window& window, Vect<int64_t> renderOffset)
         obj->render(window, renderOffset);
 }
 
-void Base::renderMenues(Window& window, Vect<int64_t> renderOffset)
+void Base::renderMenues(Window& window, const Vect<int64_t> renderOffset)
 {
     // Render any menues on top of everything
     if (!placing)
