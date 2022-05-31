@@ -19,6 +19,10 @@ inline std::unordered_map<ObjType, std::string> objTNames = {
     { Platform_T,      "Platform"      },
     { SilverStorage_T, "Silver Storage"}
 };
+inline std::unordered_map<ObjType, std::string> objTFolders = {
+    { Platform_T,      "platforms"      },
+    { SilverStorage_T, "silverStorage" }
+};
 
 // If the first of a string is the same name as the object
 inline bool objCheckSavePart(const std::string part, const ObjType objType) 
