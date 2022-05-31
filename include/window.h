@@ -34,9 +34,9 @@ public:
     void modColor(SDL_Texture* tex, std::vector<uint8_t> color);
 
     // Render a texture to the window
-    void render(SDL_Texture* texture, SDL_Rect& pos);
-    void render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& pos);
-    void render(SDL_Texture* texture, SDL_Rect& pos, const double angle);
+    void render(SDL_Texture* texture, SDL_Rect& dst);
+    void render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst);
+    void render(SDL_Texture* texture, SDL_Rect& dst, const double angle);
     
     void drawRect(SDL_Rect& rect, std::vector<uint8_t> color);
 
