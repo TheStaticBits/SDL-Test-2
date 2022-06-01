@@ -13,9 +13,9 @@
 
 Window::Window()
     : quit(false), resizeWin(false), mousePos{0, 0}, 
-      window(NULL), renderer(NULL), mini(NULL),
+      window(NULL), renderer(NULL),
       realWinSize(900, 600), winSize(realWinSize / WIN_SCALE),
-      deltaTime(0.0f), lastTime(0), fps(0)
+      deltaTime(0.0f), lastTime(0), fps(0), scale(WIN_SCALE)
 {
     // Setting up window
     window = SDL_CreateWindow(TITLE, 
@@ -41,15 +41,11 @@ Window::Window()
 
     renderer = SDL_CreateRenderer(window, -1, flags);
 
-    createMini();
-
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderTarget(renderer, mini); 
 }
 
 Window::~Window()
 {
-    SDL_DestroyTexture(mini);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 }
@@ -114,20 +110,10 @@ SDL_Texture* Window::getTextImg(TTF_Font* font, std::string text, SDL_Color colo
 
 void Window::update()
 {
-    SDL_SetRenderTarget(renderer, NULL); // Setting to default renderer
-
-    Vect<int> rWinSizeInt = realWinSize.cast<int>();
-    // Updating screen with the frame
-    SDL_Rect pos{0, 0, rWinSizeInt.x, rWinSizeInt.y};
-    render(mini, pos); // Rendering mini window to renderer
     SDL_RenderPresent(renderer); // Presenting frame
-
-    // Clearing windows
-    // SDL_RenderClear(renderer); // Cause of flickering...
-    SDL_SetRenderTarget(renderer, mini); // Setting to mini window
-    SDL_RenderClear(renderer); // Clearing the mini window
-
-    // Any rendering from here will render to the mini window
+    
+    // Clearing window
+    SDL_RenderClear(renderer); 
 }
 
 void Window::inputs()
@@ -207,31 +193,36 @@ void Window::modColor(SDL_Texture* texture, std::vector<uint8_t> color)
 
 void Window::render(SDL_Texture* texture, SDL_Rect& dst)
 {
-    if (SDL_RenderCopy(renderer, texture, NULL, &dst) != 0)
+    SDL_Rect newRect = scaleUp(dst);
+    if (SDL_RenderCopy(renderer, texture, NULL, &newRect) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst)
 {
-    if (SDL_RenderCopy(renderer, texture, &src, &dst) != 0)
+    SDL_Rect newRect = scaleUp(dst);
+    if (SDL_RenderCopy(renderer, texture, &src, &newRect) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::render(SDL_Texture* texture, SDL_Rect& dst, const double angle)
 {
+    SDL_Rect newRect = scaleUp(dst);
     SDL_Point center = {dst.w / 2, dst.h / 2};
-    if (SDL_RenderCopyEx(renderer, texture, NULL, &dst, angle, &center, SDL_FLIP_NONE) != 0)
+    if (SDL_RenderCopyEx(renderer, texture, NULL, &newRect, angle, &center, SDL_FLIP_NONE) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::drawRect(SDL_Rect& rect, std::vector<uint8_t> color)
 {
+    SDL_Rect newRect = scaleUp(rect);
+
     if (color.size() == 3)
         color.push_back(255);
 
     SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], color[3]);
 
-    if (SDL_RenderFillRect(renderer, &rect) != 0)
+    if (SDL_RenderFillRect(renderer, &newRect) != 0)
         std::cout << "[Error] Rendering rect failed: " << SDL_GetError() << std::endl;
     
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -245,14 +236,13 @@ void Window::setTarget(SDL_Texture* texture)
 
 void Window::resetTarget()
 {
-    SDL_SetRenderTarget(renderer, mini);
+    SDL_SetRenderTarget(renderer, NULL);
 }
 
 void Window::resize(int32_t width, int32_t height)
 {
     realWinSize = Vect<uint32_t>(width, height);
     winSize = realWinSize / WIN_SCALE;
-    createMini();
     SDL_SetWindowSize(window, realWinSize.x, realWinSize.y);
 }
 
@@ -270,10 +260,9 @@ void Window::handleKey(SDL_Keycode& key, Uint32& type)
         keys[key] = (type == SDL_KEYDOWN);
 }
 
-void Window::createMini()
+SDL_Rect Window::scaleUp(SDL_Rect rect)
 {
-    if (mini != NULL) SDL_DestroyTexture(mini);
-
-    mini = createTex(winSize.x, winSize.y);
-    SDL_SetTextureBlendMode(mini, SDL_BLENDMODE_BLEND);
+    rect.x *= scale; rect.y *= scale;
+    rect.w *= scale; rect.h *= scale;
+    return rect;
 }

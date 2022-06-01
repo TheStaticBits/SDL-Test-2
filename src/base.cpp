@@ -28,7 +28,6 @@ Base::Base(Window& window)
       placing(false),
       minimap(window.createTex(size.x, size.y))
 {
-    std::cout << bgParticleData.at(0).speed << std::endl;
     bgParticles.push_back(Particle(bgParticleTex, (window.getSize() / 2).cast<int64_t>(), 45, bgParticleData.at(0)));
 }
 
@@ -128,9 +127,12 @@ void Base::renderMinimap(Window& window)
 
     Vect<int> sizeInt = size.cast<int>();
     SDL_Rect background = { 0, 0, sizeInt.x, sizeInt.y };
+    
     window.drawRect(background, {0, 0, 255, 255});
 
+    window.setScale(1);
     renderTiles(window, Vect<int64_t>(0, 0));
+    window.setScale(WIN_SCALE);
 
     window.resetTarget();
 

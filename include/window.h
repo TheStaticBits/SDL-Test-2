@@ -57,10 +57,8 @@ public:
     inline const bool buttonHeld(const uint8_t button) { return fMouseHeldButtons[button]; }
 
     inline const Vect<int64_t> getMousePos() const { return mousePos; }
-
-    inline const float getDeltaTime() const { return deltaTime; }
-
-    inline const float getFPS() const { return fps; }
+    inline const float getDeltaTime() const        { return deltaTime; }
+    inline const float getFPS() const              { return fps; }
 
     // Setters
     inline void setButton(const uint8_t button, const bool state)     
@@ -68,12 +66,12 @@ public:
         fMouseButtons[button] = state;
         fMouseHeldButtons[button] = state; 
     }
-    
+    inline void setScale(const uint32_t newScale) { scale = newScale; }
 
 private:
     void handleKey(SDL_Keycode& key, Uint32& type);
-    
-    void createMini();
+
+    SDL_Rect scaleUp(SDL_Rect rect);
 
     static constexpr char* TITLE = (char*)"Game again";
     static constexpr char* FONT_PATH = (char*)"res/font/font.ttf";
@@ -98,7 +96,6 @@ private:
 
     SDL_Window* window;
     SDL_Renderer* renderer;
-    SDL_Texture* mini; // Scaled up to full size when before presenting
     std::unordered_map<uint32_t, TTF_Font*> fonts; // For different sizes
 
     Vect<uint32_t> realWinSize;
@@ -108,4 +105,5 @@ private:
     uint32_t lastTime;
     std::vector<float> deltaTimes;
     float fps;
+    uint32_t scale;
 };
