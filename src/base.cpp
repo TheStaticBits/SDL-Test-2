@@ -42,6 +42,18 @@ void Base::update(Window& window, const Vect<int64_t>& renderOffset)
         std::chrono::system_clock::now().time_since_epoch()
     ).count();
 
+    // First one temporary
+    updatePlacingControls(window, renderOffset, timeAtUpdate);
+    updateBuildings(window, renderOffset, timeAtUpdate);
+    updatePlacing(window, renderOffset, timeAtUpdate);
+
+    // Updating bgParticles
+    updateParticles(window);
+}
+
+// TEMPORARY (will add shop for placing later)
+void Base::updatePlacingControls(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate)
+{
     if (!placing)
     {
         // Temporary
@@ -63,7 +75,10 @@ void Base::update(Window& window, const Vect<int64_t>& renderOffset)
             for (std::unique_ptr<Interactable>& obj : objects)
                 obj->removeMenu();
     }
+}
 
+void Base::updateBuildings(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate)
+{
     // Updating the menu that is open before others
     for (std::unique_ptr<Interactable>& obj : objects)
         if (obj->menuOpen())
@@ -76,7 +91,10 @@ void Base::update(Window& window, const Vect<int64_t>& renderOffset)
         if (!obj->menuOpen())
             obj->checkMenu(window, renderOffset);
     }
+}
 
+void Base::updatePlacing(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate)
+{
     if (placing)
     {
         const Vect<int64_t> mousePos = window.getMousePos();
@@ -114,8 +132,10 @@ void Base::update(Window& window, const Vect<int64_t>& renderOffset)
             }
         }
     }
+}
 
-    // Updating bgParticles
+void Base::updateParticles(Window& window)
+{
     for (Particle& p : bgParticles)
         p.update(window);
 }

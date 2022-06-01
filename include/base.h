@@ -48,6 +48,12 @@ public:
     inline bool checkSavePart(std::string save) { return save.substr(0, SAVE_NAME.length()) == SAVE_NAME; }
 
 private:
+    void updatePlacingControls(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate);
+    void updateBuildings(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate);
+    void updatePlacing(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate);
+
+    void updateParticles(Window& window);
+
     inline static const std::string SAVE_NAME = "Base";
 
     static constexpr char* B_DATA_PATH = (char*)"res/data/buildings.json";
