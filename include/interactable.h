@@ -13,6 +13,7 @@
 
 #include "vector.h"
 #include "window.h"
+#include "animation.h"
 
 enum ObjType { Platform_T, SilverStorage_T};
 inline std::unordered_map<ObjType, std::string> objTNames = {
@@ -68,6 +69,7 @@ public:
 
 protected:
     static constexpr uint8_t alpha = 150;
+    static std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> textures;
 
     // SDL_Texture* image; // Add image later
     Vect<uint32_t> tileSize; // Amount of tiles it takes up
