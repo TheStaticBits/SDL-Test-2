@@ -10,6 +10,9 @@
 #include "window.h"
 #include "utility.h"
 #include "base.h"
+#include "animation.h"
+
+std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> Interactable::textures = {};
 
 Interactable::Interactable(const Vect<uint32_t> tileSize, const std::vector<uint8_t> color, const ObjType type)
     : tileSize(tileSize), renderColor(color),
