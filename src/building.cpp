@@ -136,10 +136,10 @@ std::string Building::getSave()
 
 std::string Building::readSave(std::string& save)
 {
-    std::vector<std::string> data = util::split(save, ",");
+    const std::vector<std::string> data = util::split(save, ",");
 
-    beingBuilt = std::stoi(data[0]);
-    level =      std::stoi(data[1]);
+    beingBuilt = std::stoi(data.at(0));
+    level =      std::stoi(data.at(1));
 
     if (beingBuilt) timeAtPlace = std::stoull(data[2]);
 

@@ -19,19 +19,21 @@
 #include "building.h"
 #include "utility.h"
 #include "silverStorage.h"
+#include "particle.h"
 
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
+      bgParticleTex(window.loadTexture(P_IMG_PATH)),
       size{900, 600}, // TEMPORARY, will change in the future
       placing(false),
       minimap(window.createTex(size.x, size.y))
 {
-
+    bgParticles.push_back(Particle(bgParticleTex, (window.getSize() / 2).cast<int64_t>(), 45, bgParticleData.at(0)));
 }
 
 Base::~Base()
 {
-
+    SDL_DestroyTexture(bgParticleTex);
 }
 
 void Base::update(Window& window, const Vect<int64_t>& renderOffset)
@@ -53,7 +55,7 @@ void Base::update(Window& window, const Vect<int64_t>& renderOffset)
         {
             placing = true;
             count[SilverStorage_T]++;
-            objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames[SilverStorage_T]]));
+            objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames.at(SilverStorage_T)]));
         }
 
         // Clear any menues open
@@ -112,14 +114,26 @@ void Base::update(Window& window, const Vect<int64_t>& renderOffset)
             }
         }
     }
+
+    // Updating bgParticles
+    for (Particle& p : bgParticles)
+        p.update(window);
 }
 
 void Base::renderMinimap(Window& window)
 {
+    // Creating minimap
     window.setTarget(minimap);
+
+    Vect<int> sizeInt = size.cast<int>();
+    SDL_Rect background = { 0, 0, sizeInt.x, sizeInt.y };
+    window.drawRect(background, {0, 0, 255, 255});
+
     renderTiles(window, Vect<int64_t>(0, 0));
+
     window.resetTarget();
 
+    // Drawing minimap to screen
     Vect<int> minimapSize = { static_cast<int>(size.x * minimapScale), 
                               static_cast<int>(size.y * minimapScale) };
     
@@ -130,13 +144,16 @@ void Base::renderMinimap(Window& window)
 
 void Base::renderTiles(Window& window, const Vect<int64_t> renderOffset)
 {
-    Vect<int> rendInt = renderOffset.cast<int>();
-    Vect<int> sizeInt = size.cast<int>();
-    SDL_Rect background = {-rendInt.x, -rendInt.y, sizeInt.x, sizeInt.y};
-    window.drawRect(background, {0, 0, 255, 255});
+    renderBg(window, renderOffset); // Temp (probably)
 
     for (std::unique_ptr<Interactable>& obj : objects)
         obj->render(window, renderOffset);
+}
+
+void Base::renderBg(Window& window, const Vect<int64_t> renderOffset)
+{
+    for (Particle& particle : bgParticles)
+        particle.render(window, renderOffset);
 }
 
 void Base::renderMenues(Window& window, const Vect<int64_t> renderOffset)
@@ -185,7 +202,7 @@ void Base::readSave(std::string save)
             else if (objCheckSavePart(obj, SilverStorage_T))
             {
                 count[SilverStorage_T]++;
-                objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames[SilverStorage_T]], obj));
+                objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames.at(SilverStorage_T)], obj));
             }
         }
     }

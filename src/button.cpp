@@ -29,7 +29,7 @@ Button::Button(Window& window, bTextures texType,
 
     if (textures.find(texType) == textures.end())
     {
-        for (std::string& state : bImgStates)
+        for (const std::string& state : bImgStates)
         {
             textures[texType][state] = window.loadTexture((std::string("res/buttons/") + 
                                                            bFolderNames.at(texType)    +
@@ -45,7 +45,7 @@ Button::~Button()
 {
     if (textImg != NULL) SDL_DestroyTexture(textImg);
     
-    for (std::string& state : bImgStates)
+    for (const std::string& state : bImgStates)
         SDL_DestroyTexture(textures[texType][state]);
 }
 

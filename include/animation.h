@@ -7,6 +7,7 @@
 
 #include "window.h"
 #include "utility.h"
+#include "vector.h"
 
 class Animation
 {

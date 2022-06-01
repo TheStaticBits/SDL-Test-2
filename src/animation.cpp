@@ -7,6 +7,7 @@
 
 #include "window.h"
 #include "utility.h"
+#include "vector.h"
 
 Animation::Animation(SDL_Texture* texture, uint32_t totalFrames, float delay)
     : texture(texture), delay(delay),

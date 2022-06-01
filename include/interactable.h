@@ -15,11 +15,11 @@
 #include "window.h"
 
 enum ObjType { Platform_T, SilverStorage_T};
-inline std::unordered_map<ObjType, std::string> objTNames = {
+inline const std::unordered_map<ObjType, const std::string> objTNames = {
     { Platform_T,      "Platform"      },
     { SilverStorage_T, "Silver Storage"}
 };
-inline std::unordered_map<ObjType, std::string> objTFolders = {
+inline const std::unordered_map<ObjType, const std::string> objTFolders = {
     { Platform_T,      "platforms"      },
     { SilverStorage_T, "silverStorage" }
 };

@@ -88,6 +88,7 @@ void Game::iteration()
     base.update(window, renderOffset);
 
     // Rendering
+    base.renderBg(window, renderOffset);
     base.renderTiles(window, renderOffset);
     player.render(window, renderOffset);
 

@@ -13,12 +13,12 @@
 #include "utility.h"
 
 enum bTextures { BlueB, ShopB, BuildingsB};
-inline std::unordered_map<bTextures, std::string> bFolderNames = {
+inline const std::unordered_map<bTextures, std::string> bFolderNames = {
     { BlueB,      "blue"      },
     { ShopB,      "shop"      },
     { BuildingsB, "buildingB" }
 };
-inline std::vector<std::string> bImgStates = { "idle", "hovering", "pressed" };
+inline const std::vector<std::string> bImgStates = { "idle", "hovering", "pressed" };
 
 class Button
 {

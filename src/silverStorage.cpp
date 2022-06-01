@@ -30,7 +30,7 @@ SilverStorage::SilverStorage(const nlohmann::json& data, std::string save)
 
 SilverStorage::~SilverStorage()
 {
-
+    
 }
 
 void SilverStorage::update(const uint64_t& time)
