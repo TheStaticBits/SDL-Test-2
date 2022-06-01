@@ -31,7 +31,6 @@ void Particle::update(Window& window)
 
     angle += data.rotationSpeed * deltaTime;
     
-    // std::cout << data.speed * cos(moveAngle * M_PI / 180) * deltaTime << std::endl;;
     pos.x += data.speed * cos(moveAngle * M_PI / 180) * deltaTime;
     pos.y += data.speed * sin(moveAngle * M_PI / 180) * deltaTime;
 }

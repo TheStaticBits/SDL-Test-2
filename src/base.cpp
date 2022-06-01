@@ -28,6 +28,7 @@ Base::Base(Window& window)
       placing(false),
       minimap(window.createTex(size.x, size.y))
 {
+    std::cout << bgParticleData.at(0).speed << std::endl;
     bgParticles.push_back(Particle(bgParticleTex, (window.getSize() / 2).cast<int64_t>(), 45, bgParticleData.at(0)));
 }
 
