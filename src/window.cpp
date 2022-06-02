@@ -208,8 +208,7 @@ void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst)
 void Window::render(SDL_Texture* texture, SDL_Rect& dst, const double angle)
 {
     SDL_Rect newRect = scaleUp(dst);
-    SDL_Point center = {dst.w / 2, dst.h / 2};
-    if (SDL_RenderCopyEx(renderer, texture, NULL, &newRect, angle, &center, SDL_FLIP_NONE) != 0)
+    if (SDL_RenderCopyEx(renderer, texture, NULL, &newRect, angle, NULL, SDL_FLIP_NONE) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
