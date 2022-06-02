@@ -92,9 +92,9 @@ void Player::readSave(std::string save, const Window& window)
 
 void Player::updateRect()
 {
-    Vect<int> posInt = pos.cast<int>();
-    Vect<int> sizeInt = size.cast<int>();
-    rect = {posInt.x, posInt.y, sizeInt.x, sizeInt.y };
+    const Vect<int> posInt = pos.cast<int>();
+    const Vect<int> sizeInt = size.cast<int>();
+    rect = { posInt.x, posInt.y, sizeInt.x, sizeInt.y };
 }
 
 void Player::resize(Base& base, const Window& window)

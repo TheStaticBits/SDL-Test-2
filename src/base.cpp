@@ -141,21 +141,23 @@ void Base::initParticles(Window& window)
      
     for (const std::pair<ParticleData, uint32_t>& layer : BG_PARTICLE_DATA)
     {
-        for (spawnPos.x = 0; spawnPos.x <= size.x * layer.first.parallax; spawnPos.x += layer.second)
+        for (spawnPos.x = 0; static_cast<float>(spawnPos.x) * layer.first.parallax <= static_cast<float>(size.x); spawnPos.x += layer.second)
         {
-            for (spawnPos.y = 0; spawnPos.y <= size.y * layer.first.parallax; spawnPos.y += layer.second)
+            for (spawnPos.y = 0; spawnPos.y * layer.first.parallax <= size.y; spawnPos.y += layer.second)
             {
                 // Chooses random angle between min and max angles
                 float moveAngle = static_cast<float>((rand() % (maxBgParticleAngle - minBgParticleAngle)) + minBgParticleAngle);
                 
                 float startAngle = static_cast<float>(rand() % 365);
 
-                bgParticles.push_back(Particle(bgParticleTex, spawnPos, startAngle, moveAngle, layer.first));
+                bgParticles.push_back(Particle(bgParticleTex, spawnPos.cast<float>(), startAngle, moveAngle, layer.first));
             }
-        }
-    }
 
-    // bgParticles.push_back(Particle(bgParticleTex, (window.getSize() / 2).cast<int64_t>(), 45, BG_PARTICLE_DATA.at(0).first));
+            std::cout << spawnPos.y * layer.first.parallax << " " << size.y << std::endl;
+        }
+
+        std::cout << spawnPos.x * layer.first.parallax << " " << size.x << std::endl;
+    }
 }
 
 void Base::updateParticles(Window& window, const Vect<int64_t>& renderOffset)
@@ -171,21 +173,20 @@ void Base::renderMinimap(Window& window)
     // Creating minimap
     window.setTarget(minimap);
 
-    Vect<int> sizeInt = size.cast<int>();
+    const Vect<int> sizeInt = size.cast<int>();
     SDL_Rect background = { 0, 0, sizeInt.x, sizeInt.y };
     
     window.drawRect(background, {0, 0, 255, 255});
 
     window.setScale(1);
     renderTiles(window, Vect<int64_t>(0, 0));
-    renderBg(window, Vect<int64_t>(0, 0));
     window.setScale(WIN_SCALE);
 
     window.resetTarget();
 
     // Drawing minimap to screen
-    Vect<int> minimapSize = { static_cast<int>(size.x * minimapScale), 
-                              static_cast<int>(size.y * minimapScale) };
+    const Vect<int> minimapSize = { static_cast<int>(size.x * minimapScale), 
+                                    static_cast<int>(size.y * minimapScale) };
     
     SDL_Rect dest = { 5, static_cast<int>(window.getSize().y - minimapSize.y - 5),
                       minimapSize.x, minimapSize.y };
@@ -202,6 +203,11 @@ void Base::renderTiles(Window& window, const Vect<int64_t> renderOffset)
 
 void Base::renderBg(Window& window, const Vect<int64_t> renderOffset)
 {
+    const Vect<int> sizeInt = size.cast<int>();
+    SDL_Rect background = { 0, 0, sizeInt.x, sizeInt.y };
+    
+    window.drawRect(background, {0, 100, 100, 255});
+
     for (Particle& particle : bgParticles)
         particle.render(window, renderOffset);
 }

@@ -22,7 +22,7 @@ class Particle
 {
 public:
     Particle(SDL_Texture* texture, 
-             const Vect<int64_t> startPos, 
+             const Vect<float> startPos, 
              const float startAngle, const float moveAngle,
              const ParticleData& data);
     ~Particle();
@@ -33,9 +33,14 @@ public:
     void render(Window& window, const Vect<int64_t> renderOffset);
 
 private:
+    SDL_Rect getRenderRect(const Vect<int64_t> renderOffset) const;
+    bool inBox(const SDL_Rect rect, const Vect<int> size);
+
+    inline static const float ROTATE_EDGES = 0.5f;
+
     SDL_Texture* texture;
 
-    Vect<int64_t> pos;
+    Vect<float> pos;
     float angle;
 
     const float moveAngle;

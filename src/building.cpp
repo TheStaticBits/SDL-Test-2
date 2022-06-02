@@ -97,7 +97,7 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     if (beingBuilt)
     {
-        Vect<int> renderOffsetInt = renderOffset.cast<int>();
+        const Vect<int> renderOffsetInt = renderOffset.cast<int>();
         SDL_Rect renderRect = {
             renderPos.x - renderOffsetInt.x, renderPos.y - renderOffsetInt.y,
             renderPos.w, renderPos.h

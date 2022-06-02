@@ -83,10 +83,10 @@ void Button::render(Window& window, Vect<int64_t> textOffset)
     // Draw text
     if (textImg != NULL)
     {   
-        Vect<int> sizeInt = size.cast<int>();
-        Vect<int> textSizeInt = textSize.cast<int>();
-        Vect<int> textOffsetInt = textOffset.cast<int>();
-        Vect<int> posInt = pos.cast<int>();
+        const Vect<int> sizeInt = size.cast<int>();
+        const Vect<int> textSizeInt = textSize.cast<int>();
+        const Vect<int> textOffsetInt = textOffset.cast<int>();
+        const Vect<int> posInt = pos.cast<int>();
         
         SDL_Rect textRect = { posInt.x + (sizeInt.x / 2) - (textSizeInt.x / 2) + textOffsetInt.x, 
                               posInt.y + (sizeInt.y / 2) - (textSizeInt.y / 2) + textOffsetInt.y, 
@@ -98,7 +98,7 @@ void Button::render(Window& window, Vect<int64_t> textOffset)
 
 void Button::updateRect()
 {
-    Vect<int> sizeInt = size.cast<int>();
-    Vect<int> posInt = pos.cast<int>();
+    const Vect<int> sizeInt = size.cast<int>();
+    const Vect<int> posInt = pos.cast<int>();
     rect = { posInt.x, posInt.y, sizeInt.x, sizeInt.y };
 }

@@ -43,8 +43,8 @@ void Animation::update(Window& window)
 
 void Animation::render(Window& window, const Vect<int64_t> pos)
 {
-    Vect<int> frameSizeInt = frameSize.cast<int>();
-    Vect<int> posInt = pos.cast<int>();
+    const Vect<int> frameSizeInt = frameSize.cast<int>();
+    const Vect<int> posInt = pos.cast<int>();
 
     SDL_Rect src = { static_cast<int>(frame * frameSize.x), 0, 
                      frameSizeInt.x, frameSizeInt.y };

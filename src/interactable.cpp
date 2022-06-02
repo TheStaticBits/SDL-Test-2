@@ -149,7 +149,7 @@ std::string Interactable::readSave(std::string& save)
 
 void Interactable::setMenuRect(const Window& window, const Vect<int64_t>& renderOffset)
 {
-    Vect<int> menuSizeInt = menuSize.cast<int>();
+    const Vect<int> menuSizeInt = menuSize.cast<int>();
     menuPos.w = menuSizeInt.x;
     menuPos.h = menuSizeInt.y;
 

@@ -140,11 +140,11 @@ void Shop::switchCategory(Category category)
 
 void Shop::updateRects()
 {
-    Vect<int> l1SizeInt =   l1Size.cast<int>();
-    Vect<int> l1PosInt =    l1Pos.cast<int>();
-    Vect<int> l2PosInt =    l2Pos.cast<int>();
-    Vect<int> l2SizeInt =   l2Size.cast<int>();
-    Vect<int> textSizeInt = textSize.cast<int>();
+    const Vect<int> l1SizeInt =   l1Size.cast<int>();
+    const Vect<int> l1PosInt =    l1Pos.cast<int>();
+    const Vect<int> l2PosInt =    l2Pos.cast<int>();
+    const Vect<int> l2SizeInt =   l2Size.cast<int>();
+    const Vect<int> textSizeInt = textSize.cast<int>();
 
     l1Rect = {l1PosInt.x, l1PosInt.y, l1SizeInt.x, l1SizeInt.y};
     l2Rect = {l2PosInt.x, l2PosInt.y, l2SizeInt.x, l2SizeInt.y};
