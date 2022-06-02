@@ -20,9 +20,12 @@
 inline const uint16_t TILE_SIZE = 20;
 inline const std::string RemoveObj = "Remove"; // Used for not saving objects that have not been placed
 
-inline const std::vector<ParticleData> bgParticleData = {
-    // Layer 0: biggest and closest
-    { { 0, 240, 240 }, 5.0f, 25.0f, 4.5f, 2.0f } // L0 
+// The second in the pair is the distance between 
+// each particle created for that layer. 
+inline const std::vector<std::pair<ParticleData, uint32_t>> BG_PARTICLE_DATA = {
+    { { { 0, 220, 220 }, 5.0f, 40.0f, 4.5f, 2.0f }, 90 },
+    { { { 0, 185, 185 }, 4.0f, 25.0f, 3.5f, 3.5f }, 70 },
+    { { { 0, 170, 170 }, 3.0f, 15.0f, 2.5f, 5.0f }, 30 }
 };
 
 class Base
@@ -56,6 +59,9 @@ private:
     void updateParticles(Window& window, const Vect<int64_t>& renderOffset);
 
     inline static const std::string SAVE_NAME = "Base";
+
+    inline static const uint32_t minBgParticleAngle = 310;
+    inline static const uint32_t maxBgParticleAngle = 320; // Up to, not including 
 
     static constexpr char* B_DATA_PATH = (char*)"res/data/buildings.json";
     nlohmann::json buildingData;

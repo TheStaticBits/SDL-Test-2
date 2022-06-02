@@ -22,7 +22,8 @@ class Particle
 {
 public:
     Particle(SDL_Texture* texture, 
-             const Vect<int64_t> startPos, const float angle,
+             const Vect<int64_t> startPos, 
+             const float startAngle, const float moveAngle,
              const ParticleData& data);
     ~Particle();
 

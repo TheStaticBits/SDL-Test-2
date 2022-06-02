@@ -6,6 +6,7 @@
 #include <cmath>
 #include <chrono>
 #include <memory>
+#include <stdlib.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -136,7 +137,25 @@ void Base::updatePlacing(Window& window, const Vect<int64_t>& renderOffset, cons
 
 void Base::initParticles(Window& window)
 {
-    bgParticles.push_back(Particle(bgParticleTex, (window.getSize() / 2).cast<int64_t>(), 45, bgParticleData.at(0)));
+    Vect<int64_t> spawnPos;
+     
+    for (const std::pair<ParticleData, uint32_t>& layer : BG_PARTICLE_DATA)
+    {
+        for (spawnPos.x = 0; spawnPos.x <= size.x * layer.first.parallax; spawnPos.x += layer.second)
+        {
+            for (spawnPos.y = 0; spawnPos.y <= size.y * layer.first.parallax; spawnPos.y += layer.second)
+            {
+                // Chooses random angle between min and max angles
+                float moveAngle = static_cast<float>((rand() % (maxBgParticleAngle - minBgParticleAngle)) + minBgParticleAngle);
+                
+                float startAngle = static_cast<float>(rand() % 365);
+
+                bgParticles.push_back(Particle(bgParticleTex, spawnPos, startAngle, moveAngle, layer.first));
+            }
+        }
+    }
+
+    // bgParticles.push_back(Particle(bgParticleTex, (window.getSize() / 2).cast<int64_t>(), 45, BG_PARTICLE_DATA.at(0).first));
 }
 
 void Base::updateParticles(Window& window, const Vect<int64_t>& renderOffset)
@@ -144,7 +163,7 @@ void Base::updateParticles(Window& window, const Vect<int64_t>& renderOffset)
     for (Particle& p : bgParticles)
         p.update(window);
 
-    
+    // Remove and replace particles that went offscreen here
 }
 
 void Base::renderMinimap(Window& window)

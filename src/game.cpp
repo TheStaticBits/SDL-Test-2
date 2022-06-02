@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <cmath>
 #include <chrono>
+#include <stdlib.h>
+#include <time.h>
 
 #ifdef __EMSCRIPTEN__
     #include <emscripten.h>
@@ -37,6 +39,9 @@ Game::Game()
         readSave(getSave("save"));
 #endif
     }
+
+    // Setting seed for random events
+    srand(time(NULL));
 }
 
 Game::~Game()

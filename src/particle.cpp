@@ -11,10 +11,11 @@
 #include "utility.h"
 
 Particle::Particle(SDL_Texture* texture, 
-                   const Vect<int64_t> startPos, const float angle,
+                   const Vect<int64_t> startPos, 
+                   const float startAngle, const float moveAngle, 
                    const ParticleData& data)
-    : texture(texture), pos(startPos), angle(angle),
-      moveAngle(angle), data(data),
+    : texture(texture), pos(startPos), angle(startAngle),
+      moveAngle(moveAngle), data(data),
       size(util::getSize(texture))
 {
 
