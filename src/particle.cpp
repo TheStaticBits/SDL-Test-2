@@ -37,7 +37,7 @@ void Particle::update(Window& window)
 
 void Particle::render(Window& window, const Vect<int64_t> renderOffset)
 {
-    SDL_SetTextureColorMod(texture, data.color[0], data.color[1], data.color[2]);
+    window.modColor(texture, data.color);
 
     Vect<int> posInt = (pos - (renderOffset / data.parallax)).cast<int>();
     Vect<int> sizeInt = (size * data.scale).cast<int>();

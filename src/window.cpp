@@ -226,7 +226,6 @@ void Window::drawRect(SDL_Rect& rect, std::vector<uint8_t> color)
     
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
-
 void Window::setTarget(SDL_Texture* texture)
 {
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);   
