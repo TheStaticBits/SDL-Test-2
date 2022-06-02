@@ -28,7 +28,7 @@ Base::Base(Window& window)
       placing(false),
       minimap(window.createTex(size.x, size.y))
 {
-    bgParticles.push_back(Particle(bgParticleTex, (window.getSize() / 2).cast<int64_t>(), 45, bgParticleData.at(0)));
+    initParticles(window);
 }
 
 Base::~Base()
@@ -48,7 +48,7 @@ void Base::update(Window& window, const Vect<int64_t>& renderOffset)
     updatePlacing(window, renderOffset, timeAtUpdate);
 
     // Updating bgParticles
-    updateParticles(window);
+    updateParticles(window, renderOffset);
 }
 
 // TEMPORARY (will add shop for placing later)
@@ -134,10 +134,17 @@ void Base::updatePlacing(Window& window, const Vect<int64_t>& renderOffset, cons
     }
 }
 
-void Base::updateParticles(Window& window)
+void Base::initParticles(Window& window)
+{
+    bgParticles.push_back(Particle(bgParticleTex, (window.getSize() / 2).cast<int64_t>(), 45, bgParticleData.at(0)));
+}
+
+void Base::updateParticles(Window& window, const Vect<int64_t>& renderOffset)
 {
     for (Particle& p : bgParticles)
         p.update(window);
+
+    
 }
 
 void Base::renderMinimap(Window& window)
@@ -152,6 +159,7 @@ void Base::renderMinimap(Window& window)
 
     window.setScale(1);
     renderTiles(window, Vect<int64_t>(0, 0));
+    renderBg(window, Vect<int64_t>(0, 0));
     window.setScale(WIN_SCALE);
 
     window.resetTarget();

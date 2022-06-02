@@ -22,7 +22,7 @@ inline const std::string RemoveObj = "Remove"; // Used for not saving objects th
 
 inline const std::vector<ParticleData> bgParticleData = {
     // Layer 0: biggest and closest
-    { { 0, 240, 240 }, 5.0f, 25.0f, 7.5f, 2.0f } // L0 
+    { { 0, 240, 240 }, 5.0f, 25.0f, 4.5f, 2.0f } // L0 
 };
 
 class Base
@@ -52,7 +52,8 @@ private:
     void updateBuildings(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate);
     void updatePlacing(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate);
 
-    void updateParticles(Window& window);
+    void initParticles(Window& window);
+    void updateParticles(Window& window, const Vect<int64_t>& renderOffset);
 
     inline static const std::string SAVE_NAME = "Base";
 
