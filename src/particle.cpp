@@ -26,7 +26,7 @@ Particle::~Particle()
     // Delete texture elsewhere
 }
 
-void Particle::update(Window& window)
+void Particle::update(Window& window, const Vect<uint32_t> baseSize)
 {
     const float deltaTime = window.getDeltaTime();
 
@@ -34,6 +34,8 @@ void Particle::update(Window& window)
 
     pos.x += data.speed * cos(moveAngle * M_PI / 180) * deltaTime;
     pos.y += data.speed * sin(moveAngle * M_PI / 180) * deltaTime;
+
+    wrap(window, baseSize);
 }
 
 void Particle::render(Window& window, const Vect<int64_t> renderOffset)
@@ -64,4 +66,27 @@ bool Particle::inBox(const SDL_Rect rect, const Vect<int> size)
 
     return (rect.x - edge.x < size.x) && (rect.y - edge.y < size.y) &&
            (rect.x + rect.w + edge.x > 0) && (rect.y + rect.h + edge.y > 0);
+}
+
+void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
+{
+    // Wrap around if offscreen
+    const SDL_Rect topLeft = getRenderRect(Vect<int64_t>(0, 0));
+    const SDL_Rect bottomRight = getRenderRect((baseSize - window.getSize()).cast<int64_t>());
+    const Vect<int> renderSize(topLeft.w, topLeft.h);
+    const Vect<int> bSizeShrunk = (baseSize.cast<float>() / data.parallax).cast<int>();
+
+    const Vect<int> edge = (size.cast<float>() * data.scale * ROTATE_EDGES).cast<int>();
+
+    // hacky here, "* 4" and line 83, "*= 2"
+    Vect<float> travelDist = bSizeShrunk.cast<float>() + ((renderSize + edge) * 4).cast<float>();
+    travelDist.x *= 2;
+
+    // Top left corner
+    if (topLeft.x + topLeft.w + edge.x < 0) pos.x += travelDist.x;
+    if (topLeft.y + topLeft.h + edge.y < 0) pos.y += travelDist.y;
+
+    // Bottom right corner
+    if (bottomRight.x - bottomRight.w - edge.x > bSizeShrunk.x) pos.x -= travelDist.x;
+    if (bottomRight.y - bottomRight.h - edge.y > bSizeShrunk.y) pos.y -= travelDist.y;
 }

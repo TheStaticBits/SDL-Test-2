@@ -29,14 +29,19 @@ public:
 
     void operator=(const Particle&) = delete;
 
-    void update(Window& window, const Vect<uint32_t> baseSize);
+    void update(Window& window, 
+                const Vect<int64_t> renderOffset, 
+                const Vect<uint32_t> size);
     void render(Window& window, const Vect<int64_t> renderOffset);
 
 private:
     SDL_Rect getRenderRect(const Vect<int64_t> renderOffset) const;
-    bool inBox(const SDL_Rect rect, const Vect<int> size);
+    void setRenderRect(const Vect<float> newPos, const Vect<int64_t> renderOffset);
 
-    void wrap(Window& window, const Vect<uint32_t> baseSize);
+    inline const Vect<int> getEdge(const SDL_Rect rect);
+    inline const Vect<int> getEdgeScaled(const SDL_Rect rect);
+
+    const Vect<uint32_t> offscreenDirs(const SDL_Rect rect, const Vect<int> size, const Vect<int> edge);
 
     inline static const float ROTATE_EDGES = 0.5f;
 

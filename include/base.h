@@ -23,12 +23,11 @@ inline const std::string RemoveObj = "Remove"; // Used for not saving objects th
 // The second in the pair is the distance between 
 // each particle created for that layer. 
 inline const std::vector<std::pair<ParticleData, uint32_t>> BG_PARTICLE_DATA = {
-    { { { 0, 140, 140 }, 7.0f, 10.0f, 2.0f, 3.0f }, 50 },
-    { { { 0, 185, 185 }, 8.0f, 20.0f, 3.5f, 2.5f }, 70 },
-    { { { 0, 220, 220 }, 9.0f, 30.0f, 4.5f, 1.7f }, 90 }
-    // { { { 0, 140, 140 }, 5.0f, 0.0f, 2.0f, 3.0f }, 50 },
-    // { { { 0, 160, 160 }, 6.0f, 0.0f, 3.5f, 2.5f }, 70 },
-    // { { { 0, 180, 180 }, 7.0f, 0.0f, 4.5f, 1.8f }, 90 }
+    //                   rotation  movement
+    //      Color         speed,    speed   scale   parallax   distance
+    { { { 0, 140, 140 },  7.0f,     10.0f,  2.0f,   3.0f },    70  },
+    { { { 0, 185, 185 },  8.0f,     20.0f,  3.5f,   2.5f },    90  },
+    { { { 0, 220, 220 },  9.0f,     30.0f,  4.5f,   1.7f },    100 }
 };
 
 class Base

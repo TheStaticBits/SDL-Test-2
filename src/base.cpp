@@ -137,13 +137,14 @@ void Base::updatePlacing(Window& window, const Vect<int64_t>& renderOffset, cons
 
 void Base::initParticles(Window& window)
 {
+    const Vect<uint32_t> maxRenderOffset = size - window.getSize();
     Vect<int64_t> spawnPos;
-     
+    
     for (const std::pair<ParticleData, uint32_t>& layer : BG_PARTICLE_DATA)
     {
-        for (spawnPos.x = 0; static_cast<float>(spawnPos.x) * layer.first.parallax <= static_cast<float>(size.x); spawnPos.x += layer.second)
+        for (spawnPos.x = 0; spawnPos.x - (maxRenderOffset.x - layer.first.parallax) <= size.x; spawnPos.x += layer.second)
         {
-            for (spawnPos.y = 0; spawnPos.y * layer.first.parallax <= size.y; spawnPos.y += layer.second)
+            for (spawnPos.y = 0; spawnPos.y - (maxRenderOffset.y - layer.first.parallax) <= size.y; spawnPos.y += layer.second)
             {
                 // Chooses random angle between min and max angles
                 float moveAngle = static_cast<float>((rand() % (maxBgParticleAngle - minBgParticleAngle)) + minBgParticleAngle);
@@ -152,20 +153,14 @@ void Base::initParticles(Window& window)
 
                 bgParticles.push_back(Particle(bgParticleTex, spawnPos.cast<float>(), startAngle, moveAngle, layer.first));
             }
-
-            std::cout << spawnPos.y * layer.first.parallax << " " << size.y << std::endl;
         }
-
-        std::cout << spawnPos.x * layer.first.parallax << " " << size.x << std::endl;
     }
 }
 
 void Base::updateParticles(Window& window, const Vect<int64_t>& renderOffset)
 {
     for (Particle& p : bgParticles)
-        p.update(window);
-
-    // Remove and replace particles that went offscreen here
+        p.update(window, size);
 }
 
 void Base::renderMinimap(Window& window)
