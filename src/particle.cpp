@@ -70,6 +70,8 @@ bool Particle::inBox(const SDL_Rect rect, const Vect<int> size)
 
 void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
 {
+    // could scale down position by parallax and check off screen (divided by parallax), move scaled down size, and then scale back up!
+
     // Wrap around if offscreen
     const SDL_Rect topLeft = getRenderRect(Vect<int64_t>(0, 0));
     const SDL_Rect bottomRight = getRenderRect((baseSize - window.getSize()).cast<int64_t>());
