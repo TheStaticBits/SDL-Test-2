@@ -25,9 +25,9 @@ inline const std::string RemoveObj = "Remove"; // Used for not saving objects th
 inline const std::vector<std::pair<ParticleData, uint32_t>> BG_PARTICLE_DATA = {
     //                   rotation  movement
     //      Color         speed,    speed   scale   parallax   distance
-    { { { 0, 140, 140 },  7.0f,     10.0f,  2.5f,   2.6f },    70  },
+    { { { 0, 140, 140 },  7.0f,     10.0f,  2.5f,   2.5f },    70  },
     { { { 0, 170, 185 },  8.0f,     15.0f,  3.5f,   2.0f },    90  },
-    { { { 0, 200, 220 },  9.0f,     20.0f,  4.0f,   1.4f },    100 }
+    { { { 0, 200, 220 },  9.0f,     20.0f,  4.0f,   1.5f },    100 }
 };
 
 class Base

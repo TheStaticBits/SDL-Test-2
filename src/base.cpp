@@ -191,8 +191,6 @@ void Base::renderMinimap(Window& window)
 
 void Base::renderTiles(Window& window, const Vect<int64_t> renderOffset)
 {
-    renderBg(window, renderOffset); // Temp (probably)
-
     for (std::unique_ptr<Interactable>& obj : objects)
         obj->render(window, renderOffset);
 }
