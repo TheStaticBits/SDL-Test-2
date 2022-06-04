@@ -9,7 +9,6 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "vector.h"
-#include "utility.h"
 
 inline const uint32_t WIN_SCALE = 3;
 

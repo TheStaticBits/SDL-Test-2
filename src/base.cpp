@@ -21,12 +21,7 @@
 #include "utility.h"
 #include "silverStorage.h"
 #include "particle.h"
-// Forward defining Player to avoid inclusion loop
-class Player
-{
-public:
-    void render(Window& window, const Vect<int64_t> renderOffset);
-};
+#include "player.h"
 
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 

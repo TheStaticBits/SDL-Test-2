@@ -11,8 +11,8 @@
 
 #include <nlohmann/json.hpp>
 
+class Window;
 #include "vector.h"
-#include "window.h"
 #include "animation.h"
 
 enum ObjType { Platform_T, SilverStorage_T};

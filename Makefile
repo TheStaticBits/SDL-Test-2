@@ -65,13 +65,13 @@ $(CPATH)/player.o: $(SPATH)/player.cpp $(IPATH)/player.h $(IPATH)/vector.h $(IPA
 $(CPATH)/interactable.o: $(SPATH)/interactable.cpp $(IPATH)/interactable.h $(IPATH)/vector.h $(IPATH)/window.h $(IPATH)/utility.h $(IPATH)/base.h $(IPATH)/animation.h
 	$(CC) -c $(SPATH)/interactable.cpp $(FLAGS) -o $(CPATH)/interactable.o
 
-$(CPATH)/base.o: $(SPATH)/base.cpp $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/window.h $(IPATH)/interactable.h $(IPATH)/platform.h $(IPATH)/building.h $(IPATH)/utility.h $(IPATH)/silverStorage.h $(IPATH)/particle.h
+$(CPATH)/base.o: $(SPATH)/base.cpp $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/window.h $(IPATH)/interactable.h $(IPATH)/platform.h $(IPATH)/building.h $(IPATH)/utility.h $(IPATH)/silverStorage.h $(IPATH)/particle.h $(IPATH)/player.h
 	$(CC) -c $(SPATH)/base.cpp $(FLAGS) -o $(CPATH)/base.o
 
 $(CPATH)/platform.o: $(SPATH)/platform.cpp $(IPATH)/platform.h $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/interactable.h $(IPATH)/window.h $(IPATH)/utility.h
 	$(CC) -c $(SPATH)/platform.cpp $(FLAGS) -o $(CPATH)/platform.o
 
-$(CPATH)/building.o: $(SPATH)/building.cpp $(IPATH)/building.h $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/interactable.h $(IPATH)/utility.h
+$(CPATH)/building.o: $(SPATH)/building.cpp $(IPATH)/building.h $(IPATH)/window.h $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/interactable.h $(IPATH)/utility.h
 	$(CC) -c $(SPATH)/building.cpp $(FLAGS) -o $(CPATH)/building.o
 
 $(CPATH)/silverStorage.o: $(SPATH)/silverStorage.cpp $(IPATH)/silverStorage.h $(IPATH)/building.h $(IPATH)/interactable.h $(IPATH)/vector.h $(IPATH)/base.h

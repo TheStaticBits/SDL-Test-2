@@ -11,6 +11,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include "window.h"
 #include "vector.h"
 #include "base.h"
 #include "interactable.h"

@@ -10,13 +10,11 @@
 
 #include <nlohmann/json.hpp>
 
-#include "vector.h"
-#include "window.h"
-#include "interactable.h"
-#include "platform.h"
-#include "building.h"
-#include "particle.h"
+class Window;
 class Player;
+#include "vector.h"
+#include "interactable.h"
+#include "particle.h"
 
 inline const uint16_t TILE_SIZE = 20;
 inline const std::string RemoveObj = "Remove"; // Used for not saving objects that have not been placed

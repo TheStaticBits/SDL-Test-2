@@ -8,11 +8,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "vector.h"
-#include "window.h"
-#include "base.h"
+template <typename T>
+struct Vect;
+class Window;
 #include "interactable.h"
-#include "utility.h"
 
 class Platform : public Interactable
 {

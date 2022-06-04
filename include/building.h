@@ -10,8 +10,10 @@
 
 #include <nlohmann/json.hpp>
 
-#include "vector.h"
-#include "base.h"
+template <typename T>
+struct Vect;
+
+class Base;
 #include "interactable.h"
 
 // Contains more specific code, for each building

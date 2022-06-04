@@ -9,10 +9,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "vector.h"
-#include "window.h"
-#include "utility.h"
-#include "base.h"
+class Window;
+class Base;
 #include "interactable.h"
 
 class Player

@@ -8,9 +8,10 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+template <typename T>
+class Vect;
 #include "window.h"
 #include "player.h"
-#include "vector.h"
 #include "base.h"
 #include "shop.h"
 

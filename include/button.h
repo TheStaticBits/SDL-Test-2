@@ -8,9 +8,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "window.h"
+class Window;
 #include "vector.h"
-#include "utility.h"
 
 enum bTextures { BlueB, ShopB, BuildingsB};
 inline const std::unordered_map<bTextures, std::string> bFolderNames = {

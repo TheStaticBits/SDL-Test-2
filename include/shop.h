@@ -7,9 +7,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "window.h"
+class Window;
 #include "vector.h"
-#include "utility.h"
 #include "button.h"
 
 enum Category { NoneOpen, Buildings, Platforms, Robots };

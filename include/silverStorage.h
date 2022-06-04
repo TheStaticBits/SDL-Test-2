@@ -10,8 +10,6 @@
 #include <nlohmann/json.hpp>
 
 #include "building.h"
-#include "interactable.h"
-#include "vector.h"
 
 class SilverStorage : public Building
 {

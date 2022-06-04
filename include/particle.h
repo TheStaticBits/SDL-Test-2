@@ -1,13 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+class Window;
 #include "vector.h"
-#include "window.h"
-#include "utility.h"
 
 struct ParticleData
 {
