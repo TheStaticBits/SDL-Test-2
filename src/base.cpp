@@ -137,14 +137,15 @@ void Base::updatePlacing(Window& window, const Vect<int64_t>& renderOffset, cons
 
 void Base::initParticles(Window& window)
 {
-    const Vect<uint32_t> maxRenderOffset = size - window.getSize();
+    const Vect<uint32_t> winSize = window.getSize();
+    const Vect<uint32_t> maxRenderOffset = size - winSize;
     Vect<int64_t> spawnPos;
     
     for (const std::pair<ParticleData, uint32_t>& layer : BG_PARTICLE_DATA)
     {
-        for (spawnPos.x = 0; spawnPos.x - (maxRenderOffset.x - layer.first.parallax) <= size.x; spawnPos.x += layer.second)
+        for (spawnPos.x = 0; spawnPos.x <= winSize.x + (maxRenderOffset.x / layer.first.parallax); spawnPos.x += layer.second)
         {
-            for (spawnPos.y = 0; spawnPos.y - (maxRenderOffset.y - layer.first.parallax) <= size.y; spawnPos.y += layer.second)
+            for (spawnPos.y = 0; spawnPos.y <= winSize.y +(maxRenderOffset.y / layer.first.parallax); spawnPos.y += layer.second)
             {
                 // Chooses random angle between min and max angles
                 float moveAngle = static_cast<float>((rand() % (maxBgParticleAngle - minBgParticleAngle)) + minBgParticleAngle);

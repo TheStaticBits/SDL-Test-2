@@ -34,7 +34,7 @@ public:
 
 private:
     SDL_Rect getRenderRect(const Vect<int64_t> renderOffset) const;
-    bool inBox(const SDL_Rect rect, const Vect<int> size);
+    Vect<int32_t> inBox(const SDL_Rect rect, Vect<uint32_t> uSize);
 
     void wrap(Window& window, const Vect<uint32_t> baseSize);
 

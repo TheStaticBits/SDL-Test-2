@@ -41,9 +41,9 @@ void Particle::update(Window& window, const Vect<uint32_t> baseSize)
 void Particle::render(Window& window, const Vect<int64_t> renderOffset)
 {
     SDL_Rect dst = getRenderRect(renderOffset);
-    const Vect<int> winSize = window.getSize().cast<int>();
+    const Vect<uint32_t> winSize = window.getSize().cast<uint32_t>();
     
-    if (inBox(dst, winSize))
+    if (inBox(dst, winSize) == Vect<int32_t>(0, 0))
     {
         window.modColor(texture, data.color);
         window.render(texture, dst, angle);
@@ -59,36 +59,43 @@ SDL_Rect Particle::getRenderRect(const Vect<int64_t> renderOffset) const
     return { posInt.x, posInt.y, sizeInt.x, sizeInt.y };
 }
 
-bool Particle::inBox(const SDL_Rect rect, const Vect<int> size)
+Vect<int32_t> Particle::inBox(const SDL_Rect rect, Vect<uint32_t> uSize)
 {
+    const Vect<int> size = uSize.cast<int>();
     const Vect<int> sizeVect = { rect.w, rect.h };
     const Vect<int> edge = (sizeVect.cast<float>() * ROTATE_EDGES).cast<int>();
 
-    return (rect.x - edge.x < size.x) && (rect.y - edge.y < size.y) &&
-           (rect.x + rect.w + edge.x > 0) && (rect.y + rect.h + edge.y > 0);
+    Vect<int32_t> dirOut(0, 0);
+
+    dirOut.x = (int32_t)(rect.x - edge.x > size.x) - 
+               (int32_t)(rect.x + rect.w + edge.x < 0);
+    dirOut.y = (int32_t)(rect.y - edge.y > size.y) - 
+               (int32_t)(rect.y + rect.h + edge.y < 0);
+
+    return dirOut;
 }
 
 void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
 {
     // could scale down position by parallax and check off screen (divided by parallax), move scaled down size, and then scale back up!
+    const SDL_Rect rect = getRenderRect({ 0, 0 });
+    const Vect<uint32_t> maxRenderOffset = baseSize - window.getSize();
+    const Vect<uint32_t> particleMovArea = window.getSize() + (maxRenderOffset.cast<float>() / data.parallax).cast<uint32_t>();
+    const Vect<uint32_t> scaledSize = (Vect<int>( rect.w, rect.h )).cast<uint32_t>();
+    const Vect<uint32_t> edge = (scaledSize.cast<float>() * ROTATE_EDGES).cast<uint32_t>();
 
-    // Wrap around if offscreen
-    const SDL_Rect topLeft = getRenderRect(Vect<int64_t>(0, 0));
-    const SDL_Rect bottomRight = getRenderRect((baseSize - window.getSize()).cast<int64_t>());
-    const Vect<int> renderSize(topLeft.w, topLeft.h);
-    const Vect<int> bSizeShrunk = (baseSize.cast<float>() / data.parallax).cast<int>();
+    // moving down/right = 1, left/up = -1
+    const Vect<int32_t> moveAngle = { (int32_t)(cos(this->moveAngle * M_PI / 180) < 0.0f) * 2 - 1,
+                                       (int32_t)(sin(this->moveAngle * M_PI / 180) < 0.0f) * 2 - 1 };
 
-    const Vect<int> edge = (size.cast<float>() * data.scale * ROTATE_EDGES).cast<int>();
 
-    // hacky here, "* 4" and line 83, "*= 2"
-    Vect<float> travelDist = bSizeShrunk.cast<float>() + ((renderSize + edge) * 4).cast<float>();
-    travelDist.x *= 2;
+    const Vect<uint32_t> travelDist = particleMovArea + ((scaledSize + edge));
+    Vect<int32_t> dirOut = inBox(rect, particleMovArea);
 
-    // Top left corner
-    if (topLeft.x + topLeft.w + edge.x < 0) pos.x += travelDist.x;
-    if (topLeft.y + topLeft.h + edge.y < 0) pos.y += travelDist.y;
+    // If the particle is offscreen, but moving towards the screen,
+    // cancel that wrap around
+    if (dirOut.x == moveAngle.x) dirOut.x = 0;
+    if (dirOut.y == moveAngle.y) dirOut.y = 0;
 
-    // Bottom right corner
-    if (bottomRight.x - bottomRight.w - edge.x > bSizeShrunk.x) pos.x -= travelDist.x;
-    if (bottomRight.y - bottomRight.h - edge.y > bSizeShrunk.y) pos.y -= travelDist.y;
+    pos -= (dirOut * travelDist.cast<int32_t>()).cast<float>();
 }
