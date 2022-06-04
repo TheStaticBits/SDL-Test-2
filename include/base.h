@@ -16,6 +16,7 @@
 #include "platform.h"
 #include "building.h"
 #include "particle.h"
+class Player;
 
 inline const uint16_t TILE_SIZE = 20;
 inline const std::string RemoveObj = "Remove"; // Used for not saving objects that have not been placed
@@ -40,7 +41,7 @@ public:
 
     void update(Window& window, const Vect<int64_t>& renderOffset);
 
-    void renderMinimap(Window& window);
+    void renderMinimap(Window& window, Player& player);
     void renderTiles  (Window& window, const Vect<int64_t> renderOffset);
     void renderBg     (Window& window, const Vect<int64_t> renderOffset);
     void renderMenues (Window& window, const Vect<int64_t> renderOffset);

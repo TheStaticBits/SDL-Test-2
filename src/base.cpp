@@ -21,6 +21,12 @@
 #include "utility.h"
 #include "silverStorage.h"
 #include "particle.h"
+// Forward defining Player to avoid inclusion loop
+class Player
+{
+public:
+    void render(Window& window, const Vect<int64_t> renderOffset);
+};
 
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
@@ -164,7 +170,7 @@ void Base::updateParticles(Window& window, const Vect<int64_t>& renderOffset)
         p.update(window, size);
 }
 
-void Base::renderMinimap(Window& window)
+void Base::renderMinimap(Window& window, Player& player)
 {
     // Creating minimap
     window.setTarget(minimap);
@@ -176,6 +182,7 @@ void Base::renderMinimap(Window& window)
 
     window.setScale(1);
     renderTiles(window, Vect<int64_t>(0, 0));
+    player.render(window, Vect<int64_t>(0, 0));
     window.setScale(WIN_SCALE);
 
     window.resetTarget();
