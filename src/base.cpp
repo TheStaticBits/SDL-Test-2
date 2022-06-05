@@ -84,14 +84,14 @@ void Base::updateBuildings(Window& window, const Vect<int64_t>& renderOffset, co
     // Updating the menu that is open before others
     for (std::unique_ptr<Interactable>& obj : objects)
         if (obj->menuOpen())
-            obj->checkMenu(window, renderOffset);
+            obj->checkMenu(window, renderOffset, size);
 
     for (std::unique_ptr<Interactable>& obj : objects)
     {
         obj->update(timeAtUpdate);
 
         if (!obj->menuOpen())
-            obj->checkMenu(window, renderOffset);
+            obj->checkMenu(window, renderOffset, size);
     }
 }
 

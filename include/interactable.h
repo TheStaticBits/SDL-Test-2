@@ -45,7 +45,7 @@ public:
     virtual void completePlace(const uint64_t& time);
 
     virtual void update(const uint64_t& seconds) { };
-    virtual void checkMenu(Window& window, const Vect<int64_t>& renderOffset);
+    virtual void checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
     virtual void render(Window& window, const Vect<int64_t>& renderOffset);
     virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset);
 
@@ -68,6 +68,8 @@ public:
                                              clicked = false;     }
 
 protected:
+    void setMenuRect(const Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
+    
     static constexpr uint8_t alpha = 150;
     static std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> textures;
 
@@ -83,7 +85,6 @@ protected:
     bool clicked;
     Vect<uint32_t> menuSize;
     SDL_Rect menuPos;
-    void setMenuRect(const Window& window, const Vect<int64_t>& renderOffset);
 
     const ObjType type;
 };

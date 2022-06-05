@@ -58,9 +58,9 @@ void Interactable::completePlace(const uint64_t& time)
     placing = false; 
 }
 
-void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset)
+void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
 {
-    setMenuRect(window, renderOffset);
+    setMenuRect(window, renderOffset, baseSize);
 
     if (!placing)
     {
@@ -147,7 +147,7 @@ std::string Interactable::readSave(std::string& save)
     return save.substr(save.find("#") + 1); // Removing everything before the divider
 }
 
-void Interactable::setMenuRect(const Window& window, const Vect<int64_t>& renderOffset)
+void Interactable::setMenuRect(const Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
 {
     const Vect<int> menuSizeInt = menuSize.cast<int>();
     menuPos.w = menuSizeInt.x;
@@ -165,6 +165,6 @@ void Interactable::setMenuRect(const Window& window, const Vect<int64_t>& render
     menuPos.x = renderPos.x + (renderPos.w / 2) - (menuPos.w / 2);
     if (menuPos.x < 0)
         menuPos.x = 0;
-    else if (menuPos.x + menuPos.w > window.getCamSize().xCast<int>())
-        menuPos.x = window.getCamSize().x - menuPos.w;
+    else if (menuPos.x + menuPos.w > baseSize.xCast<int>())
+        menuPos.x = baseSize.x - menuPos.w;
 }
