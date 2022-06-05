@@ -26,7 +26,7 @@
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
       bgParticleTex(window.loadTexture(P_IMG_PATH)),
-      size{150, 100}, // TEMPORARY, will change in the future
+      size{900, 600}, // TEMPORARY, will change in the future
       placing(false),
       minimap(window.createTex(size.x, size.y))
 {
