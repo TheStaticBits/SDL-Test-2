@@ -178,18 +178,16 @@ void Base::renderMinimap(Window& window, Player& player)
     window.setScale(1);
     renderTiles(window, Vect<int64_t>(0, 0));
     player.render(window, Vect<int64_t>(0, 0));
-    window.setScale(WIN_SCALE);
+    window.resetScale();
 
     window.resetTarget();
 
     window.modAlpha(minimap, minimapAlpha);
 
     // Drawing minimap to screen
-    const Vect<int> minimapSize = { static_cast<int>(size.x * minimapScale), 
-                                    static_cast<int>(size.y * minimapScale) };
     
     SDL_Rect dest = { 5, static_cast<int>(window.getSize().y - minimapSize.y - 5),
-                      minimapSize.x, minimapSize.y };
+                      minimapSize.xCast<int>(), minimapSize.yCast<int>() };
     window.render(minimap, dest);
 }
 

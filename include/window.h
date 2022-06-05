@@ -76,7 +76,8 @@ public:
         fMouseButtons[button] = state;
         fMouseHeldButtons[button] = state; 
     }
-    inline void setScale(const uint32_t newScale) { scale = newScale; }
+    inline void setScale(const uint32_t newScale) { scale = newScale;  }
+    inline void resetScale()                      { scale = WIN_SCALE; }
 
 private:
     void handleKey(SDL_Keycode& key, Uint32& type);

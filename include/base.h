@@ -24,6 +24,7 @@ inline const std::string RemoveObj = "Remove"; // Used for not saving objects th
 inline const std::vector<std::pair<ParticleData, uint32_t>> BG_PARTICLE_DATA = {
     //                   rotation  movement
     //      Color         speed,    speed   scale   parallax   distance
+    { { { 0, 120, 120 },  6.0f,     5.0f,   2.0f,   3.0f },    50  },
     { { { 0, 140, 140 },  7.0f,     10.0f,  2.5f,   2.5f },    70  },
     { { { 0, 170, 185 },  8.0f,     15.0f,  3.5f,   2.0f },    90  },
     { { { 0, 200, 220 },  9.0f,     20.0f,  4.0f,   1.5f },    100 }
@@ -78,7 +79,7 @@ private:
     
     bool placing;
 
-    inline static const float minimapScale = 0.1f;
+    inline static const Vect<uint32_t> minimapSize = { 90, 60 };
     inline static const uint8_t minimapAlpha = 150;
     SDL_Texture* minimap;
 };
