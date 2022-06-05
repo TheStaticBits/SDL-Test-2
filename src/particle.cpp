@@ -77,11 +77,19 @@ Vect<int32_t> Particle::inBox(const SDL_Rect rect, Vect<uint32_t> uSize)
 
 void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
 {
-    // could scale down position by parallax and check off screen (divided by parallax), move scaled down size, and then scale back up!
     const SDL_Rect rect = getRenderRect({ 0, 0 });
-    const Vect<uint32_t> maxRenderOffset = baseSize - window.getSize();
-    const Vect<uint32_t> particleMovArea = window.getSize() + (maxRenderOffset.cast<float>() / data.parallax).cast<uint32_t>();
+    
+    Vect<uint32_t> winSize = window.getSize();
+    if (winSize <= baseSize) winSize = baseSize;
+
+    // Bottom right corner
+    const Vect<uint32_t> maxRenderOffset = baseSize - winSize;
+    // Area that the particle can be in while visible
+    const Vect<uint32_t> particleMovArea = winSize + (maxRenderOffset.cast<float>() / data.parallax).cast<uint32_t>();
+
     const Vect<uint32_t> scaledSize = (Vect<int>( rect.w, rect.h )).cast<uint32_t>();
+    // Edge distance to allow room for the 
+    // corner of the image while rotation
     const Vect<uint32_t> edge = (scaledSize.cast<float>() * ROTATE_EDGES).cast<uint32_t>();
 
     // moving down/right = 1, left/up = -1
@@ -89,6 +97,7 @@ void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
                                        (int32_t)(sin(this->moveAngle * M_PI / 180) < 0.0f) * 2 - 1 };
 
 
+    // Distance to travel if it needs to wrap
     const Vect<uint32_t> travelDist = particleMovArea + ((scaledSize + edge));
     Vect<int32_t> dirOut = inBox(rect, particleMovArea);
 
@@ -97,5 +106,6 @@ void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
     if (dirOut.x == moveAngle.x) dirOut.x = 0;
     if (dirOut.y == moveAngle.y) dirOut.y = 0;
 
+    // Wrapping
     pos -= (dirOut * travelDist.cast<int32_t>()).cast<float>();
 }

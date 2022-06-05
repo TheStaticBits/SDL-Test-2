@@ -54,17 +54,16 @@ struct Vect
                                           static_cast<U>(y)); }
 
     template <typename U>
-    U xCast() const { return static_cast<U>(x); }
+    inline U xCast() const { return static_cast<U>(x); }
     template <typename U>
-    U yCast() const { return static_cast<U>(y); }
+    inline U yCast() const { return static_cast<U>(y); }
 
-
-    void lock(Vect<T> max, Vect<T> min) {
+    inline void lock(Vect<T> max, Vect<T> min) {
         if (x < min.x) x = min.x; else if (x > max.x) x = max.x; 
         if (y < min.y) y = min.y; else if (y > max.y) y = max.y; 
     }
 
-    void print() const
+    inline void print() const
     {
         std::cout << "(" << x << ", " << y << ")" << std::endl;
     }

@@ -191,6 +191,12 @@ void Window::modColor(SDL_Texture* texture, std::vector<uint8_t> color)
         std::cout << "[Error] Unable to set texture mod color: " << SDL_GetError() << std::endl;
 }
 
+void Window::modAlpha(SDL_Texture* texture, uint8_t alpha)
+{
+    if (SDL_SetTextureAlphaMod(texture, alpha) != 0)
+        std::cout << "[Error] Unable to set texture alpha: " << SDL_GetError() << std::endl;
+}
+
 void Window::render(SDL_Texture* texture, SDL_Rect& dst)
 {
     SDL_Rect newRect = scaleUp(dst);

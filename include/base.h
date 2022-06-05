@@ -79,5 +79,6 @@ private:
     bool placing;
 
     inline static const float minimapScale = 0.1f;
+    inline static const uint8_t minimapAlpha = 150;
     SDL_Texture* minimap;
 };

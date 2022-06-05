@@ -9,7 +9,7 @@
 #include <SDL2/SDL_ttf.h>
 
 template <typename T>
-class Vect;
+struct Vect;
 #include "window.h"
 #include "player.h"
 #include "base.h"

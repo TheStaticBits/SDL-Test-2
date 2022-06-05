@@ -29,8 +29,9 @@ public:
     void inputs();
     void calcDeltaTime();
 
-    // Mod texture colors
+    // Mod texture
     void modColor(SDL_Texture* tex, std::vector<uint8_t> color);
+    void modAlpha(SDL_Texture* tex, uint8_t alpha);
 
     // Render a texture to the window
     void render(SDL_Texture* texture, SDL_Rect& dst);

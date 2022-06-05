@@ -26,7 +26,7 @@
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
       bgParticleTex(window.loadTexture(P_IMG_PATH)),
-      size{900, 600}, // TEMPORARY, will change in the future
+      size{300, 200}, // TEMPORARY, will change in the future
       placing(false),
       minimap(window.createTex(size.x, size.y))
 {
@@ -181,6 +181,8 @@ void Base::renderMinimap(Window& window, Player& player)
     window.setScale(WIN_SCALE);
 
     window.resetTarget();
+
+    window.modAlpha(minimap, minimapAlpha);
 
     // Drawing minimap to screen
     const Vect<int> minimapSize = { static_cast<int>(size.x * minimapScale), 
