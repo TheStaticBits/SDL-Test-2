@@ -13,9 +13,10 @@
 
 Window::Window()
     : quit(false), resizeWin(false), mousePos{0, 0}, 
-      window(NULL), renderer(NULL),
+      window(NULL), renderer(NULL), camera(NULL),
       realWinSize(900, 600), winSize(realWinSize / WIN_SCALE),
-      deltaTime(0.0f), lastTime(0), fps(0), scale(WIN_SCALE)
+      deltaTime(0.0f), lastTime(0), fps(0), scale(WIN_SCALE),
+      renderTo(WINDOW)
 {
     // Setting up window
     window = SDL_CreateWindow(TITLE, 
@@ -46,8 +47,23 @@ Window::Window()
 
 Window::~Window()
 {
+    SDL_DestroyTexture(camera);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+}
+
+void Window::updateCamera(const Vect<uint32_t> baseSize)
+{
+    // Setting up game box
+    Vect<uint32_t> size;
+    
+    if (baseSize < winSize) size = baseSize;
+    else size = winSize;
+
+    camSize = size;
+    realCamSize = size * WIN_SCALE;
+    camera = createTex(realCamSize.x, realCamSize.y);
+
 }
 
 SDL_Texture* Window::loadTexture(const char* path)
@@ -116,7 +132,7 @@ void Window::update()
     SDL_RenderClear(renderer); 
 }
 
-void Window::inputs()
+void Window::inputs(const Vect<uint32_t> baseSize)
 {
     // Resetting
     mouseButtons.clear();
@@ -143,12 +159,12 @@ void Window::inputs()
                 switch (event.window.event)
                 {
                     case SDL_WINDOWEVENT_RESIZED:
-                        resize(event.window.data1, event.window.data2);
+                        resize(event.window.data1, event.window.data2, baseSize);
                         resizeWin = true;
                         break;
                     
                     case SDL_WINDOWEVENT_MAXIMIZED:
-                        maximize();
+                        maximize(baseSize);
                 }
                 break;
             
@@ -165,6 +181,7 @@ void Window::inputs()
     SDL_GetMouseState(&mouseRetrieve.x, &mouseRetrieve.y);
     // Adjusting based on the scale of the screen
     mousePos = mouseRetrieve.cast<int64_t>() / WIN_SCALE;
+    camMousePos = mousePos - (camOffset / WIN_SCALE).cast<int64_t>();
 }
 
 void Window::calcDeltaTime()
@@ -204,7 +221,7 @@ void Window::render(SDL_Texture* texture, SDL_Rect& dst)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
-void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst)
+void Window::render(SDL_Texture* texture, SDL_Rect& dst, SDL_Rect& src)
 {
     SDL_Rect newRect = scaleUp(dst);
     if (SDL_RenderCopy(renderer, texture, &src, &newRect) != 0)
@@ -215,6 +232,12 @@ void Window::render(SDL_Texture* texture, SDL_Rect& dst, const double angle)
 {
     SDL_Rect newRect = scaleUp(dst);
     if (SDL_RenderCopyEx(renderer, texture, NULL, &newRect, angle, NULL, SDL_FLIP_NONE) != 0)
+        std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
+}
+
+void Window::renderWithoutScale(SDL_Texture* texture, SDL_Rect& dst)
+{
+    if (SDL_RenderCopy(renderer, texture, NULL, &dst) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
@@ -240,22 +263,51 @@ void Window::setTarget(SDL_Texture* texture)
 
 void Window::resetTarget()
 {
-    SDL_SetRenderTarget(renderer, NULL);
+    if (renderTo == WINDOW)
+        SDL_SetRenderTarget(renderer, NULL);
+    else if (renderTo == CAMERA)
+        SDL_SetRenderTarget(renderer, camera);
 }
 
-void Window::resize(int32_t width, int32_t height)
+void Window::resize(int32_t width, int32_t height, const Vect<uint32_t> baseSize)
 {
     realWinSize = Vect<uint32_t>(width, height);
     winSize = realWinSize / WIN_SCALE;
     SDL_SetWindowSize(window, realWinSize.x, realWinSize.y);
+    updateCamera(baseSize);
 }
 
-void Window::maximize()
+void Window::maximize(const Vect<uint32_t> baseSize)
 {
     SDL_MaximizeWindow(window);
     SDL_DisplayMode DM;
     SDL_GetCurrentDisplayMode(0, &DM);
-    resize(DM.w, DM.h);
+    resize(DM.w, DM.h, baseSize);
+}
+
+void Window::startRenderGame()
+{
+    renderTo = CAMERA;
+    setTarget(camera);
+}
+
+void Window::startRenderUI()
+{
+    renderTo = WINDOW;
+    resetTarget();
+
+    SDL_Rect dst;
+
+    // If the camera size is less than window size
+    // Centering cam view
+    if (realCamSize < realWinSize)
+        camOffset = (realWinSize / 2) - (realCamSize / 2);
+    else
+        camOffset = { 0, 0 };
+
+    dst = { camOffset.xCast<int>(), camOffset.yCast<int>(), realCamSize.xCast<int>(), realCamSize.yCast<int>() };
+        
+    renderWithoutScale(camera, dst);
 }
 
 void Window::handleKey(SDL_Keycode& key, Uint32& type)

@@ -41,7 +41,7 @@ void Particle::update(Window& window, const Vect<uint32_t> baseSize)
 void Particle::render(Window& window, const Vect<int64_t> renderOffset)
 {
     SDL_Rect dst = getRenderRect(renderOffset);
-    const Vect<uint32_t> winSize = window.getSize().cast<uint32_t>();
+    const Vect<uint32_t> winSize = window.getCamSize().cast<uint32_t>();
     
     if (inBox(dst, winSize) == Vect<int32_t>(0, 0))
     {
@@ -79,7 +79,7 @@ void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
 {
     const SDL_Rect rect = getRenderRect({ 0, 0 });
     
-    Vect<uint32_t> winSize = window.getSize();
+    Vect<uint32_t> winSize = window.getCamSize();
     if (winSize <= baseSize) winSize = baseSize;
 
     // Bottom right corner

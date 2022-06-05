@@ -16,7 +16,7 @@
 #include "interactable.h"
 
 Player::Player(const Window& window)
-    : pos(Vect<float>(window.getSize().x / 2, window.getSize().y)), size{20, 20}, renderOffset(getOffset(window)), 
+    : pos(Vect<float>(window.getCamSize().x / 2, window.getCamSize().y)), size{20, 20}, renderOffset(getOffset(window)), 
     velocity{0, 0}, jump(false), canJump(false)
 {
 
@@ -105,14 +105,14 @@ void Player::resize(Base& base, const Window& window)
 
 Vect<float> Player::getOffset(const Window& window) // Percise offset for rendering the player, not moving one
 {
-    Vect<int32_t> camOffset = {(int32_t)round(window.getSize().x / 2), 
-                               (int32_t)round(window.getSize().y / 1.5)};
+    Vect<int32_t> camOffset = {(int32_t)round(window.getCamSize().x / 2), 
+                               (int32_t)round(window.getCamSize().y / 1.5)};
     return pos + (size.cast<float>() / 2) - camOffset.cast<float>();
 }
 
 void Player::lockOffset(Base& base, const Window& window)
 {
-    renderOffset.lock(base.getSize().cast<float>() - window.getSize().cast<float>(), Vect<float>(0.0f, 0.0f));
+    renderOffset.lock(base.getSize().cast<float>() - window.getCamSize().cast<float>(), Vect<float>(0.0f, 0.0f));
 }
 
 void Player::collisions(Window& window, Base& base, const float deltaTime)

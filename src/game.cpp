@@ -28,6 +28,8 @@ Game::Game()
     : lastSaveTime(0),
       player(window), base(window), shop(window)
 {
+    window.updateCamera(base.getSize());
+
     // Loading save if the person has one
     if (hasSave("save"))
     {
@@ -78,7 +80,7 @@ bool Game::initSDL()
 void Game::iteration()
 {
     window.calcDeltaTime();
-    window.inputs();
+    window.inputs(base.getSize());
 
     if (window.getResize())
     {
@@ -93,13 +95,16 @@ void Game::iteration()
     base.update(window, renderOffset);
 
     // Rendering
+    window.startRenderGame();
+
     base.renderBg(window, renderOffset);
     base.renderTiles(window, renderOffset);
     player.render(window, renderOffset);
-
     base.renderMenues(window, renderOffset);
+
+    window.startRenderUI();
+
     base.renderMinimap(window, player);
-    
     shop.render(window);
 
     // Scale up and display frame

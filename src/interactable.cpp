@@ -64,7 +64,7 @@ void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset)
 
     if (!placing)
     {
-        const Vect<int64_t> mouseMapPos = window.getMousePos() + renderOffset;
+        const Vect<int64_t> mouseMapPos = window.getCamMousePos() + renderOffset;
         if (util::collide(renderPos, mouseMapPos))
         {
             if (window.buttonHeld(SDL_BUTTON_LEFT))
@@ -157,7 +157,7 @@ void Interactable::setMenuRect(const Window& window, const Vect<int64_t>& render
     renderScreenPos.x -= renderOffset.x;
     renderScreenPos.y -= renderOffset.y;
 
-    if (renderScreenPos.y + renderScreenPos.h + menuPos.h > static_cast<int>(window.getSize().y))
+    if (renderScreenPos.y + renderScreenPos.h + menuPos.h > static_cast<int>(window.getCamSize().y))
         menuPos.y = renderPos.y - menuSizeInt.y;
     else
         menuPos.y = renderPos.y + renderPos.h;

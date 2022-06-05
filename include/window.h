@@ -11,6 +11,7 @@
 #include "vector.h"
 
 inline const uint32_t WIN_SCALE = 3;
+enum RenderTo { WINDOW, CAMERA };
 
 class Window
 {
@@ -20,13 +21,15 @@ public:
 
     void operator=(const Window&) = delete;
 
+    void updateCamera(const Vect<uint32_t> baseSize);
+
     SDL_Texture* loadTexture(const char* path);
     TTF_Font* font(const uint32_t size);
     SDL_Texture* createTex(const uint32_t width, const uint32_t height);
     SDL_Texture* getTextImg(TTF_Font* font, std::string text, SDL_Color color);
 
     void update();
-    void inputs();
+    void inputs(const Vect<uint32_t> baseSize);
     void calcDeltaTime();
 
     // Mod texture
@@ -37,28 +40,35 @@ public:
     void render(SDL_Texture* texture, SDL_Rect& dst);
     void render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst);
     void render(SDL_Texture* texture, SDL_Rect& dst, const double angle);
+    void renderWithoutScale(SDL_Texture* texture, SDL_Rect& dst);
     
     void drawRect(SDL_Rect& rect, std::vector<uint8_t> color);
 
     void setTarget(SDL_Texture* texture);
     void resetTarget();
 
-    void resize(int32_t width, int32_t height);
-    void maximize();
+    void resize(int32_t width, int32_t height, const Vect<uint32_t> baseSize);
+    void maximize(const Vect<uint32_t> baseSize);
+
+    void startRenderGame();
+    void startRenderUI();
 
     // Getters
-    inline Vect<uint32_t> getSize() const { return winSize;          }
-    inline const bool isClosed() const    { return quit;             }
-    inline const bool getResize() const   { return resizeWin;        }
+    inline const Vect<uint32_t> getSize() const    { return winSize; }
+    inline const Vect<uint32_t> getCamSize() const { return camSize; }
+    
+    inline const bool isClosed() const    { return quit;      }
+    inline const bool getResize() const   { return resizeWin; }
 
-    inline const bool pKey(const SDL_Keycode key)      { return keys[key];                }
-    inline const bool pKeyOnce(const SDL_Keycode key)  { return oneTimeKeys[key];         }
+    inline const bool pKey(const SDL_Keycode key)      { return keys[key];                 }
+    inline const bool pKeyOnce(const SDL_Keycode key)  { return oneTimeKeys[key];          }
     inline const bool button(const uint8_t button)     { return fMouseButtons[button];     }
     inline const bool buttonHeld(const uint8_t button) { return fMouseHeldButtons[button]; }
 
-    inline const Vect<int64_t> getMousePos() const { return mousePos; }
-    inline const float getDeltaTime() const        { return deltaTime; }
-    inline const float getFPS() const              { return fps; }
+    inline const Vect<int64_t> getMousePos() const    { return mousePos;    }
+    inline const Vect<int64_t> getCamMousePos() const { return camMousePos; }
+    inline const float getDeltaTime() const           { return deltaTime;   }
+    inline const float getFPS() const                 { return fps;         }
 
     // Setters
     inline void setButton(const uint8_t button, const bool state)     
@@ -89,6 +99,7 @@ private:
     std::unordered_map<uint8_t, bool> mouseButtons;
     std::unordered_map<uint8_t, bool> mouseHeldButtons;
     Vect<int64_t> mousePos;
+    Vect<int64_t> camMousePos;
     
     // Frame maps, can be modified so you can't click through things
     std::unordered_map<uint8_t, bool> fMouseButtons;
@@ -96,14 +107,20 @@ private:
 
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Texture* camera; // Viewbox of the game, not including UI
     std::unordered_map<uint32_t, TTF_Font*> fonts; // For different sizes
 
     Vect<uint32_t> realWinSize;
     Vect<uint32_t> winSize;
+    Vect<uint32_t> realCamSize;
+    Vect<uint32_t> camSize;
+    Vect<uint32_t> camOffset;
 
     float deltaTime;
     uint32_t lastTime;
     std::vector<float> deltaTimes;
     float fps;
     uint32_t scale;
+    
+    RenderTo renderTo;
 };

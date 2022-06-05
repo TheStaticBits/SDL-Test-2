@@ -99,7 +99,7 @@ void Base::updatePlacing(Window& window, const Vect<int64_t>& renderOffset, cons
 {
     if (placing)
     {
-        const Vect<int64_t> mousePos = window.getMousePos();
+        const Vect<int64_t> mousePos = window.getCamMousePos();
         
         // Getting the tile the mouse is hovering over
         Vect<int32_t> placeTile = ((mousePos + renderOffset) / TILE_SIZE).cast<int32_t>();
