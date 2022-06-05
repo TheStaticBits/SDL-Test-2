@@ -26,7 +26,7 @@
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
       bgParticleTex(window.loadTexture(P_IMG_PATH)),
-      size{300, 200}, // TEMPORARY, will change in the future
+      size{150, 100}, // TEMPORARY, will change in the future
       placing(false),
       minimap(window.createTex(size.x, size.y))
 {
@@ -139,7 +139,7 @@ void Base::updatePlacing(Window& window, const Vect<int64_t>& renderOffset, cons
 void Base::initParticles(Window& window)
 {
     const Vect<uint32_t> winSize = window.getSize();
-    const Vect<uint32_t> maxRenderOffset = size - winSize;
+    const Vect<int32_t> maxRenderOffset = (size - winSize).cast<int32_t>();
     Vect<int64_t> spawnPos;
     
     for (const std::pair<ParticleData, uint32_t>& layer : BG_PARTICLE_DATA)

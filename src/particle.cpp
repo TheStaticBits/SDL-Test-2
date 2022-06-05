@@ -79,11 +79,10 @@ void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
 {
     const SDL_Rect rect = getRenderRect({ 0, 0 });
     
-    Vect<uint32_t> winSize = window.getCamSize();
-    if (winSize <= baseSize) winSize = baseSize;
+    const Vect<uint32_t> winSize = window.getCamSize();
 
     // Bottom right corner
-    const Vect<uint32_t> maxRenderOffset = baseSize - winSize;
+    const Vect<int32_t> maxRenderOffset = (baseSize - winSize).cast<int32_t>();
     // Area that the particle can be in while visible
     const Vect<uint32_t> particleMovArea = winSize + (maxRenderOffset.cast<float>() / data.parallax).cast<uint32_t>();
 

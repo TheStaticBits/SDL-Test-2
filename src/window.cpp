@@ -63,7 +63,6 @@ void Window::updateCamera(const Vect<uint32_t> baseSize)
     camSize = size;
     realCamSize = size * WIN_SCALE;
     camera = createTex(realCamSize.x, realCamSize.y);
-
 }
 
 SDL_Texture* Window::loadTexture(const char* path)
