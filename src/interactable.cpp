@@ -158,9 +158,13 @@ void Interactable::setMenuRect(const Window& window, const Vect<int64_t>& render
     renderScreenPos.y -= renderOffset.y;
 
     if (renderScreenPos.y + renderScreenPos.h + menuPos.h > static_cast<int>(window.getCamSize().y))
-        menuPos.y = renderPos.y - menuSizeInt.y;
+        menuPos.y = renderPos.y - menuPos.h;
     else
         menuPos.y = renderPos.y + renderPos.h;
     
-    menuPos.x = renderPos.x + (renderPos.w / 2) - (menuSizeInt.x / 2);
+    menuPos.x = renderPos.x + (renderPos.w / 2) - (menuPos.w / 2);
+    if (menuPos.x < 0)
+        menuPos.x = 0;
+    else if (menuPos.x + menuPos.w > window.getCamSize().xCast<int>())
+        menuPos.x = window.getCamSize().x - menuPos.w;
 }
