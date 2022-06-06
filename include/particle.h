@@ -14,7 +14,7 @@ struct ParticleData
     std::vector<uint8_t> color;
     float rotationSpeed;
     float speed;
-    float scale;
+    int sideLength;
     float parallax; 
 };
 
@@ -33,7 +33,7 @@ public:
     void render(Window& window, const Vect<int64_t> renderOffset);
 
 private:
-    SDL_Rect getRenderRect(const Vect<int64_t> renderOffset) const;
+    SDL_Rect getRect(const Vect<int64_t> renderOffset) const;
     Vect<int32_t> inBox(const SDL_Rect rect, Vect<uint32_t> uSize);
 
     void wrap(Window& window, const Vect<uint32_t> baseSize);
@@ -47,5 +47,4 @@ private:
 
     const float moveAngle;
     const ParticleData data;
-    const Vect<uint32_t> size;
 };

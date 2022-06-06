@@ -15,8 +15,7 @@ Particle::Particle(SDL_Texture* texture,
                    const float startAngle, const float moveAngle, 
                    const ParticleData& data)
     : texture(texture), pos(startPos), angle(startAngle),
-      moveAngle(moveAngle), data(data),
-      size(util::getSize(texture))
+      moveAngle(moveAngle), data(data)
 {
 
 }
@@ -40,7 +39,7 @@ void Particle::update(Window& window, const Vect<uint32_t> baseSize)
 
 void Particle::render(Window& window, const Vect<int64_t> renderOffset)
 {
-    SDL_Rect dst = getRenderRect(renderOffset);
+    SDL_Rect dst = getRect(renderOffset);
     const Vect<uint32_t> winSize = window.getCamSize().cast<uint32_t>();
     
     if (inBox(dst, winSize) == Vect<int32_t>(0, 0))
@@ -50,13 +49,12 @@ void Particle::render(Window& window, const Vect<int64_t> renderOffset)
     }
 }
 
-SDL_Rect Particle::getRenderRect(const Vect<int64_t> renderOffset) const
+SDL_Rect Particle::getRect(const Vect<int64_t> renderOffset) const
 {
     // xtreme casts
     const Vect<int> posInt = (pos - (renderOffset.cast<float>() / data.parallax)).cast<int>();
-    const Vect<int> sizeInt = (size.cast<float>() * data.scale).cast<int>();
 
-    return { posInt.x, posInt.y, sizeInt.x, sizeInt.y };
+    return { posInt.x, posInt.y, data.sideLength, data.sideLength };
 }
 
 Vect<int32_t> Particle::inBox(const SDL_Rect rect, Vect<uint32_t> uSize)
@@ -77,7 +75,7 @@ Vect<int32_t> Particle::inBox(const SDL_Rect rect, Vect<uint32_t> uSize)
 
 void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
 {
-    const SDL_Rect rect = getRenderRect({ 0, 0 });
+    const SDL_Rect rect = getRect({ 0, 0 });
     
     const Vect<uint32_t> winSize = window.getCamSize();
 

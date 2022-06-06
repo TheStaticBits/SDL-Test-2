@@ -52,6 +52,8 @@ public:
 
     void startRenderGame();
     void startRenderUI();
+    
+    SDL_Rect scaleUp(SDL_Rect rect);
 
     // Getters
     inline const Vect<uint32_t> getSize() const    { return winSize; }
@@ -82,7 +84,6 @@ public:
 private:
     void handleKey(SDL_Keycode& key, Uint32& type);
 
-    SDL_Rect scaleUp(SDL_Rect rect);
 
     static constexpr char* TITLE = (char*)"Game again";
     static constexpr char* FONT_PATH = (char*)"res/font/font.ttf";

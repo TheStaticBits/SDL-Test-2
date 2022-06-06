@@ -309,15 +309,15 @@ void Window::startRenderUI()
     renderWithoutScale(camera, dst);
 }
 
-void Window::handleKey(SDL_Keycode& key, Uint32& type)
-{
-    if (std::find(allowedKeys.begin(), allowedKeys.end(), key) != allowedKeys.end())
-        keys[key] = (type == SDL_KEYDOWN);
-}
-
 SDL_Rect Window::scaleUp(SDL_Rect rect)
 {
     rect.x *= scale; rect.y *= scale;
     rect.w *= scale; rect.h *= scale;
     return rect;
+}
+
+void Window::handleKey(SDL_Keycode& key, Uint32& type)
+{
+    if (std::find(allowedKeys.begin(), allowedKeys.end(), key) != allowedKeys.end())
+        keys[key] = (type == SDL_KEYDOWN);
 }
