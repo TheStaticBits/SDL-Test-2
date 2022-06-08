@@ -8,6 +8,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include <nlohmann/json.hpp>
+
 template <typename T>
 struct Vect;
 class Window;
@@ -16,8 +18,8 @@ class Window;
 class Platform : public Interactable
 {
 public:
-    Platform(const uint32_t tileWidth);
-    Platform(std::string save); // Loading from save
+    Platform(Window& window, const nlohmann::json& data, const uint32_t tileWidth);
+    Platform(Window& window, const nlohmann::json& data, std::string save); // Loading from save
     ~Platform();
 
     void operator=(const Platform&) = delete;

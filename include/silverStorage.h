@@ -9,13 +9,14 @@
 
 #include <nlohmann/json.hpp>
 
+class Window;
 #include "building.h"
 
 class SilverStorage : public Building
 {
 public:
-    SilverStorage(const nlohmann::json& data); // Creation function
-    SilverStorage(const nlohmann::json& data, std::string save); // Loading from save
+    SilverStorage(Window& window, const nlohmann::json& data); // Creation function
+    SilverStorage(Window& window, const nlohmann::json& data, std::string save); // Loading from save
     ~SilverStorage();
 
     void operator=(const SilverStorage&) = delete;

@@ -74,7 +74,7 @@ $(CPATH)/platform.o: $(SPATH)/platform.cpp $(IPATH)/platform.h $(IPATH)/base.h $
 $(CPATH)/building.o: $(SPATH)/building.cpp $(IPATH)/building.h $(IPATH)/window.h $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/interactable.h $(IPATH)/utility.h
 	$(CC) -c $(SPATH)/building.cpp $(FLAGS) -o $(CPATH)/building.o
 
-$(CPATH)/silverStorage.o: $(SPATH)/silverStorage.cpp $(IPATH)/silverStorage.h $(IPATH)/building.h $(IPATH)/interactable.h $(IPATH)/vector.h $(IPATH)/base.h
+$(CPATH)/silverStorage.o: $(SPATH)/silverStorage.cpp $(IPATH)/silverStorage.h $(IPATH)/window.h $(IPATH)/building.h $(IPATH)/interactable.h $(IPATH)/vector.h $(IPATH)/base.h
 	$(CC) -c $(SPATH)/silverStorage.cpp $(FLAGS) -o $(CPATH)/silverStorage.o
 
 $(CPATH)/shop.o: $(SPATH)/shop.cpp $(IPATH)/shop.h $(IPATH)/window.h $(IPATH)/utility.h $(IPATH)/vector.h $(IPATH)/button.h

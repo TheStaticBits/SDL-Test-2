@@ -14,7 +14,12 @@
         }
     },
     "Silver Storage": {
-        "imgPath": "res/buildings/silverStorage.png",
+        "imgPaths": {
+            "idle": "res/buildings/silverStorage.png"
+        },
+        "animData": {
+            "idle": { "frames": 2, "delay": 0.1 }
+        },
         "size": [3, 2],
 
         "max": {

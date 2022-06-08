@@ -1,6 +1,7 @@
 #include "animation.h"
 
 #include <iostream>
+#include <vector>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -9,9 +10,9 @@
 #include "utility.h"
 #include "vector.h"
 
-Animation::Animation(SDL_Texture* texture, uint32_t totalFrames, float delay)
-    : texture(texture), delay(delay),
-      totalFrames(totalFrames), 
+Animation::Animation(SDL_Texture* tex, uint32_t frames, float delay)
+    : texture(tex), delay(delay),
+      totalFrames(frames), 
       size(util::getSize(texture)),
       frameSize(size.x / totalFrames, size.y),
       delayCounter(0), frame(0), finished(false)
@@ -21,7 +22,7 @@ Animation::Animation(SDL_Texture* texture, uint32_t totalFrames, float delay)
 
 Animation::~Animation()
 {
-    SDL_DestroyTexture(texture);
+    
 }
 
 void Animation::update(Window& window)
@@ -58,4 +59,21 @@ void Animation::renderCenter(Window& window, const Vect<int64_t> center)
 {
     Vect<int64_t> topLeft = center - (frameSize.cast<int64_t>() / 2);
     render(window, topLeft);
+}
+
+void Animation::modColor(Window& window, const std::vector<uint8_t> color)
+{
+    SDL_SetTextureColorMod(texture, color[0], color[1], color[2]);
+}
+
+void Animation::modAlpha(Window& window, const uint8_t alpha)
+{
+    SDL_SetTextureAlphaMod(texture, alpha);
+}
+
+void Animation::reset()
+{
+    delayCounter = 0;
+    frame = 0;
+    finished = false;
 }

@@ -13,6 +13,7 @@
 template <typename T>
 struct Vect;
 
+class Window;
 class Base;
 #include "interactable.h"
 
@@ -21,7 +22,7 @@ class Base;
 class Building : public Interactable
 {
 public:
-    Building(const nlohmann::json& data, const std::vector<uint8_t> color, const ObjType type);
+    Building(Window& window, const nlohmann::json& data, const ObjType type);
     ~Building();
 
     void operator=(const Building&) = delete;

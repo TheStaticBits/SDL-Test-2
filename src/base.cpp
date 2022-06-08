@@ -63,13 +63,13 @@ void Base::updatePlacingControls(Window& window, const Vect<int64_t>& renderOffs
         {
             placing = true;
             count[Platform_T]++;
-            objects.push_back(std::make_unique<Platform>(4));
+            objects.push_back(std::make_unique<Platform>(window, buildingData, (uint32_t)4));
         } 
         if (window.pKey(SDLK_b)) // Building
         {
             placing = true;
             count[SilverStorage_T]++;
-            objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames.at(SilverStorage_T)]));
+            objects.push_back(std::make_unique<SilverStorage>(window, buildingData));
         }
 
         // Clear any menues open

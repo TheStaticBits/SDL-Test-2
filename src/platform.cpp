@@ -7,22 +7,24 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include <nlohmann/json.hpp>
+
 #include "vector.h"
 #include "window.h"
 #include "base.h"
 #include "interactable.h"
 #include "utility.h"
 
-Platform::Platform(const uint32_t tileWidth)
-    : Interactable({tileWidth, 1}, {0, 255, 0}, Platform_T)
+Platform::Platform(Window& window, const nlohmann::json& data, const uint32_t tileWidth)
+    : Interactable(window, data, {tileWidth, 1}, Platform_T)
 {
 
 }
 
-Platform::Platform(std::string save)
-    : Interactable(Platform_T)
+Platform::Platform(Window& window, const nlohmann::json& data, std::string save)
+    : Interactable(window, data, Platform_T)
 {
-    renderColor = {0, 255, 0};
+    modColor = {0, 255, 0};
 
     save = Interactable::readSave(save);
     readSave(save);

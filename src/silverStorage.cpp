@@ -9,20 +9,21 @@
 
 #include <nlohmann/json.hpp>
 
+#include "window.h"
 #include "building.h"
 #include "interactable.h"
 #include "vector.h"
 
 // Create a new building
-SilverStorage::SilverStorage(const nlohmann::json& data)
-    : Building(data, {148, 148, 148}, SilverStorage_T), capacity(0)
+SilverStorage::SilverStorage(Window& window, const nlohmann::json& data)
+    : Building(window, data, SilverStorage_T), capacity(0)
 {
     
 }
 
 // Loads from save file
-SilverStorage::SilverStorage(const nlohmann::json& data, std::string save)
-    : Building(data, {148, 148, 148}, SilverStorage_T)
+SilverStorage::SilverStorage(Window& window, const nlohmann::json& data, std::string save)
+    : Building(window, data, SilverStorage_T)
 {
     placing = false;
     readSave(save);

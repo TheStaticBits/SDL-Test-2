@@ -17,8 +17,8 @@
 #include "interactable.h"
 #include "utility.h"
 
-Building::Building(const nlohmann::json& data, const std::vector<uint8_t> color, const ObjType type)
-    : Interactable({data["size"][0], data["size"][1]}, color, type), 
+Building::Building(Window& window, const nlohmann::json& data, const ObjType type)
+    : Interactable(window, data, {data["size"][0], data["size"][1]}, type), 
       beingBuilt(false), timeAtPlace(0), percentComplete(0),
       level(1), data(data)
 {
@@ -105,15 +105,15 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
         };
 
         // Drawing transparent part
-        std::vector<uint8_t> color = renderColor;
-        color.push_back(alpha);
+        std::vector<uint8_t> color = modColor;
+        color.push_back(ALPHA);
         window.drawRect(renderRect, color);
 
         // Drawing solid part
         const uint32_t solidHeight = static_cast<uint32_t>(percentComplete * renderPos.h);
         renderRect.y += solidHeight;
         renderRect.h -= solidHeight;
-        window.drawRect(renderRect, renderColor);
+        window.drawRect(renderRect, modColor);
     }
     else
         Interactable::render(window, renderOffset);

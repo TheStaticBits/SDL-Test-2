@@ -20,10 +20,6 @@ inline const std::unordered_map<ObjType, const std::string> objTNames = {
     { Platform_T,      "Platform"      },
     { SilverStorage_T, "Silver Storage"}
 };
-inline const std::unordered_map<ObjType, const std::string> objTFolders = {
-    { Platform_T,      "platforms"      },
-    { SilverStorage_T, "silverStorage" }
-};
 
 // If the first of a string is the same name as the object
 inline bool objCheckSavePart(const std::string part, const ObjType objType) 
@@ -35,19 +31,26 @@ inline bool objCheckSavePart(const std::string part, const ObjType objType)
 class Interactable
 {
 public:
-    Interactable(const Vect<uint32_t> tileSize, const std::vector<uint8_t> color, const ObjType type);
-    Interactable(const ObjType type); // For loading from save
+    Interactable(Window& window, const nlohmann::json& data, const Vect<uint32_t> tileSize, const ObjType type);
+    Interactable(Window& window, const nlohmann::json& data, const ObjType type); // For loading from save
     virtual ~Interactable();
 
     void operator=(const Interactable&) = delete;
 
+    void loadImgs(Window& window, const nlohmann::json& data);
+    void setupAnims(Window& window, const nlohmann::json& data);
+
     virtual bool canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size);
     virtual void completePlace(const uint64_t& time);
 
-    virtual void update(const uint64_t& seconds) { };
+    virtual void update(const uint64_t& seconds);
     virtual void checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
     virtual void render(Window& window, const Vect<int64_t>& renderOffset);
     virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset);
+    
+    void updateAnim(Window& window);
+    void setModColor(Window& window);
+    void swapAnim(const std::string& name);
 
     // Save functions
     virtual std::string getSave();
@@ -56,9 +59,19 @@ public:
     // Getter functions
     inline bool isPlacing() const        { return placing;   }
     inline Vect<uint32_t>& getTileSize() { return tileSize;  }
-    inline SDL_Rect& getRect()           { return renderPos; }
+    inline SDL_Rect& getRect()           { return renderPos; } 
     inline const ObjType& getType()      { return type;      }
-    inline const bool menuOpen()      { return hovering;  }
+    inline const bool menuOpen()         { return hovering;  }
+    
+    inline const Vect<int> getCenter()  { return { renderPos.x + renderPos.w, 
+                                                   renderPos.y + renderPos.h }; }
+
+    inline const nlohmann::json& getAnimData(const nlohmann::json& data, 
+                                             const std::string& anim, 
+                                             const std::string& property) const 
+    { 
+        return data[objTNames.at(type)]["animData"][anim][property]; 
+    }
 
     // Setter functions
     inline void setPlacable(bool canPlace) { placable = canPlace; }
@@ -70,12 +83,13 @@ public:
 protected:
     void setMenuRect(const Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
     
-    static constexpr uint8_t alpha = 150;
+    static constexpr uint8_t ALPHA = 150;
     static std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> textures;
 
-    // SDL_Texture* image; // Add image later
-    Vect<uint32_t> tileSize; // Amount of tiles it takes up
-    std::vector<uint8_t> renderColor;
+    std::unordered_map<std::string, Animation> anims;
+    std::string currentAnim;
+    Vect<uint32_t> tileSize; // Amount of tiles the hitbox/collision takes up
+    std::vector<uint8_t> modColor;
     SDL_Rect renderPos; // Top left corner
 
     bool placing;
