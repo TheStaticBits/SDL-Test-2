@@ -63,8 +63,8 @@ public:
     inline const ObjType& getType()      { return type;      }
     inline const bool menuOpen()         { return hovering;  }
     
-    inline const Vect<int> getCenter()  { return { renderPos.x + renderPos.w, 
-                                                   renderPos.y + renderPos.h }; }
+    inline const Vect<int> getCenter()  { return { renderPos.x + renderPos.w / 2, 
+                                                   renderPos.y + renderPos.h / 2}; }
 
     inline const nlohmann::json& getAnimData(const nlohmann::json& data, 
                                              const std::string& anim, 

@@ -220,7 +220,7 @@ void Window::render(SDL_Texture* texture, SDL_Rect& dst)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
-void Window::render(SDL_Texture* texture, SDL_Rect& dst, SDL_Rect& src)
+void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst)
 {
     SDL_Rect newRect = scaleUp(dst);
     if (SDL_RenderCopy(renderer, texture, &src, &newRect) != 0)
