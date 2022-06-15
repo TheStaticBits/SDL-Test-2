@@ -49,10 +49,12 @@ public:
     inline std::vector<std::unique_ptr<Interactable>>& getObjects() { return objects; }
 
     std::string getSave();
-    void readSave(std::string save);
+    void readSave(std::string save, Window& window);
     inline bool checkSavePart(std::string save) { return save.substr(0, SAVE_NAME.length()) == SAVE_NAME; }
 
 private:
+    const nlohmann::json& getBData(const ObjType type) { return buildingData[objTNames.at(type)]; } 
+
     void updatePlacingControls(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate);
     void updateBuildings(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate);
     void updatePlacing(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate);

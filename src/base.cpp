@@ -63,13 +63,13 @@ void Base::updatePlacingControls(Window& window, const Vect<int64_t>& renderOffs
         {
             placing = true;
             count[Platform_T]++;
-            objects.push_back(std::make_unique<Platform>(window, buildingData, (uint32_t)4));
+            objects.push_back(std::make_unique<Platform>(window, getBData(Platform_T), 4));
         } 
         if (window.pKey(SDLK_b)) // Building
         {
             placing = true;
             count[SilverStorage_T]++;
-            objects.push_back(std::make_unique<SilverStorage>(window, buildingData));
+            objects.push_back(std::make_unique<SilverStorage>(window, getBData(SilverStorage_T)));
         }
 
         // Clear any menues open
@@ -88,7 +88,7 @@ void Base::updateBuildings(Window& window, const Vect<int64_t>& renderOffset, co
 
     for (std::unique_ptr<Interactable>& obj : objects)
     {
-        obj->update(timeAtUpdate);
+        obj->update(window, timeAtUpdate);
 
         if (!obj->menuOpen())
             obj->checkMenu(window, renderOffset, size);
@@ -237,7 +237,7 @@ std::string Base::getSave()
     return save;
 }
 
-void Base::readSave(std::string save)
+void Base::readSave(std::string save, Window& window)
 {
     if (save.length() > SAVE_NAME.length())
     {
@@ -249,12 +249,12 @@ void Base::readSave(std::string save)
             if (objCheckSavePart(obj, Platform_T))
             {
                 count[Platform_T]++;
-                objects.push_back(std::make_unique<Platform>(obj));
+                objects.push_back(std::make_unique<Platform>(window, getBData(Platform_T), obj));
             }
             else if (objCheckSavePart(obj, SilverStorage_T))
             {
                 count[SilverStorage_T]++;
-                objects.push_back(std::make_unique<SilverStorage>(buildingData[objTNames.at(SilverStorage_T)], obj));
+                objects.push_back(std::make_unique<SilverStorage>(window, getBData(SilverStorage_T), obj));
             }
         }
     }

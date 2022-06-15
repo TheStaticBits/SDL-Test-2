@@ -17,12 +17,12 @@ Animation::Animation(SDL_Texture* tex, uint32_t frames, float delay)
       frameSize(size.x / totalFrames, size.y),
       delayCounter(0), frame(0), finished(false)
 {
-
+    
 }
 
 Animation::~Animation()
 {
-    
+
 }
 
 void Animation::update(Window& window)

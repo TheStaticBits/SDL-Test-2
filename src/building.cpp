@@ -74,8 +74,10 @@ void Building::completePlace(const uint64_t& time)
     percentComplete = 0;
 }
 
-void Building::update(const uint64_t& time)
+void Building::update(Window& window, const uint64_t& time)
 {
+    Interactable::update(window, time);
+
     // Being built timer
     if (beingBuilt)
     {

@@ -43,7 +43,7 @@ public:
     virtual bool canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size);
     virtual void completePlace(const uint64_t& time);
 
-    virtual void update(const uint64_t& seconds);
+    virtual void update(Window& window, const uint64_t& time);
     virtual void checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
     virtual void render(Window& window, const Vect<int64_t>& renderOffset);
     virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset);
@@ -70,7 +70,7 @@ public:
                                              const std::string& anim, 
                                              const std::string& property) const 
     { 
-        return data[objTNames.at(type)]["animData"][anim][property]; 
+        return data["animData"][anim][property]; 
     }
 
     // Setter functions
@@ -86,7 +86,7 @@ protected:
     static constexpr uint8_t ALPHA = 150;
     static std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> textures;
 
-    std::unordered_map<std::string, Animation> anims;
+    std::unordered_map<std::string, std::unique_ptr<Animation>> anims;
     std::string currentAnim;
     Vect<uint32_t> tileSize; // Amount of tiles the hitbox/collision takes up
     std::vector<uint8_t> modColor;

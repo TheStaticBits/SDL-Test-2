@@ -17,7 +17,7 @@
 std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> Interactable::textures = {};
 
 Interactable::Interactable(Window& window, const nlohmann::json& data, const Vect<uint32_t> tileSize, const ObjType type)
-    : tileSize(tileSize), modColor{255, 255, 255},
+    : currentAnim("idle"), tileSize(tileSize), modColor{255, 255, 255},
       renderPos{ 0, 0, static_cast<int>(tileSize.x * TILE_SIZE), 
                        static_cast<int>(tileSize.y * TILE_SIZE) }, 
       placing(true), placable(true), hovering(false), clicked(false),
@@ -28,7 +28,7 @@ Interactable::Interactable(Window& window, const nlohmann::json& data, const Vec
 }
 
 Interactable::Interactable(Window& window, const nlohmann::json& data, const ObjType type)
-    : modColor{255, 255, 255}, 
+    : currentAnim("idle"), modColor{255, 255, 255}, 
       placing(false), placable(false), 
       hovering(false), clicked(false),
       menuSize{90, 70}, type(type)
@@ -47,16 +47,17 @@ void Interactable::loadImgs(Window& window, const nlohmann::json& data)
     if (textures.find(type) != textures.end())
         return; 
     
-    for (const std::pair<std::string, std::string> imgData : data["imgPaths"])
-        textures[type][imgData.first] = window.loadTexture(imgData.second.c_str());
+    // Textures stored staticly
+    for (const auto& frameData : data["anims"].items())
+        textures[type][frameData.key()] = window.loadTexture(frameData.value()["path"].get<std::string>().c_str());
 }
 
 void Interactable::setupAnims(Window& window, const nlohmann::json& data)
 {
-    for (const std::pair<std::string, std::string> frameData : data["imgPaths"])
-        anims[frameData.first] = Animation(textures[type][frameData.first], 
-                                           getAnimData(data, frameData.first, "frames"), 
-                                           getAnimData(data, frameData.first, "delay" ));
+    for (const auto& frameData : data["anims"].items())
+        anims[frameData.key()] = std::make_unique<Animation>(textures[type][frameData.key()], 
+                                frameData.value()["frames"].get<uint32_t>(), 
+                                frameData.value()["delay"].get<float>());
 }
 
 bool Interactable::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size)
@@ -79,6 +80,11 @@ bool Interactable::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_pt
 void Interactable::completePlace(const uint64_t& time)
 {
     placing = false; 
+}
+
+void Interactable::update(Window& window, const uint64_t& time)
+{
+    anims[currentAnim]->update(window);
 }
 
 void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
@@ -114,7 +120,7 @@ void Interactable::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     setModColor(window);
 
-    anims[currentAnim].renderCenter(window, getCenter().cast<int64_t>() - renderOffset);
+    anims[currentAnim]->renderCenter(window, getCenter().cast<int64_t>() - renderOffset);
 }
 
 void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
@@ -131,7 +137,7 @@ void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
 
 void Interactable::updateAnim(Window& window)
 {
-    anims[currentAnim].update(window);
+    anims[currentAnim]->update(window);
 }
 
 void Interactable::setModColor(Window& window)
@@ -139,7 +145,7 @@ void Interactable::setModColor(Window& window)
     std::vector<uint8_t> color = modColor;
     if (placing) // Alphafied
     {
-        anims[currentAnim].modAlpha(window, ALPHA);
+        anims[currentAnim]->modAlpha(window, ALPHA);
 
         if (!placable) // Redified
         {
@@ -149,12 +155,12 @@ void Interactable::setModColor(Window& window)
         }
     }
 
-    anims[currentAnim].modColor(window, color);
+    anims[currentAnim]->modColor(window, color);
 }
 
 void Interactable::swapAnim(const std::string& name)
 {
-    anims[currentAnim].reset();
+    anims[currentAnim]->reset();
     currentAnim = name;
 }
 

@@ -15,10 +15,7 @@ public:
     Animation(SDL_Texture* tex, uint32_t frames, float delay);
     ~Animation();
     
-    void operator=(const Animation& other)
-    {
-        Animation(other.texture, other.totalFrames, other.delay);
-    }
+    void operator=(const Animation&) = delete;
 
     void update(Window& window);
     void render(Window& window, const Vect<int64_t> pos);

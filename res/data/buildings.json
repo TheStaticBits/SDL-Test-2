@@ -1,6 +1,9 @@
 {
     "Core": {
-        "imgPath": "res/buildings/core.png",
+        "anims": {
+            "idle": { "path": "res/buildings/core.png",
+                      "frames": 2, "delay": 0.1 }
+        },
         "size": [4, 4],
 
         "1": {
@@ -13,12 +16,18 @@
             "sizeIncrease": 4
         }
     },
+
+    "Platform": {
+        "anims": {
+            "idle": { "path": "res/interactables/platform/idle.png", 
+                      "frames": 1, "delay": 0.1 }
+        }
+    },
+
     "Silver Storage": {
-        "imgPaths": {
-            "idle": "res/buildings/silverStorage.png"
-        },
-        "animData": {
-            "idle": { "frames": 2, "delay": 0.1 }
+        "anims": {
+            "idle": { "path": "res/interactables/silverStorage/idle.png",    
+                      "frames": 1, "delay": 0.1 }
         },
         "size": [3, 2],
 

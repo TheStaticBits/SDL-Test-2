@@ -34,9 +34,9 @@ SilverStorage::~SilverStorage()
     
 }
 
-void SilverStorage::update(const uint64_t& time)
+void SilverStorage::update(Window& window, const uint64_t& time)
 {
-    Building::update(time);
+    Building::update(window, time);
 
     if (!beingBuilt)
     {

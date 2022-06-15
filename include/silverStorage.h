@@ -21,7 +21,7 @@ public:
 
     void operator=(const SilverStorage&) = delete;
     
-    void update(const uint64_t& time) override;
+    void update(Window& window, const uint64_t& time) override;
 
     std::string getSave() override;
     std::string readSave(std::string& save) override;

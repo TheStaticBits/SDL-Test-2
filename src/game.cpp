@@ -158,6 +158,6 @@ void Game::readSave(const std::string save)
         if (player.checkSavePart(part))
             player.readSave(part, window);
         else if (base.checkSavePart(part))
-            base.readSave(part);
+            base.readSave(part, window);
     }
 }

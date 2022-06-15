@@ -30,7 +30,7 @@ public:
     bool canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size) override;
     void completePlace(const uint64_t& time) override;
 
-    void update(const uint64_t& time) override;
+    void update(Window& window, const uint64_t& time) override;
     void render(Window& window, const Vect<int64_t>& renderOffset) override;
 
     std::string getSave() override;
