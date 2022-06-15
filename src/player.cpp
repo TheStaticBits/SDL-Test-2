@@ -16,7 +16,7 @@
 #include "interactable.h"
 
 Player::Player(const Window& window)
-    : pos(Vect<float>(window.getCamSize().x / 2, window.getCamSize().y)), size{20, 20}, renderOffset(getOffset(window)), 
+    : pos(Vect<float>(window.getCamSize().x / 2, window.getCamSize().y)), size{60, 60}, renderOffset(getOffset(window)), 
     velocity{0, 0}, jump(false), canJump(false)
 {
 

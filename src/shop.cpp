@@ -14,17 +14,17 @@
 
 Shop::Shop(Window& window)
     : l1Bg(window.loadTexture("res/shop/l1Bg.png")),
-      l1Size(util::getSize(l1Bg)),
+      l1Size(util::getSize(l1Bg) * SCALE),
       l1Pos(window.getSize().x, window.getSize().y / 2 - l1Size.y / 2),
       l1OutX(static_cast<int64_t>(window.getSize().x - l1Size.x)),
 
       l2Bg(window.loadTexture("res/shop/l2Bg.png")),
-      l2Size(util::getSize(l2Bg)),
+      l2Size(util::getSize(l2Bg) * SCALE),
       l2Pos(window.getSize().x, window.getSize().y / 2 - l2Size.y / 2),
       locked(true),
 
       text(window.getTextImg(window.font(10), "Shop", {0, 0, 0, 255})),
-      textSize(util::getSize(text)), 
+      textSize(util::getSize(text) * SCALE), 
       
       shopButton(window, ShopB),
       buildingsButton(window, BuildingsB),
@@ -150,15 +150,15 @@ void Shop::updateRects()
     l2Rect = {l2PosInt.x, l2PosInt.y, l2SizeInt.x, l2SizeInt.y};
 
     textRect = {l1PosInt.x + (l1SizeInt.x / 2) - (textSizeInt.x / 2), 
-                l1PosInt.y + 5, textSizeInt.x, textSizeInt.y};
+                l1PosInt.y + 15, textSizeInt.x, textSizeInt.y};
 }
 
 void Shop::updateUIPositions(const Window& window)
 {
     shopButton.setPos(Vect<int64_t>(window.getSize().x - shopButton.getSize().x - 1, 1));
 
-    buildingsButton.setY(l1Pos.y + 20);
-    platformsButton.setY(buildingsButton.getPos().y + buildingsButton.getSize().y + 10);
+    buildingsButton.setY(l1Pos.y + 60);
+    platformsButton.setY(buildingsButton.getPos().y + buildingsButton.getSize().y + 30);
 }
 
 void Shop::moveL1(const Window& window, const float& deltaTime)

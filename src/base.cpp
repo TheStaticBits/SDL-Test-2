@@ -26,7 +26,7 @@
 Base::Base(Window& window)
     : buildingData(nlohmann::json::parse(std::ifstream(B_DATA_PATH))), 
       bgParticleTex(window.loadTexture(P_IMG_PATH)),
-      size{900, 600}, // TEMPORARY, will change in the future
+      size{2700, 1800}, // TEMPORARY, will change in the future
       placing(false),
       minimap(window.createTex(size.x, size.y))
 {
@@ -175,10 +175,8 @@ void Base::renderMinimap(Window& window, Player& player)
     
     window.drawRect(background, {0, 0, 255, 255});
 
-    window.setScale(1);
     renderTiles(window, Vect<int64_t>(0, 0));
     player.render(window, Vect<int64_t>(0, 0));
-    window.resetScale();
 
     window.resetTarget();
 

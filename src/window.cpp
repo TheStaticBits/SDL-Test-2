@@ -14,9 +14,8 @@
 Window::Window()
     : quit(false), resizeWin(false), mousePos{0, 0}, 
       window(NULL), renderer(NULL), camera(NULL),
-      realWinSize(900, 600), winSize(realWinSize / WIN_SCALE),
-      deltaTime(0.0f), lastTime(0), fps(0), scale(WIN_SCALE),
-      renderTo(WINDOW)
+      realWinSize(900, 600), deltaTime(0.0f), lastTime(0), 
+      fps(0), renderTo(WINDOW)
 {
     // Setting up window
     window = SDL_CreateWindow(TITLE, 
@@ -54,14 +53,10 @@ Window::~Window()
 
 void Window::updateCamera(const Vect<uint32_t> baseSize)
 {
-    // Setting up game box
-    Vect<uint32_t> size;
     
-    if (baseSize < winSize) size = baseSize;
-    else size = winSize;
+    if (baseSize < realWinSize) realCamSize = baseSize;
+    else realCamSize = realWinSize;
 
-    camSize = size;
-    realCamSize = size * WIN_SCALE;
     camera = createTex(realCamSize.x, realCamSize.y);
 }
 
@@ -178,9 +173,8 @@ void Window::inputs(const Vect<uint32_t> baseSize)
 
     Vect<int> mouseRetrieve;
     SDL_GetMouseState(&mouseRetrieve.x, &mouseRetrieve.y);
-    // Adjusting based on the scale of the screen
-    mousePos = mouseRetrieve.cast<int64_t>() / WIN_SCALE;
-    camMousePos = mousePos - (camOffset / WIN_SCALE).cast<int64_t>();
+    mousePos = mouseRetrieve.cast<int64_t>();
+    camMousePos = mousePos - (camOffset).cast<int64_t>();
 }
 
 void Window::calcDeltaTime()
@@ -215,41 +209,40 @@ void Window::modAlpha(SDL_Texture* texture, uint8_t alpha)
 
 void Window::render(SDL_Texture* texture, SDL_Rect& dst)
 {
-    SDL_Rect newRect = scaleUp(dst);
-    if (SDL_RenderCopy(renderer, texture, NULL, &newRect) != 0)
+    if (!onScreen(dst)) return;
+    if (SDL_RenderCopy(renderer, texture, NULL, &dst) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst)
 {
-    SDL_Rect newRect = scaleUp(dst);
-    if (SDL_RenderCopy(renderer, texture, &src, &newRect) != 0)
+    if (!onScreen(dst)) return;
+    if (SDL_RenderCopy(renderer, texture, &src, &dst) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::render(SDL_Texture* texture, SDL_Rect& dst, const double angle)
 {
-    SDL_Rect newRect = scaleUp(dst);
-    if (SDL_RenderCopyEx(renderer, texture, NULL, &newRect, angle, NULL, SDL_FLIP_NONE) != 0)
+    if (!onScreen(dst)) return;
+    if (SDL_RenderCopyEx(renderer, texture, NULL, &dst, angle, NULL, SDL_FLIP_NONE) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::renderWithoutScale(SDL_Texture* texture, SDL_Rect& dst)
 {
+    if (!onScreen(dst)) return;
     if (SDL_RenderCopy(renderer, texture, NULL, &dst) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::drawRect(SDL_Rect& rect, std::vector<uint8_t> color)
 {
-    SDL_Rect newRect = scaleUp(rect);
-
     if (color.size() == 3)
         color.push_back(255);
 
     SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], color[3]);
 
-    if (SDL_RenderFillRect(renderer, &newRect) != 0)
+    if (SDL_RenderFillRect(renderer, &rect) != 0)
         std::cout << "[Error] Rendering rect failed: " << SDL_GetError() << std::endl;
     
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -271,7 +264,6 @@ void Window::resetTarget()
 void Window::resize(int32_t width, int32_t height, const Vect<uint32_t> baseSize)
 {
     realWinSize = Vect<uint32_t>(width, height);
-    winSize = realWinSize / WIN_SCALE;
     SDL_SetWindowSize(window, realWinSize.x, realWinSize.y);
     updateCamera(baseSize);
 }
@@ -309,11 +301,10 @@ void Window::startRenderUI()
     renderWithoutScale(camera, dst);
 }
 
-SDL_Rect Window::scaleUp(SDL_Rect rect)
+const bool Window::onScreen(const SDL_Rect rect)
 {
-    rect.x *= scale; rect.y *= scale;
-    rect.w *= scale; rect.h *= scale;
-    return rect;
+    return (rect.x + rect.w > 0 && rect.x < realWinSize.xCast<int>() && 
+            rect.y + rect.h > 0 && rect.y < realWinSize.yCast<int>());
 }
 
 void Window::handleKey(SDL_Keycode& key, Uint32& type)

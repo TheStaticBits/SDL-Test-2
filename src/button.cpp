@@ -24,7 +24,7 @@ Button::Button(Window& window, bTextures texType,
         textImg = window.getTextImg(font, text, textColor);
         TTF_CloseFont(font);
 
-        textSize = util::getSize(textImg);
+        textSize = util::getSize(textImg) * SCALE;
     }
 
     if (textures.find(texType) == textures.end())
@@ -38,7 +38,7 @@ Button::Button(Window& window, bTextures texType,
         }
     }
 
-    size = util::getSize(textures[texType]["idle"]);
+    size = util::getSize(textures[texType]["idle"]) * SCALE;
 }
 
 Button::~Button()

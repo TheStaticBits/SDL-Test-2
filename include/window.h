@@ -10,7 +10,7 @@
 
 #include "vector.h"
 
-inline const uint32_t WIN_SCALE = 3;
+inline const uint32_t SCALE = 3;
 enum RenderTo { WINDOW, CAMERA };
 
 class Window
@@ -53,11 +53,11 @@ public:
     void startRenderGame();
     void startRenderUI();
     
-    SDL_Rect scaleUp(SDL_Rect rect);
+    const bool onScreen(const SDL_Rect rect);
 
     // Getters
-    inline const Vect<uint32_t> getSize() const    { return winSize; }
-    inline const Vect<uint32_t> getCamSize() const { return camSize; }
+    inline const Vect<uint32_t> getSize() const    { return realWinSize; }
+    inline const Vect<uint32_t> getCamSize() const { return realCamSize; }
     
     inline const bool isClosed() const    { return quit;      }
     inline const bool getResize() const   { return resizeWin; }
@@ -78,8 +78,6 @@ public:
         fMouseButtons[button] = state;
         fMouseHeldButtons[button] = state; 
     }
-    inline void setScale(const uint32_t newScale) { scale = newScale;  }
-    inline void resetScale()                      { scale = WIN_SCALE; }
 
 private:
     void handleKey(SDL_Keycode& key, Uint32& type);
@@ -113,16 +111,13 @@ private:
     std::unordered_map<uint32_t, TTF_Font*> fonts; // For different sizes
 
     Vect<uint32_t> realWinSize;
-    Vect<uint32_t> winSize;
     Vect<uint32_t> realCamSize;
-    Vect<uint32_t> camSize;
     Vect<uint32_t> camOffset;
 
     float deltaTime;
     uint32_t lastTime;
     std::vector<float> deltaTimes;
     float fps;
-    uint32_t scale;
     
     RenderTo renderTo;
 };

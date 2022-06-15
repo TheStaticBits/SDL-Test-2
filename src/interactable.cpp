@@ -21,7 +21,7 @@ Interactable::Interactable(Window& window, const nlohmann::json& data, const Vec
       renderPos{ 0, 0, static_cast<int>(tileSize.x * TILE_SIZE), 
                        static_cast<int>(tileSize.y * TILE_SIZE) }, 
       placing(true), placable(true), hovering(false), clicked(false),
-      menuSize{90, 70}, type(type)
+      menuSize{270, 210}, type(type)
 {
     loadImgs(window, data);
     setupAnims(window, data);
@@ -31,7 +31,7 @@ Interactable::Interactable(Window& window, const nlohmann::json& data, const Obj
     : currentAnim("idle"), modColor{255, 255, 255}, 
       placing(false), placable(false), 
       hovering(false), clicked(false),
-      menuSize{90, 70}, type(type)
+      menuSize{270, 210}, type(type)
 {
     loadImgs(window, data);
     setupAnims(window, data);
@@ -154,6 +154,7 @@ void Interactable::setModColor(Window& window)
             color[2] = 0;
         }
     }
+    else anims[currentAnim]-> modAlpha(window, 255);
 
     anims[currentAnim]->modColor(window, color);
 }

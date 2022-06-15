@@ -10,13 +10,13 @@
 
 #include <nlohmann/json.hpp>
 
-class Window;
 class Player;
+#include "window.h"
 #include "vector.h"
 #include "interactable.h"
 #include "particle.h"
 
-inline const uint16_t TILE_SIZE = 20;
+inline const uint16_t TILE_SIZE = 20 * SCALE;
 inline const std::string RemoveObj = "Remove"; // Used for not saving objects that have not been placed
 
 // The second in the pair is the distance between 
@@ -24,10 +24,10 @@ inline const std::string RemoveObj = "Remove"; // Used for not saving objects th
 inline const std::vector<std::pair<ParticleData, uint32_t>> BG_PARTICLE_DATA = {
     //                   rotation  movement
     //      Color         speed,    speed   size   parallax   distance
-    { { { 0, 120, 120 },  6.0f,     5.0f,   25,    3.0f },    50  },
-    { { { 0, 140, 140 },  7.0f,     10.0f,  30,    2.5f },    70  },
-    { { { 0, 170, 185 },  8.0f,     15.0f,  40,    2.0f },    90  },
-    { { { 0, 200, 220 },  9.0f,     20.0f,  45,    1.5f },    100 }
+    { { { 0, 120, 120 },  6.0f,     5.0f,   50,    3.0f },    100 },
+    { { { 0, 140, 140 },  7.0f,     10.0f,  60,    2.5f },    140 },
+    { { { 0, 170, 185 },  8.0f,     15.0f,  80,    2.0f },    180 },
+    { { { 0, 200, 220 },  9.0f,     20.0f,  90,    1.5f },    200 }
 };
 
 class Base
@@ -81,7 +81,7 @@ private:
     
     bool placing;
 
-    inline static const Vect<uint32_t> minimapSize = { 90, 60 };
+    inline static const Vect<uint32_t> minimapSize = { 270, 180 };
     inline static const uint8_t minimapAlpha = 150;
     SDL_Texture* minimap;
 };
