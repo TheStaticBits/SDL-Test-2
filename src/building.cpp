@@ -39,27 +39,26 @@ bool Building::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<In
 
     for (std::unique_ptr<Interactable>& obj : objects)
     {
-        if (obj->getType() == Platform_T)
-        {
-            SDL_Rect objRect = obj->getRect();
-            // If the platform is at the bottom of the building
-            if (objRect.y == pos.y + renderPos.h)
-            {
-                // If the platform is at least partially in the building
-                if (objRect.x + objRect.w > pos.x && objRect.x < pos.x + renderPos.w)
-                {
-                    uint32_t pixelsBeneath = obj->getRect().w;
+        if (obj->getType() != Platform_T) continue;
+        
+        // If the platform is at the bottom of the building
+        SDL_Rect objRect = obj->getRect();
+        if (objRect.y != pos.y + renderPos.h) continue;
 
-                    // Removing pixels off the side
-                    if (objRect.x < pos.x)
-                        pixelsBeneath -= pos.x - objRect.x;
-                    if (objRect.x + objRect.w > pos.x + renderPos.w)
-                        pixelsBeneath -= (objRect.x + objRect.w) - (pos.x + renderPos.w);
-                    
-                    pChecked += pixelsBeneath;
-                }
-            }
-        }
+        // If the platform is at least partially in the building
+        if (!(objRect.x + objRect.w > pos.x && objRect.x < pos.x + renderPos.w)) continue;
+
+        // Add pixels to the building base that are covered by the platform:
+
+        uint32_t pixelsBeneath = obj->getRect().w;
+
+        // Removing pixels off the side
+        if (objRect.x < pos.x)
+            pixelsBeneath -= pos.x - objRect.x;
+        if (objRect.x + objRect.w > pos.x + renderPos.w)
+            pixelsBeneath -= (objRect.x + objRect.w) - (pos.x + renderPos.w);
+        
+        pChecked += pixelsBeneath;
     }
     
     return pChecked == static_cast<uint32_t>(renderPos.w);
