@@ -39,7 +39,8 @@ Interactable::Interactable(Window& window, const nlohmann::json& data, const Obj
 
 Interactable::~Interactable()
 {
-    // SDL_DestroyTexture(image);
+    for (const auto& tex : textures[type])
+        SDL_DestroyTexture(tex.second);
 }
 
 void Interactable::loadImgs(Window& window, const nlohmann::json& data)
@@ -119,7 +120,11 @@ void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset, 
 void Interactable::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     setModColor(window);
+    renderCenter(window, renderOffset);
+}
 
+void Interactable::renderCenter(Window& window, const Vect<int64_t>& renderOffset)
+{
     anims[currentAnim]->renderCenter(window, getCenter().cast<int64_t>() - renderOffset);
 }
 
@@ -154,7 +159,7 @@ void Interactable::setModColor(Window& window)
             color[2] = 0;
         }
     }
-    else anims[currentAnim]-> modAlpha(window, 255);
+    else anims[currentAnim]->modAlpha(window, 255);
 
     anims[currentAnim]->modColor(window, color);
 }

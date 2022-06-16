@@ -71,7 +71,7 @@ $(CPATH)/base.o: $(SPATH)/base.cpp $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/wi
 $(CPATH)/platform.o: $(SPATH)/platform.cpp $(IPATH)/platform.h $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/interactable.h $(IPATH)/window.h $(IPATH)/utility.h
 	$(CC) -c $(SPATH)/platform.cpp $(FLAGS) -o $(CPATH)/platform.o
 
-$(CPATH)/building.o: $(SPATH)/building.cpp $(IPATH)/building.h $(IPATH)/window.h $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/interactable.h $(IPATH)/utility.h
+$(CPATH)/building.o: $(SPATH)/building.cpp $(IPATH)/building.h $(IPATH)/window.h $(IPATH)/base.h $(IPATH)/vector.h $(IPATH)/interactable.h $(IPATH)/utility.h $(IPATH)/animation.h
 	$(CC) -c $(SPATH)/building.cpp $(FLAGS) -o $(CPATH)/building.o
 
 $(CPATH)/silverStorage.o: $(SPATH)/silverStorage.cpp $(IPATH)/silverStorage.h $(IPATH)/window.h $(IPATH)/building.h $(IPATH)/interactable.h $(IPATH)/vector.h $(IPATH)/base.h

@@ -44,14 +44,14 @@ void Animation::update(Window& window)
 
 void Animation::render(Window& window, const Vect<int64_t> pos)
 {
-    const Vect<int> frameSizeInt = frameSize.cast<int>();
-    const Vect<int> posInt = pos.cast<int>();
+    SDL_Rect src = getSourceRect();
+    SDL_Rect dst = getDestRect(pos);
 
-    SDL_Rect src = { static_cast<int>(frame * frameSize.x), 0, 
-                     frameSizeInt.x, frameSizeInt.y };
-    SDL_Rect dst = { posInt.x, posInt.y, 
-                     frameSizeInt.x, frameSizeInt.y };
-    
+    window.render(texture, src, dst);
+}
+
+void Animation::render(Window& window, SDL_Rect src, SDL_Rect dst)
+{
     window.render(texture, src, dst);
 }
 
@@ -76,4 +76,20 @@ void Animation::reset()
     delayCounter = 0;
     frame = 0;
     finished = false;
+}
+
+const SDL_Rect Animation::getSourceRect() const
+{
+    const Vect<int> frameSizeInt = frameSize.cast<int>();
+    
+    return { static_cast<int>(frame * frameSize.x), 0, 
+             frameSizeInt.x, frameSizeInt.y };
+}
+
+const SDL_Rect Animation::getDestRect(const Vect<int64_t> pos) const
+{
+    const Vect<int> frameSizeInt = frameSize.cast<int>();
+    const Vect<int> posInt = pos.cast<int>();
+
+    return { posInt.x, posInt.y, frameSizeInt.x, frameSizeInt.y };
 }

@@ -16,6 +16,7 @@
 #include "base.h"
 #include "interactable.h"
 #include "utility.h"
+#include "animation.h"
 
 Building::Building(Window& window, const nlohmann::json& data, const ObjType type)
     : Interactable(window, data, {data["size"][0], data["size"][1]}, type), 
@@ -86,11 +87,11 @@ void Building::update(Window& window, const uint64_t& time)
         if (time >= timeAtPlace + upgradeTime)
         {
             beingBuilt = false;
-            percentComplete = 100;
+            percentComplete = 0;
         }
         else
         {
-            percentComplete = 1 - ((float)(time - timeAtPlace) / upgradeTime);
+            percentComplete = ((float)(time - timeAtPlace) / upgradeTime);
         }
     }
 }
@@ -99,22 +100,49 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     if (beingBuilt)
     {
+        // const Vect<int> renderOffsetInt = renderOffset.cast<int>();
+        // SDL_Rect renderRect = {
+        //     renderPos.x - renderOffsetInt.x, renderPos.y - renderOffsetInt.y,
+        //     renderPos.w, renderPos.h
+        // };
+
+        // // Drawing transparent part
+        // std::vector<uint8_t> color = modColor;
+        // color.push_back(ALPHA);
+        // window.drawRect(renderRect, color);
+
+        // // Drawing solid part
+        // const uint32_t solidHeight = static_cast<uint32_t>(percentComplete * renderPos.h);
+        // renderRect.y += solidHeight;
+        // renderRect.h -= solidHeight;
+        // window.drawRect(renderRect, modColor);
+
         const Vect<int> renderOffsetInt = renderOffset.cast<int>();
-        SDL_Rect renderRect = {
-            renderPos.x - renderOffsetInt.x, renderPos.y - renderOffsetInt.y,
-            renderPos.w, renderPos.h
-        };
+        Vect<int64_t> pos = { renderPos.x - renderOffsetInt.x, 
+                              renderPos.y - renderOffsetInt.y };
 
         // Drawing transparent part
-        std::vector<uint8_t> color = modColor;
-        color.push_back(ALPHA);
-        window.drawRect(renderRect, color);
+        getCurrentAnim()->modAlpha(window, ALPHA);
+        getCurrentAnim()->render(window, pos);
 
         // Drawing solid part
-        const uint32_t solidHeight = static_cast<uint32_t>(percentComplete * renderPos.h);
-        renderRect.y += solidHeight;
-        renderRect.h -= solidHeight;
-        window.drawRect(renderRect, modColor);
+        SDL_Rect srcRect = getCurrentAnim()->getSourceRect();
+        SDL_Rect destRect = { pos.xCast<int>(), pos.yCast<int>(),
+                              srcRect.w, srcRect.h };
+        const Vect<uint32_t> frameSize = getCurrentAnim()->getFrame();
+
+        const uint32_t height = static_cast<uint32_t>(percentComplete * srcRect.h);
+
+
+        // SRC image is not scaled up
+        srcRect.y = (frameSize.y - height) / SCALE;
+        srcRect.h = height / SCALE; 
+        
+        destRect.y += srcRect.y * SCALE;
+        destRect.h = srcRect.h * SCALE;
+        
+        getCurrentAnim()->modAlpha(window, 255);
+        getCurrentAnim()->render(window, srcRect, destRect);
     }
     else
         Interactable::render(window, renderOffset);

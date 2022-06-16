@@ -47,6 +47,8 @@ public:
     virtual void checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
     virtual void render(Window& window, const Vect<int64_t>& renderOffset);
     virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset);
+
+    void renderCenter(Window& window, const Vect<int64_t>& renderOffset);
     
     void updateAnim(Window& window);
     void setModColor(Window& window);
@@ -62,6 +64,8 @@ public:
     inline SDL_Rect& getRect()           { return renderPos; } 
     inline const ObjType& getType()      { return type;      }
     inline const bool menuOpen()         { return hovering;  }
+
+    inline std::unique_ptr<Animation>& getCurrentAnim() { return anims[currentAnim]; }
     
     inline const Vect<int> getCenter()  { return { renderPos.x + renderPos.w / 2, 
                                                    renderPos.y + renderPos.h / 2}; }
