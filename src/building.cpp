@@ -100,22 +100,6 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     if (beingBuilt)
     {
-        // const Vect<int> renderOffsetInt = renderOffset.cast<int>();
-        // SDL_Rect renderRect = {
-        //     renderPos.x - renderOffsetInt.x, renderPos.y - renderOffsetInt.y,
-        //     renderPos.w, renderPos.h
-        // };
-
-        // // Drawing transparent part
-        // std::vector<uint8_t> color = modColor;
-        // color.push_back(ALPHA);
-        // window.drawRect(renderRect, color);
-
-        // // Drawing solid part
-        // const uint32_t solidHeight = static_cast<uint32_t>(percentComplete * renderPos.h);
-        // renderRect.y += solidHeight;
-        // renderRect.h -= solidHeight;
-        // window.drawRect(renderRect, modColor);
 
         const Vect<int> renderOffsetInt = renderOffset.cast<int>();
         Vect<int64_t> pos = { renderPos.x - renderOffsetInt.x, 
