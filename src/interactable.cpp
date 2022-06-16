@@ -50,7 +50,7 @@ void Interactable::loadImgs(Window& window, const nlohmann::json& data)
     
     // Textures stored staticly
     for (const auto& frameData : data["anims"].items())
-        textures[type][frameData.key()] = window.loadTexture(frameData.value()["path"].get<std::string>().c_str());
+        textures[type][frameData.key()] = window.scale(window.loadTexture(frameData.value()["path"].get<std::string>().c_str()));
 }
 
 void Interactable::setupAnims(Window& window, const nlohmann::json& data)

@@ -135,11 +135,11 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
 
 
         // SRC image is not scaled up
-        srcRect.y = (frameSize.y - height) / SCALE;
-        srcRect.h = height / SCALE; 
+        srcRect.y = (frameSize.y - height);
+        srcRect.h = height; 
         
-        destRect.y += srcRect.y * SCALE;
-        destRect.h = srcRect.h * SCALE;
+        destRect.y += srcRect.y;
+        destRect.h = srcRect.h;
         
         getCurrentAnim()->modAlpha(window, 255);
         getCurrentAnim()->render(window, srcRect, destRect);

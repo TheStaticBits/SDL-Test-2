@@ -13,7 +13,7 @@
 Animation::Animation(SDL_Texture* tex, uint32_t frames, float delay)
     : texture(tex), delay(delay),
       totalFrames(frames), 
-      size(util::getSize(texture) * SCALE),
+      size(util::getSize(texture)),
       frameSize(size.x / totalFrames, size.y),
       delayCounter(0), frame(0), finished(false)
 {

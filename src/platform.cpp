@@ -41,12 +41,12 @@ Platform::~Platform()
 
 void Platform::initParts()
 {
-    Vect<int> frameSize = (getCurrentAnim()->getFrame() / SCALE).cast<int>();
+    Vect<int> frameSize = (getCurrentAnim()->getFrame()).cast<int>();
 
-    head = { data["headX"][0].get<int>(), 0,
-             data["headX"][1].get<int>() - data["headX"][0].get<int>(), frameSize.y };
-    body = { data["bodyX"][0].get<int>(), 0,
-             data["bodyX"][1].get<int>() - data["bodyX"][0].get<int>(), frameSize.y };
+    head = { static_cast<int>(data["headX"][0].get<int>() * SCALE), 0,
+             static_cast<int>(data["headX"][1].get<int>() * SCALE - data["headX"][0].get<int>() * SCALE), frameSize.y };
+    body = { static_cast<int>(data["bodyX"][0].get<int>() * SCALE), 0,
+             static_cast<int>(data["bodyX"][1].get<int>() * SCALE - data["bodyX"][0].get<int>() * SCALE), frameSize.y };
 }
 
 bool Platform::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size)
@@ -59,10 +59,10 @@ void Platform::render(Window& window, const Vect<int64_t>& renderOffset)
     Interactable::setModColor(window);
 
     const Vect<int> renderOffsetInt = renderOffset.cast<int>();
-    const int frameOffset = static_cast<int>(getCurrentAnim()->getFrameNum() * TILE_SIZE) / SCALE;
+    const int frameOffset = static_cast<int>(getCurrentAnim()->getFrameNum() * TILE_SIZE);
 
-    head.x = data["headX"][0].get<int>() + frameOffset;
-    body.x = data["bodyX"][0].get<int>() + frameOffset;
+    head.x = static_cast<int>(data["headX"][0].get<int>() * SCALE) + frameOffset;
+    body.x = static_cast<int>(data["bodyX"][0].get<int>() * SCALE) + frameOffset;
     
     for (uint32_t tileX = 0; tileX < tileSize.x; tileX++ )
     {
@@ -73,13 +73,12 @@ void Platform::render(Window& window, const Vect<int64_t>& renderOffset)
         // Finds position centered on the current tile for the image
         SDL_Rect renderRect = { (renderPos.x - renderOffsetInt.x + 
                                  static_cast<int>((tileX * TILE_SIZE) + 
-                                 (TILE_SIZE / 2) - (curRect.w / 2 * SCALE))),
+                                 (TILE_SIZE / 2) - (curRect.w / 2))),
 
                                 (renderPos.y - renderOffsetInt.y + 
-                                 static_cast<int>((TILE_SIZE / 2) - (curRect.h / 2 * SCALE))),
+                                 static_cast<int>((TILE_SIZE / 2) - (curRect.h / 2))),
 
-                                static_cast<int>(curRect.w * SCALE), 
-                                static_cast<int>(curRect.h * SCALE)};
+                                curRect.w, curRect.h};
         
         window.render(getCurrentAnim()->getTexture(), curRect, renderRect, 
                       (tileX == tileSize.x - 1 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));

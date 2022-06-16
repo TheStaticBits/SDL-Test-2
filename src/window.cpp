@@ -237,6 +237,23 @@ void Window::renderWithoutScale(SDL_Texture* texture, SDL_Rect& dst)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
+SDL_Texture* Window::scale(SDL_Texture* texture)
+{
+    const Vect<uint32_t> size = util::getSize(texture);
+    SDL_Texture* scaledUp = createTex(size.x * SCALE, size.y * SCALE);
+    
+    setTarget(scaledUp);
+    
+    SDL_Rect scaledRect = { 0, 0, static_cast<int>(size.x * SCALE), 
+                                  static_cast<int>(size.y * SCALE) };
+    render(texture, scaledRect);
+    
+    resetTarget();
+    
+    SDL_DestroyTexture(texture);
+    return scaledUp;
+}
+
 void Window::drawRect(SDL_Rect& rect, std::vector<uint8_t> color)
 {
     if (color.size() == 3)
