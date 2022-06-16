@@ -209,28 +209,24 @@ void Window::modAlpha(SDL_Texture* texture, uint8_t alpha)
 
 void Window::render(SDL_Texture* texture, SDL_Rect& dst)
 {
-    if (!onScreen(dst)) return;
     if (SDL_RenderCopy(renderer, texture, NULL, &dst) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst)
 {
-    if (!onScreen(dst)) return;
     if (SDL_RenderCopy(renderer, texture, &src, &dst) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::render(SDL_Texture* texture, SDL_Rect& dst, const double angle)
 {
-    if (!onScreen(dst)) return;
     if (SDL_RenderCopyEx(renderer, texture, NULL, &dst, angle, NULL, SDL_FLIP_NONE) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
 void Window::renderWithoutScale(SDL_Texture* texture, SDL_Rect& dst)
 {
-    if (!onScreen(dst)) return;
     if (SDL_RenderCopy(renderer, texture, NULL, &dst) != 0)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
@@ -299,12 +295,6 @@ void Window::startRenderUI()
     dst = { camOffset.xCast<int>(), camOffset.yCast<int>(), realCamSize.xCast<int>(), realCamSize.yCast<int>() };
         
     renderWithoutScale(camera, dst);
-}
-
-const bool Window::onScreen(const SDL_Rect rect)
-{
-    return (rect.x + rect.w > 0 && rect.x < realWinSize.xCast<int>() && 
-            rect.y + rect.h > 0 && rect.y < realWinSize.yCast<int>());
 }
 
 void Window::handleKey(SDL_Keycode& key, Uint32& type)

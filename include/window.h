@@ -52,8 +52,6 @@ public:
 
     void startRenderGame();
     void startRenderUI();
-    
-    const bool onScreen(const SDL_Rect rect);
 
     // Getters
     inline const Vect<uint32_t> getSize() const    { return realWinSize; }
