@@ -225,6 +225,12 @@ void Window::render(SDL_Texture* texture, SDL_Rect& dst, const double angle)
         std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
 }
 
+void Window::render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst, const SDL_RendererFlip flip)
+{
+    if (SDL_RenderCopyEx(renderer, texture, &src, &dst, 0, NULL, flip) != 0)
+        std::cout << "[Error] Rendering failed: " << SDL_GetError() << std::endl;
+}
+
 void Window::renderWithoutScale(SDL_Texture* texture, SDL_Rect& dst)
 {
     if (SDL_RenderCopy(renderer, texture, NULL, &dst) != 0)

@@ -155,8 +155,8 @@ void Interactable::setModColor(Window& window)
         if (!placable) // Redified
         {
             color[0] = 255;
-            color[1] = 0;
-            color[2] = 0;
+            color[1] = 50;
+            color[2] = 50;
         }
     }
     else anims[currentAnim]->modAlpha(window, 255);

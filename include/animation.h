@@ -27,9 +27,11 @@ public:
     void modColor(Window& window, const std::vector<uint8_t> color);
     void modAlpha(Window& window, const uint8_t alpha);
 
-    inline const bool isFinished() const         { return finished; }
-    inline const Vect<uint32_t> getSize() const  { return size;     }
+    inline const bool isFinished() const         { return finished;  }
+    inline const Vect<uint32_t> getSize() const  { return size;      }
     inline const Vect<uint32_t> getFrame() const { return frameSize; }
+    inline SDL_Texture* getTexture() const       { return texture;   }
+    inline const uint32_t getFrameNum() const    { return frame;     }
 
     const SDL_Rect getSourceRect() const;
     const SDL_Rect getDestRect(const Vect<int64_t> pos) const;

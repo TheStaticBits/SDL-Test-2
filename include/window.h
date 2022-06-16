@@ -40,6 +40,7 @@ public:
     void render(SDL_Texture* texture, SDL_Rect& dst);
     void render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst);
     void render(SDL_Texture* texture, SDL_Rect& dst, const double angle);
+    void render(SDL_Texture* texture, SDL_Rect& src, SDL_Rect& dst, const SDL_RendererFlip flip);
     void renderWithoutScale(SDL_Texture* texture, SDL_Rect& dst);
     
     void drawRect(SDL_Rect& rect, std::vector<uint8_t> color);

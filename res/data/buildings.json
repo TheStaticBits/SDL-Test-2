@@ -21,7 +21,9 @@
         "anims": {
             "idle": { "path": "res/interactables/platform/idle.png", 
                       "frames": 1, "delay": 0.1 }
-        }
+        },
+        "headX": [0,  20],
+        "bodyX": [20, 40] 
     },
 
     "Silver Storage": {

@@ -22,6 +22,8 @@ public:
     Platform(Window& window, const nlohmann::json& data, std::string save); // Loading from save
     ~Platform();
 
+    void initParts();
+
     void operator=(const Platform&) = delete;
 
     bool canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size) override;
@@ -34,4 +36,8 @@ public:
 
 private:
     static const ObjType type = Platform_T;
+    const nlohmann::json& data;
+
+    SDL_Rect head; // Either end of the platform
+    SDL_Rect body; // Any central parts of the platform
 };

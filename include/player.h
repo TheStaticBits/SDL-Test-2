@@ -40,7 +40,7 @@ private:
     static constexpr float SPEED = 320.0f; // Pixels per second
     static constexpr float CAM_TIGHTNESS = 3.75f; // How tight the camera is on the player (higher is tighter)
 
-    static constexpr int32_t JUMP_SPEED = -1200; 
+    static constexpr int32_t JUMP_SPEED = -1250; 
     static constexpr int32_t GRAVITY = -2400; 
 
     Vect<float> pos;
