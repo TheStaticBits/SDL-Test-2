@@ -83,7 +83,7 @@ private:
     
     bool placing;
 
-    inline static const Vect<uint32_t> minimapSize = { 270, 180 };
+    inline static const Vect<uint32_t> minimapSize = { 75 * SCALE , 50 * SCALE };
     inline static const uint8_t minimapAlpha = 150;
     SDL_Texture* minimap;
 };

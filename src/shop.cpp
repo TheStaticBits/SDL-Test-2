@@ -157,8 +157,8 @@ void Shop::updateUIPositions(const Window& window)
 {
     shopButton.setPos(Vect<int64_t>(window.getSize().x - shopButton.getSize().x - 1, 1));
 
-    buildingsButton.setY(l1Pos.y + 60);
-    platformsButton.setY(buildingsButton.getPos().y + buildingsButton.getSize().y + 30);
+    buildingsButton.setY(l1Pos.y + 20 * SCALE);
+    platformsButton.setY(buildingsButton.getPos().y + buildingsButton.getSize().y + 10 * SCALE);
 }
 
 void Shop::moveL1(const Window& window, const float& deltaTime)

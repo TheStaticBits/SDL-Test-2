@@ -9,8 +9,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-class Window;
 class Base;
+#include "window.h"
 #include "interactable.h"
 
 class Player
@@ -37,11 +37,11 @@ public:
 private:
     inline static const std::string saveName = "Player";
 
-    static constexpr float SPEED = 320.0f; // Pixels per second
+    static constexpr float SPEED = 105.0f * SCALE; // Pixels per second
     static constexpr float CAM_TIGHTNESS = 3.75f; // How tight the camera is on the player (higher is tighter)
 
-    static constexpr int32_t JUMP_SPEED = -1250; 
-    static constexpr int32_t GRAVITY = -2400; 
+    static constexpr int32_t JUMP_SPEED = -400 * SCALE; 
+    static constexpr int32_t GRAVITY = -800 * SCALE; 
 
     Vect<float> pos;
     Vect<uint32_t> size;
