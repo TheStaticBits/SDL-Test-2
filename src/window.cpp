@@ -15,13 +15,13 @@
 Window::Window()
     : quit(false), resizeWin(false), mousePos{0, 0}, 
       window(NULL), renderer(NULL), camera(NULL),
-      winSize(900, 600), deltaTime(0.0f), lastTime(0), 
+      winSize(1920, 1080), deltaTime(0.0f), lastTime(0), 
       fps(0), renderTo(WINDOW)
 {
     // Setting up window
     window = SDL_CreateWindow(TITLE, 
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
-                              winSize.x, winSize.y, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                              winSize.x, winSize.y, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     if (window == NULL)
         std::cout << "[Error] Window creation failed: " << SDL_GetError() << std::endl;

@@ -90,9 +90,7 @@ void Building::update(Window& window, const uint64_t& time)
             percentComplete = 0;
         }
         else
-        {
             percentComplete = ((float)(time - timeAtPlace) / upgradeTime);
-        }
     }
 }
 
@@ -128,6 +126,17 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
     }
     else
         Interactable::render(window, renderOffset);
+}
+
+void Building::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
+{
+    if (beingBuilt)
+    {
+        
+    }
+    Interactable::renderMenu(window, renderOffset);
+
+
 }
 
 std::string Building::getSave()

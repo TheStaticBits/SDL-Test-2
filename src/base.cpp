@@ -81,7 +81,7 @@ void Base::updatePlacingControls(Window& window, const Vect<int64_t>& renderOffs
 
 void Base::updateBuildings(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate)
 {
-    // Updating the menu that is open before others
+    // Updating the menu that is open before others (for click order)
     for (std::unique_ptr<Interactable>& obj : objects)
         if (obj->menuOpen())
             obj->checkMenu(window, renderOffset, size);
