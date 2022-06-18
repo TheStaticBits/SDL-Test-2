@@ -15,7 +15,7 @@
 Window::Window()
     : quit(false), resizeWin(false), mousePos{0, 0}, 
       window(NULL), renderer(NULL), camera(NULL),
-      winSize(1920, 1080), deltaTime(0.0f), lastTime(0), 
+      winSize(1200, 800), deltaTime(0.0f), lastTime(0), 
       fps(0), renderTo(WINDOW)
 {
     // Setting up window

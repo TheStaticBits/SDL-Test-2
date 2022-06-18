@@ -11,7 +11,7 @@
 #include "vector.h"
 class Base;
 
-inline const uint32_t SCALE = 3;
+inline const uint32_t SCALE = 4;
 enum RenderTo { WINDOW, CAMERA };
 
 class Window
