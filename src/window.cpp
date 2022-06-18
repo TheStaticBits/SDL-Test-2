@@ -10,33 +10,30 @@
 
 #include "vector.h"
 #include "utility.h"
+#include "base.h"
 
 Window::Window()
     : quit(false), resizeWin(false), mousePos{0, 0}, 
       window(NULL), renderer(NULL), camera(NULL),
-      realWinSize(900, 600), deltaTime(0.0f), lastTime(0), 
+      winSize(900, 600), deltaTime(0.0f), lastTime(0), 
       fps(0), renderTo(WINDOW)
 {
     // Setting up window
     window = SDL_CreateWindow(TITLE, 
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
-                              realWinSize.x, realWinSize.y, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                              winSize.x, winSize.y, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (window == NULL)
         std::cout << "[Error] Window creation failed: " << SDL_GetError() << std::endl;
     
-    SDL_SetWindowMinimumSize(window, realWinSize.x, realWinSize.y);
+    SDL_SetWindowMinimumSize(window, winSize.x, winSize.y);
 
-    uint32_t flags;
+    uint32_t flags = ( SDL_RENDERER_ACCELERATED | 
+                       SDL_RENDERER_TARGETTEXTURE);
     
     // Setting up renderer
     if (VSYNC)
-        flags = ( SDL_RENDERER_ACCELERATED | 
-                  SDL_RENDERER_PRESENTVSYNC | 
-                  SDL_RENDERER_TARGETTEXTURE );
-    else
-        flags = ( SDL_RENDERER_ACCELERATED | 
-                  SDL_RENDERER_TARGETTEXTURE );
+        flags |= SDL_RENDERER_PRESENTVSYNC;
 
 
     renderer = SDL_CreateRenderer(window, -1, flags);
@@ -53,11 +50,10 @@ Window::~Window()
 
 void Window::updateCamera(const Vect<uint32_t> baseSize)
 {
-    
-    if (baseSize < realWinSize) realCamSize = baseSize;
-    else realCamSize = realWinSize;
+    if (baseSize < winSize) camSize = baseSize;
+    else camSize = winSize;
 
-    camera = createTex(realCamSize.x, realCamSize.y);
+    camera = createTex(camSize.x, camSize.y);
 }
 
 SDL_Texture* Window::loadTexture(const char* path)
@@ -95,6 +91,8 @@ SDL_Texture* Window::createTex(const uint32_t width, const uint32_t height)
                             width, height);
     if (tex == NULL)
         std::cout << "[Error] Texture creation failed: " << SDL_GetError() << std::endl;
+
+    SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND);
     
     return tex;
 }
@@ -126,7 +124,7 @@ void Window::update()
     SDL_RenderClear(renderer); 
 }
 
-void Window::inputs(const Vect<uint32_t> baseSize)
+void Window::inputs(Base& base)
 {
     // Resetting
     mouseButtons.clear();
@@ -153,13 +151,18 @@ void Window::inputs(const Vect<uint32_t> baseSize)
                 switch (event.window.event)
                 {
                     case SDL_WINDOWEVENT_RESIZED:
-                        resize(event.window.data1, event.window.data2, baseSize);
+                        resize(event.window.data1, event.window.data2, base.getSize());
                         resizeWin = true;
                         break;
                     
                     case SDL_WINDOWEVENT_MAXIMIZED:
-                        maximize(baseSize);
+                        maximize(base.getSize());
+                        break;
                 }
+                break;
+            
+            case SDL_RENDER_TARGETS_RESET:
+                base.resetBuildingTextures(*this);
                 break;
             
             default:
@@ -251,6 +254,7 @@ SDL_Texture* Window::scale(SDL_Texture* texture)
     resetTarget();
     
     SDL_DestroyTexture(texture);
+
     return scaledUp;
 }
 
@@ -266,9 +270,9 @@ void Window::drawRect(SDL_Rect& rect, std::vector<uint8_t> color)
     
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
+
 void Window::setTarget(SDL_Texture* texture)
 {
-    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);   
     SDL_SetRenderTarget(renderer, texture);
 }
 
@@ -282,8 +286,8 @@ void Window::resetTarget()
 
 void Window::resize(int32_t width, int32_t height, const Vect<uint32_t> baseSize)
 {
-    realWinSize = Vect<uint32_t>(width, height);
-    SDL_SetWindowSize(window, realWinSize.x, realWinSize.y);
+    winSize = Vect<uint32_t>(width, height);
+    SDL_SetWindowSize(window, width, height);
     updateCamera(baseSize);
 }
 
@@ -292,7 +296,7 @@ void Window::maximize(const Vect<uint32_t> baseSize)
     SDL_MaximizeWindow(window);
     SDL_DisplayMode DM;
     SDL_GetCurrentDisplayMode(0, &DM);
-    resize(DM.w, DM.h, baseSize);
+    resize(DM.w, DM.h, baseSize);    
 }
 
 void Window::startRenderGame()
@@ -310,12 +314,12 @@ void Window::startRenderUI()
 
     // If the camera size is less than window size
     // Centering cam view
-    if (realCamSize < realWinSize)
-        camOffset = (realWinSize / 2) - (realCamSize / 2);
+    if (camSize < winSize)
+        camOffset = (winSize / 2) - (camSize / 2);
     else
         camOffset = { 0, 0 };
 
-    dst = { camOffset.xCast<int>(), camOffset.yCast<int>(), realCamSize.xCast<int>(), realCamSize.yCast<int>() };
+    dst = { camOffset.xCast<int>(), camOffset.yCast<int>(), camSize.xCast<int>(), camSize.yCast<int>() };
         
     renderWithoutScale(camera, dst);
 }

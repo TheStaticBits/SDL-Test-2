@@ -36,6 +36,8 @@ public:
     const SDL_Rect getSourceRect() const;
     const SDL_Rect getDestRect(const Vect<int64_t> pos) const;
 
+    void setTex(SDL_Texture* newTex) { texture = newTex; }
+
 private:
     SDL_Texture* texture;
     

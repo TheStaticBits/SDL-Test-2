@@ -167,7 +167,6 @@ void Base::updateParticles(Window& window, const Vect<int64_t>& renderOffset)
 
 void Base::renderMinimap(Window& window, Player& player)
 {
-    // Creating minimap
     window.setTarget(minimap);
 
     const Vect<int> sizeInt = size.cast<int>();
@@ -212,6 +211,14 @@ void Base::renderMenues(Window& window, const Vect<int64_t> renderOffset)
     if (!placing)
         for (std::unique_ptr<Interactable>& obj : objects)
             obj->renderMenu(window, renderOffset);
+}
+
+void Base::resetBuildingTextures(Window& window)
+{
+    Interactable::resetTextures(window, buildingData);
+
+    for (const std::unique_ptr<Interactable>& obj : objects)
+        obj->resetAnims();
 }
 
 std::string Base::getSave()

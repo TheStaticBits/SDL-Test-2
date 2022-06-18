@@ -17,8 +17,8 @@ class Window;
 
 enum ObjType { Platform_T, SilverStorage_T};
 inline const std::unordered_map<ObjType, const std::string> objTNames = {
-    { Platform_T,      "Platform"      },
-    { SilverStorage_T, "Silver Storage"}
+    { Platform_T,      "Platform"       },
+    { SilverStorage_T, "Silver Storage" }
 };
 
 // If the first of a string is the same name as the object
@@ -39,6 +39,9 @@ public:
 
     void loadImgs(Window& window, const nlohmann::json& data);
     void setupAnims(Window& window, const nlohmann::json& data);
+
+    static void resetTextures(Window& window, const nlohmann::json& allData);
+    void resetAnims();
 
     virtual bool canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size);
     virtual void completePlace(const uint64_t& time);

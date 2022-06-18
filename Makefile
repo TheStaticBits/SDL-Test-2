@@ -56,7 +56,7 @@ $(CPATH)/main.o: $(SPATH)/main.cpp $(IPATH)/game.h
 $(CPATH)/game.o: $(SPATH)/game.cpp $(IPATH)/game.h $(IPATH)/window.h $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/base.h $(IPATH)/save.h $(IPATH)/utility.h $(IPATH)/shop.h
 	$(CC) -c $(SPATH)/game.cpp $(FLAGS) -o $(CPATH)/game.o
 
-$(CPATH)/window.o: $(SPATH)/window.cpp $(IPATH)/window.h $(IPATH)/vector.h $(IPATH)/utility.h
+$(CPATH)/window.o: $(SPATH)/window.cpp $(IPATH)/window.h $(IPATH)/vector.h $(IPATH)/utility.h $(IPATH)/base.h
 	$(CC) -c $(SPATH)/window.cpp $(FLAGS) -o $(CPATH)/window.o
 
 $(CPATH)/player.o: $(SPATH)/player.cpp $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/window.h $(IPATH)/utility.h $(IPATH)/base.h $(IPATH)/interactable.h

@@ -80,7 +80,7 @@ bool Game::initSDL()
 void Game::iteration()
 {
     window.calcDeltaTime();
-    window.inputs(base.getSize());
+    window.inputs(base);
 
     if (window.getResize())
     {

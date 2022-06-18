@@ -9,6 +9,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "vector.h"
+class Base;
 
 inline const uint32_t SCALE = 3;
 enum RenderTo { WINDOW, CAMERA };
@@ -29,7 +30,7 @@ public:
     SDL_Texture* getTextImg(TTF_Font* font, std::string text, SDL_Color color);
 
     void update();
-    void inputs(const Vect<uint32_t> baseSize);
+    void inputs(Base& base);
     void calcDeltaTime();
 
     // Mod texture
@@ -57,8 +58,8 @@ public:
     void startRenderUI();
 
     // Getters
-    inline const Vect<uint32_t> getSize() const    { return realWinSize; }
-    inline const Vect<uint32_t> getCamSize() const { return realCamSize; }
+    inline const Vect<uint32_t> getSize() const    { return winSize; }
+    inline const Vect<uint32_t> getCamSize() const { return camSize; }
     
     inline const bool isClosed() const    { return quit;      }
     inline const bool getResize() const   { return resizeWin; }
@@ -111,8 +112,8 @@ private:
     SDL_Texture* camera; // Viewbox of the game, not including UI
     std::unordered_map<uint32_t, TTF_Font*> fonts; // For different sizes
 
-    Vect<uint32_t> realWinSize;
-    Vect<uint32_t> realCamSize;
+    Vect<uint32_t> winSize;
+    Vect<uint32_t> camSize;
     Vect<uint32_t> camOffset;
 
     float deltaTime;

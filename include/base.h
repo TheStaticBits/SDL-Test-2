@@ -45,6 +45,8 @@ public:
     void renderBg     (Window& window, const Vect<int64_t> renderOffset);
     void renderMenues (Window& window, const Vect<int64_t> renderOffset);
 
+    void resetBuildingTextures(Window& window);
+
     inline Vect<uint32_t> getSize() const { return size; }
     inline std::vector<std::unique_ptr<Interactable>>& getObjects() { return objects; }
 

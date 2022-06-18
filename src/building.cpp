@@ -100,7 +100,6 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
 {
     if (beingBuilt)
     {
-
         const Vect<int> renderOffsetInt = renderOffset.cast<int>();
         Vect<int64_t> pos = { renderPos.x - renderOffsetInt.x, 
                               renderPos.y - renderOffsetInt.y };
@@ -116,7 +115,6 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
         const Vect<uint32_t> frameSize = getCurrentAnim()->getFrame();
 
         const uint32_t height = static_cast<uint32_t>(percentComplete * srcRect.h);
-
 
         // SRC image is not scaled up
         srcRect.y = (frameSize.y - height);

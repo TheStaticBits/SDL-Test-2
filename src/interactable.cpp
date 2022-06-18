@@ -61,6 +61,19 @@ void Interactable::setupAnims(Window& window, const nlohmann::json& data)
                                 frameData.value()["delay"].get<float>());
 }
 
+void Interactable::resetTextures(Window& window, const nlohmann::json& allData)
+{
+    for (const auto& bName : objTNames)
+        for (const auto& animData : allData[bName.second]["anims"].items())
+            textures[bName.first][animData.key()] = window.scale(window.loadTexture(animData.value()["path"].get<std::string>().c_str()));
+}
+
+void Interactable::resetAnims()
+{
+    for (const auto& anim : anims)
+        anim.second->setTex(textures[type][anim.first]);
+}
+
 bool Interactable::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size)
 {
     // If the platform is touching any other object besides itself
