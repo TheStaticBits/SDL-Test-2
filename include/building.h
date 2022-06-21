@@ -32,7 +32,7 @@ public:
 
     void update(Window& window, const uint64_t& time) override;
     void render(Window& window, const Vect<int64_t>& renderOffset) override;
-    void renderMenu(Window& window, const Vect<int64_t>& renderOffset) override;
+    void renderMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize) override;
     
     void chooseMenu() override;
 

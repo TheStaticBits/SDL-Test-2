@@ -20,6 +20,7 @@ Menu::Menu(const Vect<int64_t> menuPos, const Vect<uint32_t> menuSize)
 }
 
 Menu::Menu(const Vect<int64_t> menuPos, const nlohmann::json& menuData)
+    : bg(NULL), menuSize(menuData["size"][0], menuData["size"][1]), menuPos(menuPos)
 {
     
 }
@@ -60,8 +61,9 @@ void Menu::update(Window& window)
 void Menu::render(Window& window)
 {
     SDL_Rect bgRect = util::getRect(menuPos, menuSize);
-    if (bg != NULL) window.render(bg, bgRect);
-    else window.drawRect(bgRect, { 0, 0, 0, 255 });
+    // if (bg != NULL) window.render(bg, bgRect);
+    // else 
+        window.drawRect(bgRect, { 255, 255, 255, 255 });
 
     for (auto& button : buttons)
         button.second.render(window);

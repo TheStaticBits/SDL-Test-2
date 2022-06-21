@@ -88,6 +88,7 @@ void Building::update(Window& window, const uint64_t& time)
         {
             beingBuilt = false;
             percentComplete = 0;
+            chooseMenu();
         }
         else
             percentComplete = ((float)(time - timeAtPlace) / upgradeTime);
@@ -128,13 +129,13 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
         Interactable::render(window, renderOffset);
 }
 
-void Building::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
+void Building::renderMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
 {
-    Interactable::renderMenu(window, renderOffset);
+    Interactable::renderMenu(window, renderOffset, baseSize);
 
     if (!hovering) return;
     
-    if (currentMenu == "building")
+    if (currentMenu == "beingBuilt")
     {
         // Progress bar and stuff
     }
@@ -144,7 +145,7 @@ void Building::chooseMenu()
 {
     if (beingBuilt)
     {
-        currentMenu = "building";
+        currentMenu = "beingBuilt";
     }
     else
     {

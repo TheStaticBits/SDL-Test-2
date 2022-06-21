@@ -49,10 +49,10 @@ public:
     virtual void completePlace(const uint64_t& time);
 
     virtual void update(Window& window, const uint64_t& time);
-    virtual void checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
+    virtual void checkMenu(Window& window, const Vect<int64_t>& renderOffset);
     virtual void chooseMenu();
     virtual void render(Window& window, const Vect<int64_t>& renderOffset);
-    virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset);
+    virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
 
     void renderCenter(Window& window, const Vect<int64_t>& renderOffset);
     

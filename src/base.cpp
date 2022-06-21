@@ -88,14 +88,14 @@ void Base::updateBuildings(Window& window, const Vect<int64_t>& renderOffset, co
     // Updating the menu that is open before others
     for (std::unique_ptr<Interactable>& obj : objects)
         if (obj->menuOpen())
-            obj->checkMenu(window, renderOffset, size);
+            obj->checkMenu(window, renderOffset);
 
     for (std::unique_ptr<Interactable>& obj : objects)
     {
         obj->update(window, timeAtUpdate);
 
         if (!obj->menuOpen())
-            obj->checkMenu(window, renderOffset, size);
+            obj->checkMenu(window, renderOffset);
     }
 }
 
@@ -214,7 +214,7 @@ void Base::renderMenues(Window& window, const Vect<int64_t> renderOffset)
     // Render any menues on top of everything
     if (!placing)
         for (std::unique_ptr<Interactable>& obj : objects)
-            obj->renderMenu(window, renderOffset);
+            obj->renderMenu(window, renderOffset, size);
 }
 
 void Base::resetTextures(Window& window)

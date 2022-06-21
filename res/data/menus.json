@@ -1,7 +1,7 @@
 {
     "interactables": {
         "home": {
-            "pxSize": [270, 210],
+            "size": [360, 280],
             "bgPath": "blah",
             "buttons": {
                 "cancel": {
@@ -31,7 +31,11 @@
         },
 
         "beingBuilt": {
-
+            "size": [200, 150],
+            "bgPath": "blah",
+            "buttons": {},
+            "text": {},
+            "runtimeRender": {}
         }
     },
     

@@ -72,7 +72,7 @@ void Interactable::loadMenuData()
     menuData = nlohmann::json::parse(std::ifstream(MENU_DATA_PATH));
 
     // Loading menus from menu data
-    for (const auto& data : menuData.items())
+    for (const auto& data : menuData["interactables"].items())
         menus.emplace(data.key(), Menu({0, 0}, data.value()));
 }
 
@@ -123,7 +123,7 @@ void Interactable::update(Window& window, const uint64_t& time)
     anims.at(currentAnim).update(window);
 }
 
-void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
+void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset)
 {
     if (!placing)
     {
@@ -146,12 +146,10 @@ void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset, 
             else
                 window.setButton(SDL_BUTTON_LEFT, false);
         }
+        else clicked = false;
     }
     else
         hovering = false;
-    
-    if (hovering)
-        updateMenuPos(window, renderOffset, baseSize);
 }
 
 // Override this to modify menu selection
@@ -171,9 +169,12 @@ void Interactable::renderCenter(Window& window, const Vect<int64_t>& renderOffse
     anims.at(currentAnim).renderCenter(window, getCenter().cast<int64_t>() - renderOffset);
 }
 
-void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
+void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
 {
     if (!hovering) return; // End function if the menu isn't open
+    
+    if (hovering)
+        updateMenuPos(window, renderOffset, baseSize);
 
     menus.at(currentMenu).render(window);
 
