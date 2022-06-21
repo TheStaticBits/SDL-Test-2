@@ -23,7 +23,7 @@ inline const std::string RemoveObj = "Remove"; // Used for not saving objects th
 // each particle created for that layer. 
 inline const std::vector<std::pair<ParticleData, uint32_t>> BG_PARTICLE_DATA = {
     //                   rotation  movement
-    //      Color         speed,    speed   size   parallax   distance
+    //      Color         speed     speed   size   parallax   distance
     { { { 0, 120, 120 },  6.0f,     5.0f,   50,    3.0f },    100 },
     { { { 0, 140, 140 },  7.0f,     10.0f,  60,    2.5f },    140 },
     { { { 0, 170, 185 },  8.0f,     15.0f,  80,    2.0f },    180 },
@@ -45,7 +45,7 @@ public:
     void renderBg     (Window& window, const Vect<int64_t> renderOffset);
     void renderMenues (Window& window, const Vect<int64_t> renderOffset);
 
-    void resetBuildingTextures(Window& window);
+    void resetTextures(Window& window);
 
     inline Vect<uint32_t> getSize() const { return size; }
     inline std::vector<std::unique_ptr<Interactable>>& getObjects() { return objects; }

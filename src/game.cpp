@@ -23,6 +23,8 @@
 #include "save.h"
 #include "utility.h"
 #include "shop.h"
+#include "button.h"
+#include "interactable.h"
 
 Game::Game()
     : lastSaveTime(0),

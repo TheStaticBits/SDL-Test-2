@@ -1,0 +1,41 @@
+{
+    "interactables": {
+        "home": {
+            "pxSize": [270, 210],
+            "bgPath": "blah",
+            "buttons": {
+                "cancel": {
+                    "lockDir": "Bottom",
+                    "offset": [0, 10],
+                    "texture": "[insertCancelButtonHere]"
+                }
+            },
+
+            "text": {
+                "stats": {
+                    "text": "Stats",
+                    "lockDir": "Top",
+                    "offset": [0, 10],
+                    "fontSize": 30
+                }
+            },
+
+            "runtimeRender": {
+                "level": {
+                    "text": "Level: ",
+                    "lockDir": "TopLeft",
+                    "offset": [10, 10],
+                    "fontSize": 30
+                }
+            }
+        },
+
+        "beingBuilt": {
+
+        }
+    },
+    
+    "shop": {
+
+    }
+}

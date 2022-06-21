@@ -31,6 +31,10 @@ Base::Base(Window& window)
       minimap(window.createTex(size.x, size.y))
 {
     initParticles(window);
+    
+    // Initializing some static variables
+    Button::loadButtonData(window);
+    Interactable::loadMenuData();
 }
 
 Base::~Base()
@@ -81,7 +85,7 @@ void Base::updatePlacingControls(Window& window, const Vect<int64_t>& renderOffs
 
 void Base::updateBuildings(Window& window, const Vect<int64_t>& renderOffset, const uint64_t timeAtUpdate)
 {
-    // Updating the menu that is open before others (for click order)
+    // Updating the menu that is open before others
     for (std::unique_ptr<Interactable>& obj : objects)
         if (obj->menuOpen())
             obj->checkMenu(window, renderOffset, size);
@@ -213,12 +217,10 @@ void Base::renderMenues(Window& window, const Vect<int64_t> renderOffset)
             obj->renderMenu(window, renderOffset);
 }
 
-void Base::resetBuildingTextures(Window& window)
+void Base::resetTextures(Window& window)
 {
     Interactable::resetTextures(window, buildingData);
-
-    for (const std::unique_ptr<Interactable>& obj : objects)
-        obj->resetAnims();
+    Button::resetTextures(window);
 }
 
 std::string Base::getSave()

@@ -47,13 +47,13 @@ linux: application.exe
 
 # --------------------------------
 
-application.exe: $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o $(CPATH)/silverStorage.o $(CPATH)/shop.o $(CPATH)/button.o $(CPATH)/animation.o $(CPATH)/particle.o
-	$(CC) $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o $(CPATH)/silverStorage.o $(CPATH)/shop.o $(CPATH)/button.o $(CPATH)/animation.o $(CPATH)/particle.o $(FLAGS) $(FFLAGS) -o $(OUTPUT)
+application.exe: $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o $(CPATH)/silverStorage.o $(CPATH)/shop.o $(CPATH)/button.o $(CPATH)/animation.o $(CPATH)/particle.o $(CPATH)/menu.o
+	$(CC) $(CPATH)/main.o $(CPATH)/game.o $(CPATH)/window.o $(CPATH)/player.o $(CPATH)/interactable.o $(CPATH)/base.o $(CPATH)/platform.o $(CPATH)/building.o $(CPATH)/silverStorage.o $(CPATH)/shop.o $(CPATH)/button.o $(CPATH)/animation.o $(CPATH)/particle.o $(CPATH)/menu.o $(FLAGS) $(FFLAGS) -o $(OUTPUT)
 
 $(CPATH)/main.o: $(SPATH)/main.cpp $(IPATH)/game.h
 	$(CC) -c $(SPATH)/main.cpp $(FLAGS) -o $(CPATH)/main.o
 
-$(CPATH)/game.o: $(SPATH)/game.cpp $(IPATH)/game.h $(IPATH)/window.h $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/base.h $(IPATH)/save.h $(IPATH)/utility.h $(IPATH)/shop.h
+$(CPATH)/game.o: $(SPATH)/game.cpp $(IPATH)/game.h $(IPATH)/window.h $(IPATH)/player.h $(IPATH)/vector.h $(IPATH)/base.h $(IPATH)/save.h $(IPATH)/utility.h $(IPATH)/shop.h $(IPATH)/button.h $(IPATH)/interactable.h
 	$(CC) -c $(SPATH)/game.cpp $(FLAGS) -o $(CPATH)/game.o
 
 $(CPATH)/window.o: $(SPATH)/window.cpp $(IPATH)/window.h $(IPATH)/vector.h $(IPATH)/utility.h $(IPATH)/base.h
@@ -80,7 +80,7 @@ $(CPATH)/silverStorage.o: $(SPATH)/silverStorage.cpp $(IPATH)/silverStorage.h $(
 $(CPATH)/shop.o: $(SPATH)/shop.cpp $(IPATH)/shop.h $(IPATH)/window.h $(IPATH)/utility.h $(IPATH)/vector.h $(IPATH)/button.h
 	$(CC) -c $(SPATH)/shop.cpp $(FLAGS) -o $(CPATH)/shop.o
 
-$(CPATH)/button.o: $(SPATH)/button.cpp $(IPATH)/button.h $(IPATH)/window.h $(IPATH)/utility.h $(IPATH)/vector.h
+$(CPATH)/button.o: $(SPATH)/button.cpp $(IPATH)/button.h $(IPATH)/window.h $(IPATH)/utility.h $(IPATH)/vector.h $(IPATH)/animation.h
 	$(CC) -c $(SPATH)/button.cpp $(FLAGS) -o $(CPATH)/button.o
 
 $(CPATH)/animation.o: $(SPATH)/animation.cpp $(IPATH)/animation.h $(IPATH)/window.h $(IPATH)/utility.h $(IPATH)/vector.h
@@ -88,6 +88,9 @@ $(CPATH)/animation.o: $(SPATH)/animation.cpp $(IPATH)/animation.h $(IPATH)/windo
 
 $(CPATH)/particle.o: $(SPATH)/particle.cpp $(IPATH)/particle.h $(IPATH)/window.h $(IPATH)/utility.h $(IPATH)/vector.h
 	$(CC) -c $(SPATH)/particle.cpp $(FLAGS) -o $(CPATH)/particle.o
+
+$(CPATH)/menu.o: $(SPATH)/menu.cpp $(IPATH)/menu.h $(IPATH)/window.h $(IPATH)/vector.h $(IPATH)/button.h $(IPATH)/utility.h
+	$(CC) -c $(SPATH)/menu.cpp $(FLAGS) -o $(CPATH)/menu.o
 
 clean:
 	-rm $(CPATH)/*.o

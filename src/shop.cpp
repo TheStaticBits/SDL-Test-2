@@ -26,10 +26,10 @@ Shop::Shop(Window& window)
       text(window.getTextImg(window.font(10), "Shop", {0, 0, 0, 255})),
       textSize(util::getSize(text) * SCALE), 
       
-      shopButton(window, ShopB),
-      buildingsButton(window, BuildingsB),
-      platformsButton(window, BuildingsB), // Temporary
-      
+      shopButton(window, "shop"),
+      buildingsButton(window, "objectShop"),
+      platformsButton(window, "objectShop"),
+
       active(false),
       openCategory(NoneOpen),
       switchToCategory(NoneOpen)
@@ -140,17 +140,13 @@ void Shop::switchCategory(Category category)
 
 void Shop::updateRects()
 {
-    const Vect<int> l1SizeInt =   l1Size.cast<int>();
-    const Vect<int> l1PosInt =    l1Pos.cast<int>();
-    const Vect<int> l2PosInt =    l2Pos.cast<int>();
-    const Vect<int> l2SizeInt =   l2Size.cast<int>();
     const Vect<int> textSizeInt = textSize.cast<int>();
 
-    l1Rect = {l1PosInt.x, l1PosInt.y, l1SizeInt.x, l1SizeInt.y};
-    l2Rect = {l2PosInt.x, l2PosInt.y, l2SizeInt.x, l2SizeInt.y};
+    l1Rect = util::getRect(l1Pos.cast<int64_t>(), l1Size);
+    l2Rect = util::getRect(l2Pos.cast<int64_t>(), l2Size);
 
-    textRect = {l1PosInt.x + (l1SizeInt.x / 2) - (textSizeInt.x / 2), 
-                l1PosInt.y + 15, textSizeInt.x, textSizeInt.y};
+    textRect = {static_cast<int>(l1Pos.x + (l1Size.x / 2) - (textSize.x / 2)), 
+                l1Pos.yCast<int>() + 15, textSizeInt.x, textSizeInt.y};
 }
 
 void Shop::updateUIPositions(const Window& window)

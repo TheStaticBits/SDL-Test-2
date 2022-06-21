@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -13,15 +14,18 @@
 #include "utility.h"
 #include "base.h"
 #include "animation.h"
+#include "menu.h"
 
 std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> Interactable::textures = {};
+std::unordered_map<std::string, Menu> Interactable::menus = {};
+nlohmann::json Interactable::menuData = nlohmann::json(nlohmann::json::value_t::object);
 
 Interactable::Interactable(Window& window, const nlohmann::json& data, const Vect<uint32_t> tileSize, const ObjType type)
     : currentAnim("idle"), tileSize(tileSize), modColor{255, 255, 255},
       renderPos{ 0, 0, static_cast<int>(tileSize.x * TILE_SIZE), 
                        static_cast<int>(tileSize.y * TILE_SIZE) }, 
       placing(true), placable(true), hovering(false), clicked(false),
-      menuSize{270, 210}, type(type)
+      currentMenu("home"), type(type)
 {
     loadImgs(window, data);
     setupAnims(window, data);
@@ -31,7 +35,7 @@ Interactable::Interactable(Window& window, const nlohmann::json& data, const Obj
     : currentAnim("idle"), modColor{255, 255, 255}, 
       placing(false), placable(false), 
       hovering(false), clicked(false),
-      menuSize{270, 210}, type(type)
+      currentMenu("home"), type(type)
 {
     loadImgs(window, data);
     setupAnims(window, data);
@@ -57,21 +61,39 @@ void Interactable::setupAnims(Window& window, const nlohmann::json& data)
 {
     for (const auto& frameData : data["anims"].items())
         anims[frameData.key()] = std::make_unique<Animation>(textures[type][frameData.key()], 
-                                frameData.value()["frames"].get<uint32_t>(), 
-                                frameData.value()["delay"].get<float>());
+                                                             frameData.value()["frames"].get<uint32_t>(), 
+                                                             frameData.value()["delay"].get<float>());
+}
+
+void Interactable::loadMenuData()
+{
+    menuData = nlohmann::json::parse(std::ifstream(MENU_DATA_PATH));
+
+    // Loading menus from menu data
+    for (const auto& data : menuData.items())
+        menus.emplace(data.key(), Menu({0, 0}, data.value()));
 }
 
 void Interactable::resetTextures(Window& window, const nlohmann::json& allData)
 {
     for (const auto& bName : objTNames)
+    {
         for (const auto& animData : allData[bName.second]["anims"].items())
-            textures[bName.first][animData.key()] = window.scale(window.loadTexture(animData.value()["path"].get<std::string>().c_str()));
-}
+        {
+            if (textures.find(bName.first) == textures.end()) 
+                continue;
 
-void Interactable::resetAnims()
-{
-    for (const auto& anim : anims)
-        anim.second->setTex(textures[type][anim.first]);
+            // Rerendering textures onto the scaledup versions
+            SDL_Texture* tex = window.loadTexture(animData.value()["path"].get<std::string>().c_str());
+            SDL_Rect dst = util::getRect({0, 0}, util::getSize(tex) * SCALE);
+
+            window.setTarget(textures[bName.first][animData.key()]);
+            window.render(tex, dst);
+            window.resetTarget();
+
+            SDL_DestroyTexture(tex);
+        }
+    }
 }
 
 bool Interactable::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size)
@@ -82,10 +104,8 @@ bool Interactable::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_pt
             return false;
 
     // If the platform is outside of the base boundaries
-    if (pos.x < 0 || 
-        pos.x + renderPos.w > size.x || 
-        pos.y < 0 || 
-        pos.y + renderPos.h > size.y)
+    if (pos.x < 0 || pos.x + renderPos.w > size.x || 
+        pos.y < 0 || pos.y + renderPos.h > size.y)
         return false;
 
     return true;
@@ -103,8 +123,6 @@ void Interactable::update(Window& window, const uint64_t& time)
 
 void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
 {
-    setMenuRect(window, renderOffset, baseSize);
-
     if (!placing)
     {
         const Vect<int64_t> mouseMapPos = window.getCamMousePos() + renderOffset;
@@ -116,11 +134,12 @@ void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset, 
             {
                 clicked = false;
                 hovering = !hovering;
+                chooseMenu();
             }
         }
         else if (window.buttonHeld(SDL_BUTTON_LEFT) && hovering)
         {
-            if (!util::collide(menuPos, mouseMapPos))
+            if (!util::collide(menus.at(currentMenu).getRect(), mouseMapPos))
                 removeMenu();
             else
                 window.setButton(SDL_BUTTON_LEFT, false);
@@ -128,6 +147,15 @@ void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset, 
     }
     else
         hovering = false;
+    
+    if (hovering)
+        updateMenuPos(window, renderOffset, baseSize);
+}
+
+// Override this to modify menu selection
+void Interactable::chooseMenu()
+{
+    currentMenu = "home";
 }
 
 void Interactable::render(Window& window, const Vect<int64_t>& renderOffset)
@@ -143,13 +171,13 @@ void Interactable::renderCenter(Window& window, const Vect<int64_t>& renderOffse
 
 void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
 {
-    if (hovering)
-    {
-        SDL_Rect render = menuPos;
-        render.x -= renderOffset.x;
-        render.y -= renderOffset.y;
+    if (!hovering) return; // End function if the menu isn't open
 
-        window.drawRect(render, { 255, 255, 255 });
+    menus.at(currentMenu).render(window);
+
+    if (currentMenu == "home")
+    {
+        // Render some stats here using the Menu object
     }
 }
 
@@ -209,24 +237,24 @@ std::string Interactable::readSave(std::string& save)
     return save.substr(save.find("#") + 1); // Removing everything before the divider
 }
 
-void Interactable::setMenuRect(const Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
+void Interactable::updateMenuPos(const Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
 {
-    const Vect<int> menuSizeInt = menuSize.cast<int>();
-    menuPos.w = menuSizeInt.x;
-    menuPos.h = menuSizeInt.y;
+    const Vect<int> menuSize = menus.at(currentMenu).getSize().cast<int>();
 
-    SDL_Rect renderScreenPos = renderPos;
-    renderScreenPos.x -= renderOffset.x;
-    renderScreenPos.y -= renderOffset.y;
+    SDL_Rect screenPos = renderPos;
+    screenPos.x -= renderOffset.x;
+    screenPos.y -= renderOffset.y;
 
-    if (renderScreenPos.y + renderScreenPos.h + menuPos.h > static_cast<int>(window.getCamSize().y))
-        menuPos.y = renderPos.y - menuPos.h;
+    if (screenPos.y + screenPos.h + menuSize.y > static_cast<int>(window.getCamSize().y))
+        menus.at(currentMenu).setY(screenPos.y - menuSize.y);
     else
-        menuPos.y = renderPos.y + renderPos.h;
+        menus.at(currentMenu).setY(screenPos.y + screenPos.h);
     
-    menuPos.x = renderPos.x + (renderPos.w / 2) - (menuPos.w / 2);
-    if (menuPos.x < 0)
-        menuPos.x = 0;
-    else if (menuPos.x + menuPos.w > baseSize.xCast<int>())
-        menuPos.x = baseSize.x - menuPos.w;
+    int tileMenuX = (renderPos.x + (renderPos.w / 2) - (menuSize.x / 2)); // Not onscreen position
+    if (tileMenuX < 0) 
+        menus.at(currentMenu).setX(-renderOffset.x); // Setting to the left of the board
+    else if (tileMenuX + menuSize.x > baseSize.xCast<int>())
+        menus.at(currentMenu).setX(baseSize.x - menuSize.x - renderOffset.x); // Right side of board
+    else
+        menus.at(currentMenu).setX(tileMenuX - renderOffset.x); 
 }

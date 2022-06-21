@@ -8,27 +8,23 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+#include <nlohmann/json.hpp>
+
 class Window;
 #include "vector.h"
-
-enum bTextures { BlueB, ShopB, BuildingsB};
-inline const std::unordered_map<bTextures, std::string> bFolderNames = {
-    { BlueB,      "blue"      },
-    { ShopB,      "shop"      },
-    { BuildingsB, "buildingB" }
-};
-inline const std::vector<std::string> bImgStates = { "idle", "hovering", "pressed" };
+#include "utility.h"
+#include "animation.h"
 
 class Button
 {
 public:
-    Button(Window& window, bTextures texType, 
+    Button(Window& window, std::string texType,
            Vect<int64_t> pos = {0, 0}, std::string text = "",
-           const uint32_t fontSize = 0,
-           SDL_Color textColor = {255, 255, 255, 255});
+           const uint32_t fontSize = 0, SDL_Color textColor = {0, 0, 0});
     ~Button();
 
-    void operator=(const Button&) = delete;
+    static void loadButtonData(Window& window);
+    static void resetTextures(Window& window);
 
     void setupText(std::string text, const uint32_t fontSize, SDL_Color color);
 
@@ -38,16 +34,27 @@ public:
     inline void setPos(Vect<int64_t> newPos) { pos = newPos; }
     inline void setX(int64_t x)              { pos.x = x;    }
     inline void setY(int64_t y)              { pos.y = y;    }
+    inline void addX(int64_t x)              { pos.x += x;   }
+    inline void addY(int64_t y)              { pos.y += y;   }
 
     inline const bool isActivated()       const { return activated; }
     inline const Vect<uint32_t> getSize() const { return size;      }
     inline const Vect<int64_t> getPos()   const { return pos;       }
     inline const SDL_Rect getRect()       const { return rect;      }
 
+    inline static const Vect<uint32_t> getButtonSize(std::string texType)
+    {
+        return util::getSize(textures[texType]);
+    }
+
 private:
-    static std::unordered_map<bTextures, std::unordered_map<std::string, SDL_Texture*>> textures;
+    inline static const std::string DATA_PATH = "res/data/buttons.json";
+
+    static nlohmann::json buttonData;
+    static std::unordered_map<std::string, SDL_Texture*> textures;
     
-    bTextures texType;
+    std::string texType;
+    Animation animation;
     Vect<uint32_t> size;
 
     SDL_Texture* textImg;

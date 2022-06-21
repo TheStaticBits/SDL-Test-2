@@ -21,7 +21,7 @@ Window::Window()
     // Setting up window
     window = SDL_CreateWindow(TITLE, 
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
-                              winSize.x, winSize.y, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN_DESKTOP);
+                              winSize.x, winSize.y, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (window == NULL)
         std::cout << "[Error] Window creation failed: " << SDL_GetError() << std::endl;
@@ -162,7 +162,7 @@ void Window::inputs(Base& base)
                 break;
             
             case SDL_RENDER_TARGETS_RESET:
-                base.resetBuildingTextures(*this);
+                base.resetTextures(*this);
                 break;
             
             default:

@@ -14,6 +14,7 @@
 class Window;
 #include "vector.h"
 #include "animation.h"
+#include "menu.h"
 
 enum ObjType { Platform_T, SilverStorage_T};
 inline const std::unordered_map<ObjType, const std::string> objTNames = {
@@ -39,15 +40,17 @@ public:
 
     void loadImgs(Window& window, const nlohmann::json& data);
     void setupAnims(Window& window, const nlohmann::json& data);
+    
+    static void loadMenuData();
 
     static void resetTextures(Window& window, const nlohmann::json& allData);
-    void resetAnims();
 
     virtual bool canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<Interactable>>& objects, const Vect<uint32_t>& size);
     virtual void completePlace(const uint64_t& time);
 
     virtual void update(Window& window, const uint64_t& time);
     virtual void checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
+    virtual void chooseMenu();
     virtual void render(Window& window, const Vect<int64_t>& renderOffset);
     virtual void renderMenu(Window& window, const Vect<int64_t>& renderOffset);
 
@@ -88,7 +91,7 @@ public:
                                              clicked = false;     }
 
 protected:
-    void setMenuRect(const Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
+    void updateMenuPos(const Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize);
     
     static constexpr uint8_t ALPHA = 150;
     static std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> textures;
@@ -104,8 +107,11 @@ protected:
 
     bool hovering; // If menu is open or not
     bool clicked;
-    Vect<uint32_t> menuSize;
-    SDL_Rect menuPos;
+
+    std::string currentMenu;
+    inline static const std::string MENU_DATA_PATH = "res/data/menus.json";
+    static std::unordered_map<std::string, Menu> menus;
+    static nlohmann::json menuData;
 
     const ObjType type;
 };

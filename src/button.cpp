@@ -1,6 +1,7 @@
 #include "button.h"
 
 #include <iostream>
+#include <fstream>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -9,13 +10,21 @@
 #include "window.h"
 #include "vector.h"
 #include "utility.h"
+#include "animation.h"
 
-std::unordered_map<bTextures, std::unordered_map<std::string, SDL_Texture*>> Button::textures = {};
+// Empty JSON
+nlohmann::json Button::buttonData = nlohmann::json(nlohmann::json::value_t::object);
+std::unordered_map<std::string, SDL_Texture*> Button::textures = {};
 
-Button::Button(Window& window, bTextures texType, 
+Button::Button(Window& window, std::string texType,
                Vect<int64_t> pos, std::string text,
                const uint32_t fontSize, SDL_Color textColor)
-    : texType(texType), textImg(NULL), pos(pos),
+    : texType(texType), 
+      animation(textures[texType], 
+                buttonData[texType]["anim"]["frames"].get<uint32_t>(), 
+                buttonData[texType]["anim"]["delay"].get<float>()),
+      size(animation.getFrame()),
+      textImg(NULL), pos(pos),
       hovering(false), pressed(false), activated(false)
 {
     if (text != "")
@@ -24,29 +33,41 @@ Button::Button(Window& window, bTextures texType,
         textImg = window.getTextImg(font, text, textColor);
         TTF_CloseFont(font);
 
-        textSize = util::getSize(textImg) * SCALE;
+        textSize = util::getSize(textImg);
     }
-
-    if (textures.find(texType) == textures.end())
-    {
-        for (const std::string& state : bImgStates)
-        {
-            textures[texType][state] = window.loadTexture((std::string("res/buttons/") + 
-                                                           bFolderNames.at(texType)    +
-                                                           std::string("/") + state    + 
-                                                           std::string(".png")).c_str());
-        }
-    }
-
-    size = util::getSize(textures[texType]["idle"]) * SCALE;
 }
 
 Button::~Button()
 {
     if (textImg != NULL) SDL_DestroyTexture(textImg);
-    
-    for (const std::string& state : bImgStates)
-        SDL_DestroyTexture(textures[texType][state]);
+    SDL_DestroyTexture(textures[texType]);
+}
+
+void Button::loadButtonData(Window& window)
+{
+    buttonData = nlohmann::json::parse(std::ifstream(DATA_PATH));
+
+    // Load button textures
+    for (const auto& data : buttonData.items())
+        textures[data.key()] = window.scale(window.loadTexture(data.value()["path"].get<std::string>().c_str()));
+}
+
+void Button::resetTextures(Window& window)
+{
+    for (const auto& data : buttonData.items())
+    {
+        if (textures.find(data.key()) == textures.end()) 
+            continue;
+
+        SDL_Texture* tex = window.loadTexture(data.value()["path"].get<std::string>().c_str());
+        SDL_Rect dst = util::getRect({0, 0}, util::getSize(tex) * SCALE);
+
+        window.setTarget(textures[data.key()]);
+        window.render(tex, dst);
+        window.resetTarget();
+
+        SDL_DestroyTexture(tex);
+    }
 }
 
 void Button::update(Window& window)
@@ -56,15 +77,28 @@ void Button::update(Window& window)
     activated = false;
     hovering = util::collide(rect, window.getMousePos());
     
+    animation.update(window);
+    if (animation.isFinished()) 
+    {
+        animation.sendToOpposite();
+        animation.lock();
+    }
+    
     if (hovering)
     {
         if (window.buttonHeld(SDL_BUTTON_LEFT))
         {
+            if (!pressed) animation.flip();
+            animation.unlock();
+
             pressed = true;
-            window.setButton(SDL_BUTTON_LEFT, false);
+            window.setButton(SDL_BUTTON_LEFT, false); // So other elements below the button don't get activated
         }
         else if (pressed)
         {
+            animation.flip();
+            animation.unlock();
+            // Activates on button release
             pressed = false;
             activated = true;
         }
@@ -76,21 +110,17 @@ void Button::update(Window& window)
 void Button::render(Window& window, Vect<int64_t> textOffset)
 {
     // Draw button
-    if (hovering && !pressed) window.render(textures[texType]["hovering"], rect);
-    else if (pressed)         window.render(textures[texType]["pressed"],  rect);
-    else                      window.render(textures[texType]["idle"],     rect);
-    
+    animation.render(window, pos);
+
     // Draw text
     if (textImg != NULL)
-    {   
-        const Vect<int> sizeInt = size.cast<int>();
-        const Vect<int> textSizeInt = textSize.cast<int>();
-        const Vect<int> textOffsetInt = textOffset.cast<int>();
-        const Vect<int> posInt = pos.cast<int>();
-        
-        SDL_Rect textRect = { posInt.x + (sizeInt.x / 2) - (textSizeInt.x / 2) + textOffsetInt.x, 
-                              posInt.y + (sizeInt.y / 2) - (textSizeInt.y / 2) + textOffsetInt.y, 
-                              textSizeInt.x, textSizeInt.y };
+    {
+        SDL_Rect textRect = { pos.xCast<int>() + textOffset.xCast<int>() + 
+                              (size.xCast<int>() - textSize.xCast<int>()) / 2,
+                              pos.yCast<int>() + textOffset.yCast<int>() + 
+                              (size.yCast<int>() - textSize.yCast<int>()) / 2, 
+
+                              textSize.xCast<int>(), textSize.yCast<int>() };
 
         window.render(textImg, textRect);
     }
@@ -98,7 +128,5 @@ void Button::render(Window& window, Vect<int64_t> textOffset)
 
 void Button::updateRect()
 {
-    const Vect<int> sizeInt = size.cast<int>();
-    const Vect<int> posInt = pos.cast<int>();
-    rect = { posInt.x, posInt.y, sizeInt.x, sizeInt.y };
+    rect = util::getRect(pos, size);
 }

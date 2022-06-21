@@ -1,0 +1,13 @@
+{
+    "shop": {
+        "path": "res/buttons/shop.png",
+        "hoverColorMod": [0, 0, 150],
+        "anim": { "frames": 3, "delay": 0.1 }
+    },
+
+    "objectShop": {
+        "path": "res/buttons/buildingShop.png",
+        "hoverColorMod": [0, 0, 150],
+        "anim": { "frames": 2, "delay": 0.1 }
+    }
+}

@@ -64,4 +64,12 @@ namespace util
 
         return result;
     }
+
+    // template <typename T, typename O>
+    inline SDL_Rect getRect(const Vect<int64_t> pos, const Vect<uint32_t> size)
+    {
+        SDL_Rect rect = { pos.xCast<int>(), pos.yCast<int>(), 
+                          size.xCast<int>(), size.yCast<int>() };
+        return rect;
+    }
 };

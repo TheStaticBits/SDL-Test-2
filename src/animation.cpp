@@ -15,9 +15,10 @@ Animation::Animation(SDL_Texture* tex, uint32_t frames, float delay)
       totalFrames(frames), 
       size(util::getSize(texture)),
       frameSize(size.x / totalFrames, size.y),
-      delayCounter(0), frame(0), finished(false)
+      delayCounter(0), frame(0), 
+      flipped(false), locked(false), finished(false)
 {
-    
+
 }
 
 Animation::~Animation()
@@ -28,16 +29,19 @@ Animation::~Animation()
 void Animation::update(Window& window)
 {
     finished = false;
-
+    if (locked) return; 
+    
     delayCounter += window.getDeltaTime();
     if (delayCounter >= delay)
     {
         delayCounter = 0.0f;
 
-        if (++frame >= totalFrames)
+        if ((!flipped && ++frame >= totalFrames) || (flipped && --frame < 0))
         {
             finished = true;
-            frame = 0;
+
+            if (frame < 0) frame = totalFrames - 1;
+            else frame = 0;
         }
     }
 }
@@ -57,7 +61,7 @@ void Animation::render(Window& window, SDL_Rect src, SDL_Rect dst)
 
 void Animation::renderCenter(Window& window, const Vect<int64_t> center)
 {
-    Vect<int64_t> topLeft = center - (frameSize.cast<int64_t>() / 2);
+    Vect<int64_t> topLeft = center - ((frameSize.cast<int64_t>()) / 2);
     render(window, topLeft);
 }
 
@@ -88,8 +92,5 @@ const SDL_Rect Animation::getSourceRect() const
 
 const SDL_Rect Animation::getDestRect(const Vect<int64_t> pos) const
 {
-    const Vect<int> frameSizeInt = frameSize.cast<int>();
-    const Vect<int> posInt = pos.cast<int>();
-
-    return { posInt.x, posInt.y, frameSizeInt.x, frameSizeInt.y };
+    return util::getRect(pos, frameSize);
 }

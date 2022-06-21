@@ -36,7 +36,14 @@ public:
     const SDL_Rect getSourceRect() const;
     const SDL_Rect getDestRect(const Vect<int64_t> pos) const;
 
-    void setTex(SDL_Texture* newTex) { texture = newTex; }
+    inline void setTex(SDL_Texture* newTex) { texture = newTex; }
+
+    inline void flip() { flipped = !flipped; }
+    
+    inline void lock()   { locked = true;  }
+    inline void unlock() { locked = false; }
+    
+    inline void sendToOpposite() { frame = ((frame == 0) ? (totalFrames - 1) : 0); }
 
 private:
     SDL_Texture* texture;
@@ -49,5 +56,7 @@ private:
     float delayCounter;
     uint32_t frame;
 
+    bool flipped;
+    bool locked;
     bool finished; 
 };

@@ -130,13 +130,26 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
 
 void Building::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
 {
-    if (beingBuilt)
-    {
-        
-    }
     Interactable::renderMenu(window, renderOffset);
 
+    if (!hovering) return;
+    
+    if (currentMenu == "building")
+    {
+        // Progress bar and stuff
+    }
+}
 
+void Building::chooseMenu()
+{
+    if (beingBuilt)
+    {
+        currentMenu = "building";
+    }
+    else
+    {
+        currentMenu = "home";
+    }
 }
 
 std::string Building::getSave()
