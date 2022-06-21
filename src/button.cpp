@@ -35,6 +35,8 @@ Button::Button(Window& window, std::string texType,
 
         textSize = util::getSize(textImg);
     }
+
+    animation.lock();
 }
 
 Button::~Button()
@@ -88,29 +90,58 @@ void Button::update(Window& window)
     {
         if (window.buttonHeld(SDL_BUTTON_LEFT))
         {
-            if (!pressed) animation.flip();
-            animation.unlock();
+            if (!pressed) 
+            {
+                animation.resetDir(); // Runs only at first press
+                animation.unlock();
+            }
 
             pressed = true;
             window.setButton(SDL_BUTTON_LEFT, false); // So other elements below the button don't get activated
         }
         else if (pressed)
         {
-            animation.flip();
+            animation.reverse();
             animation.unlock();
             // Activates on button release
             pressed = false;
             activated = true;
         }
     }
-    else
+    else if (pressed)
+    {
+        animation.reverse();
+        animation.unlock();
         pressed = false;
+    }
 }
 
 void Button::render(Window& window, Vect<int64_t> textOffset)
 {
-    // Draw button
-    animation.render(window, pos);
+    // Modifying color
+    if (hovering) 
+    {
+        // Might change to make this more efficient, like storing the
+        // texture so SDL doesn't have to create another every frame.
+        const Vect<uint32_t> size = animation.getFrame();
+        
+        SDL_Texture* tex = window.createTex(size.x, size.y);
+        
+        const nlohmann::json color = buttonData[texType]["hoverColorMod"];
+        SDL_Rect rect = util::getRect({0, 0}, size);
+
+        window.setTarget(tex);
+        animation.render(window, {0, 0});
+        window.drawRect(rect, {color[0], color[1], color[2], color[3]});
+        window.resetTarget();
+
+        SDL_Rect renderRect = util::getRect(pos, size);
+
+        window.render(tex, renderRect);
+        SDL_DestroyTexture(tex);
+    }
+    else
+        animation.render(window, pos);
 
     // Draw text
     if (textImg != NULL)

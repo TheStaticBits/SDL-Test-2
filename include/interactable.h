@@ -71,7 +71,7 @@ public:
     inline const ObjType& getType()      { return type;      }
     inline const bool menuOpen()         { return hovering;  }
 
-    inline std::unique_ptr<Animation>& getCurrentAnim() { return anims[currentAnim]; }
+    inline Animation& getCurrentAnim() { return anims.at(currentAnim); }
     
     inline const Vect<int> getCenter()  { return { renderPos.x + renderPos.w / 2, 
                                                    renderPos.y + renderPos.h / 2}; }
@@ -96,7 +96,7 @@ protected:
     static constexpr uint8_t ALPHA = 150;
     static std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> textures;
 
-    std::unordered_map<std::string, std::unique_ptr<Animation>> anims;
+    std::unordered_map<std::string, Animation> anims;
     std::string currentAnim;
     Vect<uint32_t> tileSize; // Amount of tiles the hitbox/collision takes up
     std::vector<uint8_t> modColor;

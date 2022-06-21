@@ -36,13 +36,15 @@ void Animation::update(Window& window)
     {
         delayCounter = 0.0f;
 
-        if ((!flipped && ++frame >= totalFrames) || (flipped && --frame < 0))
+        if ((!flipped && frame == totalFrames - 1) || (flipped && frame == 0))
         {
             finished = true;
 
-            if (frame < 0) frame = totalFrames - 1;
-            else frame = 0;
+            if (!flipped) frame = 0;
+            else frame = totalFrames - 1;
         }
+        else if (!flipped) frame++;
+        else frame--;
     }
 }
 

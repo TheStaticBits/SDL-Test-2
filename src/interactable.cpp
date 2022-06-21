@@ -60,9 +60,11 @@ void Interactable::loadImgs(Window& window, const nlohmann::json& data)
 void Interactable::setupAnims(Window& window, const nlohmann::json& data)
 {
     for (const auto& frameData : data["anims"].items())
-        anims[frameData.key()] = std::make_unique<Animation>(textures[type][frameData.key()], 
-                                                             frameData.value()["frames"].get<uint32_t>(), 
-                                                             frameData.value()["delay"].get<float>());
+        anims.emplace(std::piecewise_construct,
+                      std::forward_as_tuple(frameData.key()),
+                      std::forward_as_tuple(textures[type][frameData.key()], 
+                                            frameData.value()["frames"].get<uint32_t>(), 
+                                            frameData.value()["delay"].get<float>()));
 }
 
 void Interactable::loadMenuData()
@@ -118,7 +120,7 @@ void Interactable::completePlace(const uint64_t& time)
 
 void Interactable::update(Window& window, const uint64_t& time)
 {
-    anims[currentAnim]->update(window);
+    anims.at(currentAnim).update(window);
 }
 
 void Interactable::checkMenu(Window& window, const Vect<int64_t>& renderOffset, const Vect<uint32_t> baseSize)
@@ -166,7 +168,7 @@ void Interactable::render(Window& window, const Vect<int64_t>& renderOffset)
 
 void Interactable::renderCenter(Window& window, const Vect<int64_t>& renderOffset)
 {
-    anims[currentAnim]->renderCenter(window, getCenter().cast<int64_t>() - renderOffset);
+    anims.at(currentAnim).renderCenter(window, getCenter().cast<int64_t>() - renderOffset);
 }
 
 void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
@@ -183,7 +185,7 @@ void Interactable::renderMenu(Window& window, const Vect<int64_t>& renderOffset)
 
 void Interactable::updateAnim(Window& window)
 {
-    anims[currentAnim]->update(window);
+    anims.at(currentAnim).update(window);
 }
 
 void Interactable::setModColor(Window& window)
@@ -191,7 +193,7 @@ void Interactable::setModColor(Window& window)
     std::vector<uint8_t> color = modColor;
     if (placing) // Alphafied
     {
-        anims[currentAnim]->modAlpha(window, ALPHA);
+        anims.at(currentAnim).modAlpha(window, ALPHA);
 
         if (!placable) // Redified
         {
@@ -200,14 +202,14 @@ void Interactable::setModColor(Window& window)
             color[2] = 50;
         }
     }
-    else anims[currentAnim]->modAlpha(window, 255);
+    else anims.at(currentAnim).modAlpha(window, 255);
 
-    anims[currentAnim]->modColor(window, color);
+    anims.at(currentAnim).modColor(window, color);
 }
 
 void Interactable::swapAnim(const std::string& name)
 {
-    anims[currentAnim]->reset();
+    anims.at(currentAnim).reset();
     currentAnim = name;
 }
 

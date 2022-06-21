@@ -41,7 +41,7 @@ Platform::~Platform()
 
 void Platform::initParts()
 {
-    Vect<int> frameSize = (getCurrentAnim()->getFrame()).cast<int>();
+    Vect<int> frameSize = (getCurrentAnim().getFrame()).cast<int>();
 
     head = { static_cast<int>(data["headX"][0].get<int>() * SCALE), 0,
              static_cast<int>(data["headX"][1].get<int>() * SCALE - data["headX"][0].get<int>() * SCALE), frameSize.y };
@@ -59,7 +59,7 @@ void Platform::render(Window& window, const Vect<int64_t>& renderOffset)
     Interactable::setModColor(window);
 
     const Vect<int> renderOffsetInt = renderOffset.cast<int>();
-    const int frameOffset = static_cast<int>(getCurrentAnim()->getFrameNum() * TILE_SIZE);
+    const int frameOffset = static_cast<int>(getCurrentAnim().getFrameNum() * TILE_SIZE);
 
     head.x = static_cast<int>(data["headX"][0].get<int>() * SCALE) + frameOffset;
     body.x = static_cast<int>(data["bodyX"][0].get<int>() * SCALE) + frameOffset;
@@ -80,7 +80,7 @@ void Platform::render(Window& window, const Vect<int64_t>& renderOffset)
 
                                 curRect.w, curRect.h};
         
-        window.render(getCurrentAnim()->getTexture(), curRect, renderRect, 
+        window.render(getCurrentAnim().getTexture(), curRect, renderRect, 
                       (tileX == tileSize.x - 1 ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
     }
 }

@@ -38,7 +38,8 @@ public:
 
     inline void setTex(SDL_Texture* newTex) { texture = newTex; }
 
-    inline void flip() { flipped = !flipped; }
+    inline void reverse()  { flipped = true;  }
+    inline void resetDir() { flipped = false; }
     
     inline void lock()   { locked = true;  }
     inline void unlock() { locked = false; }

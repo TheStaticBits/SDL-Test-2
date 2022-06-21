@@ -103,14 +103,14 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
                               renderPos.y - renderOffsetInt.y };
 
         // Drawing transparent part
-        getCurrentAnim()->modAlpha(window, ALPHA);
-        getCurrentAnim()->render(window, pos);
+        getCurrentAnim().modAlpha(window, ALPHA);
+        getCurrentAnim().render(window, pos);
 
         // Drawing solid part
-        SDL_Rect srcRect = getCurrentAnim()->getSourceRect();
+        SDL_Rect srcRect = getCurrentAnim().getSourceRect();
         SDL_Rect destRect = { pos.xCast<int>(), pos.yCast<int>(),
                               srcRect.w, srcRect.h };
-        const Vect<uint32_t> frameSize = getCurrentAnim()->getFrame();
+        const Vect<uint32_t> frameSize = getCurrentAnim().getFrame();
 
         const uint32_t height = static_cast<uint32_t>(percentComplete * srcRect.h);
 
@@ -121,8 +121,8 @@ void Building::render(Window& window, const Vect<int64_t>& renderOffset)
         destRect.y += srcRect.y;
         destRect.h = srcRect.h;
         
-        getCurrentAnim()->modAlpha(window, 255);
-        getCurrentAnim()->render(window, srcRect, destRect);
+        getCurrentAnim().modAlpha(window, 255);
+        getCurrentAnim().render(window, srcRect, destRect);
     }
     else
         Interactable::render(window, renderOffset);
