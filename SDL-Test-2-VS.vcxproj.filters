@@ -34,4 +34,11 @@
     <ClInclude Include="include\vector.h" />
     <ClInclude Include="include\window.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+    <None Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="save.txt" />
+  </ItemGroup>
 </Project>
