@@ -87,14 +87,14 @@ void Menu::addX(const int64_t x)
 {
     menuPos.x += x;
     for (auto& button : buttons) button.second.addX(x);
-    for (auto& text : constText) text.second.second.x += x;
+    for (auto& text : constText) text.second.second.x += static_cast<int>(x);
 }
 
 void Menu::addY(const int64_t y)
 {
     menuPos.y += y;
     for (auto& button : buttons) button.second.addY(y);
-    for (auto& text : constText) text.second.second.y += y;
+    for (auto& text : constText) text.second.second.y += static_cast<int>(y);
 }
 
 const Vect<int64_t> Menu::getCenteredPos(const Vect<uint32_t> objSize, 

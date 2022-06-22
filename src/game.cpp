@@ -45,7 +45,7 @@ Game::Game()
     }
 
     // Setting seed for random events
-    srand(time(NULL));
+    srand(static_cast<uint32_t>(time(NULL)));
 }
 
 Game::~Game()
@@ -115,7 +115,7 @@ void Game::iteration()
     // Saving every 5 seconds
     if (std::time(0) > lastSaveTime + SAVE_INTERVAL)
     {
-        lastSaveTime = std::time(0);
+        lastSaveTime = static_cast<uint32_t>(std::time(0));
         save();
     }
 

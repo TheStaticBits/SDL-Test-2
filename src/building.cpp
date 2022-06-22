@@ -55,9 +55,9 @@ bool Building::canPlace(const Vect<int64_t>& pos, std::vector<std::unique_ptr<In
 
         // Removing pixels off the side
         if (objRect.x < pos.x)
-            pixelsBeneath -= pos.x - objRect.x;
+            pixelsBeneath -= static_cast<uint32_t>(pos.x - objRect.x);
         if (objRect.x + objRect.w > pos.x + renderPos.w)
-            pixelsBeneath -= (objRect.x + objRect.w) - (pos.x + renderPos.w);
+            pixelsBeneath -= static_cast<uint32_t>((objRect.x + objRect.w) - (pos.x + renderPos.w));
         
         pChecked += pixelsBeneath;
     }

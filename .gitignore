@@ -1,5 +1,5 @@
 *.o
 *.exe
-bin/web/
+bin/*
+.vs/*
 save.txt
-bin/*/res

@@ -245,8 +245,8 @@ void Interactable::updateMenuPos(const Window& window, const Vect<int64_t>& rend
     const Vect<int> menuSize = menus.at(currentMenu).getSize().cast<int>();
 
     SDL_Rect screenPos = renderPos;
-    screenPos.x -= renderOffset.x;
-    screenPos.y -= renderOffset.y;
+    screenPos.x -= renderOffset.xCast<int>();
+    screenPos.y -= renderOffset.yCast<int>();
 
     if (screenPos.y + screenPos.h + menuSize.y > static_cast<int>(window.getCamSize().y))
         menus.at(currentMenu).setY(screenPos.y - menuSize.y);

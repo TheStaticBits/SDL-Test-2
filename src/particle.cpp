@@ -1,7 +1,7 @@
 #include "particle.h"
 
 #include <iostream>
-#include <cmath>
+#include <math.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -9,6 +9,8 @@
 #include "vector.h"
 #include "window.h"
 #include "utility.h"
+
+inline constexpr float PI = 3.141592653589;
 
 Particle::Particle(SDL_Texture* texture, 
                    const Vect<float> startPos, 
@@ -31,8 +33,8 @@ void Particle::update(Window& window, const Vect<uint32_t> baseSize)
 
     angle += data.rotationSpeed * deltaTime;
 
-    pos.x += data.speed * cos(moveAngle * M_PI / 180) * deltaTime;
-    pos.y += data.speed * sin(moveAngle * M_PI / 180) * deltaTime;
+    pos.x += data.speed * cos(moveAngle * PI / 180) * deltaTime;
+    pos.y += data.speed * sin(moveAngle * PI / 180) * deltaTime;
 
     wrap(window, baseSize);
 }
@@ -90,8 +92,8 @@ void Particle::wrap(Window& window, const Vect<uint32_t> baseSize)
     const Vect<uint32_t> edge = (scaledSize.cast<float>() * ROTATE_EDGES).cast<uint32_t>();
 
     // moving down/right = 1, left/up = -1
-    const Vect<int32_t> moveAngle = { (int32_t)(cos(this->moveAngle * M_PI / 180) < 0.0f) * 2 - 1,
-                                       (int32_t)(sin(this->moveAngle * M_PI / 180) < 0.0f) * 2 - 1 };
+    const Vect<int32_t> moveAngle = { (int32_t)(cos(this->moveAngle * PI / 180) < 0.0f) * 2 - 1,
+                                      (int32_t)(sin(this->moveAngle * PI / 180) < 0.0f) * 2 - 1 };
 
 
     // Distance to travel if it needs to wrap

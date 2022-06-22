@@ -37,11 +37,11 @@ public:
 private:
     inline static const std::string saveName = "Player";
 
-    static constexpr float SPEED = 105.0f * SCALE; // Pixels per second
+    static constexpr float SPEED = 105.0f * static_cast<int32_t>(SCALE); // Pixels per second
     static constexpr float CAM_TIGHTNESS = 3.75f; // How tight the camera is on the player (higher is tighter)
 
-    static constexpr int32_t JUMP_SPEED = -400 * SCALE; 
-    static constexpr int32_t GRAVITY = -800 * SCALE; 
+    static constexpr int32_t JUMP_SPEED = -400 * static_cast<int32_t>(SCALE); 
+    static constexpr int32_t GRAVITY = -800 * static_cast<int32_t>(SCALE);
 
     Vect<float> pos;
     Vect<uint32_t> size;

@@ -85,8 +85,8 @@ public:
 
     // Setter functions
     inline void setPlacable(bool canPlace) { placable = canPlace; }
-    inline void setPos(Vect<int64_t> pos)  { renderPos.x = pos.x; 
-                                             renderPos.y = pos.y; }
+    inline void setPos(Vect<int64_t> pos)  { renderPos.x = pos.xCast<int>();
+                                             renderPos.y = pos.yCast<int>(); }
     inline void removeMenu()               { hovering = false;
                                              clicked = false;     }
 
