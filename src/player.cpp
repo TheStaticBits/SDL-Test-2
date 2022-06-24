@@ -16,8 +16,9 @@
 #include "interactable.h"
 
 Player::Player(const Window& window)
-    : pos(Vect<float>(window.getCamSize().x / 2, window.getCamSize().y)), size{ TILE_SIZE, TILE_SIZE}, renderOffset(getOffset(window)), 
-    velocity{0, 0}, jump(false), canJump(false)
+    : pos(Vect<float>(window.getCamSize().xCast<float>() / 2, window.getCamSize().yCast<float>())), 
+      size{TILE_SIZE, TILE_SIZE}, renderOffset(getOffset(window)),
+      velocity{0, 0}, jump(false), canJump(false)
 {
 
 }
@@ -53,8 +54,8 @@ void Player::update(Window& window, Base& base)
 void Player::render(Window& window, const Vect<int64_t> renderOffset)
 {
     SDL_Rect renderTo = rect;
-    renderTo.x -= renderOffset.x;
-    renderTo.y -= renderOffset.y;
+    renderTo.x -= renderOffset.xCast<int>();
+    renderTo.y -= renderOffset.yCast<int>();
 
     window.drawRect(renderTo, {255, 255, 255});
 }
@@ -134,7 +135,7 @@ void Player::collisions(Window& window, Base& base, const float deltaTime)
             int32_t result = platformCollide(base.getObjects(), deltaTime);
             if (result != -1)
             {
-                pos.y = result;
+                pos.y = static_cast<float>(result);
                 onPlatform = true;
                 break;
             }

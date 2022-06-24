@@ -3,7 +3,7 @@
 
 #include "game.h"
 
-int main(int argc, char* args[]) 
+int main(int argc, char* args[])
 {
     if (!Game::initSDL())
         return -1;

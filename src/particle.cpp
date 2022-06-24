@@ -10,7 +10,7 @@
 #include "window.h"
 #include "utility.h"
 
-inline constexpr float PI = 3.141592653589;
+inline constexpr double PI = 3.141592653589;
 
 Particle::Particle(SDL_Texture* texture, 
                    const Vect<float> startPos, 
@@ -33,8 +33,8 @@ void Particle::update(Window& window, const Vect<uint32_t> baseSize)
 
     angle += data.rotationSpeed * deltaTime;
 
-    pos.x += data.speed * cos(moveAngle * PI / 180) * deltaTime;
-    pos.y += data.speed * sin(moveAngle * PI / 180) * deltaTime;
+    pos.x += data.speed * static_cast<float>(cos(moveAngle * PI / 180)) * deltaTime;
+    pos.y += data.speed * static_cast<float>(sin(moveAngle * PI / 180)) * deltaTime;
 
     wrap(window, baseSize);
 }

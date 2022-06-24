@@ -37,8 +37,24 @@
   <ItemGroup>
     <None Include="Makefile" />
     <None Include=".gitignore" />
+    <None Include="res\data\buildings.json" />
+    <None Include="res\data\buttons.json" />
+    <None Include="res\data\menus.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="save.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\buttons\buildingShop.png" />
+    <Image Include="res\buttons\shop.png" />
+    <Image Include="res\graphics\bgParticle.png" />
+    <Image Include="res\graphics\oldBgParticle.png" />
+    <Image Include="res\interactables\platform\idle.png" />
+    <Image Include="res\interactables\silverStorage\idle.png" />
+    <Image Include="res\shop\l1Bg.png" />
+    <Image Include="res\shop\l2Bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\font\font.ttf" />
   </ItemGroup>
 </Project>

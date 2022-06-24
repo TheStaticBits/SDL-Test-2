@@ -24,7 +24,7 @@ Button::Button(Window& window, std::string texType,
                 buttonData[texType]["anim"]["frames"].get<uint32_t>(), 
                 buttonData[texType]["anim"]["delay"].get<float>()),
       size(animation.getFrame()),
-      textImg(NULL), pos(pos),
+      textImg(NULL), pos(pos), rect(util::getRect(pos, size)),
       hovering(false), pressed(false), activated(false)
 {
     if (text != "")
@@ -35,7 +35,7 @@ Button::Button(Window& window, std::string texType,
 
         textSize = util::getSize(textImg);
     }
-
+    
     animation.lock();
 }
 
@@ -72,6 +72,11 @@ void Button::resetTextures(Window& window)
     }
 }
 
+void Button::setupText(std::string text, const uint32_t fontSize, SDL_Color color)
+{
+
+}
+
 void Button::update(Window& window)
 {
     updateRect();
@@ -80,7 +85,7 @@ void Button::update(Window& window)
     hovering = util::collide(rect, window.getMousePos());
     
     animation.update(window);
-    if (animation.isFinished()) 
+    if (animation.isFinished())
     {
         animation.sendToOpposite();
         animation.lock();
