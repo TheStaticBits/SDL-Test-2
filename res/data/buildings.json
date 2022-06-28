@@ -4,7 +4,7 @@
             "idle": { "path": "res/buildings/core.png",
                       "frames": 2, "delay": 0.1 }
         },
-        "size": [4, 4],
+        "size": [ 4, 4 ],
 
         "1": {
             "radius": 0
@@ -22,8 +22,8 @@
             "idle": { "path": "res/interactables/platform/idle.png", 
                       "frames": 1, "delay": 0.1 }
         },
-        "headX": [0,  20],
-        "bodyX": [20, 40] 
+        "headX": [ 0,  20 ],
+        "bodyX": [ 20, 40 ] 
     },
 
     "Silver Storage": {
@@ -31,7 +31,7 @@
             "idle": { "path": "res/interactables/silverStorage/idle.png",    
                       "frames": 1, "delay": 0.1 }
         },
-        "size": [3, 2],
+        "size": [ 3, 2 ],
 
         "max": {
             "Core L1": 1,

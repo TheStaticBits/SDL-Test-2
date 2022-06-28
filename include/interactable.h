@@ -41,7 +41,7 @@ public:
     void loadImgs(Window& window, const nlohmann::json& data);
     void setupAnims(Window& window, const nlohmann::json& data);
     
-    static void loadMenuData();
+    static void loadMenuData(Window& window);
 
     static void resetTextures(Window& window, const nlohmann::json& allData);
 

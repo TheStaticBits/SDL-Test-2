@@ -53,6 +53,9 @@
     <Image Include="res\interactables\silverStorage\idle.png" />
     <Image Include="res\shop\l1Bg.png" />
     <Image Include="res\shop\l2Bg.png" />
+    <Image Include="res\menus\interactableHomeBG.png" />
+    <Image Include="res\buttons\cancel.png" />
+    <Image Include="res\menus\buildingsBuild.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\font\font.ttf" />

@@ -34,7 +34,7 @@ Base::Base(Window& window)
     
     // Initializing some static variables
     Button::loadButtonData(window);
-    Interactable::loadMenuData();
+    Interactable::loadMenuData(window);
 }
 
 Base::~Base()

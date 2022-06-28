@@ -30,7 +30,7 @@ class Menu
 {
 public:
     Menu(const Vect<int64_t> menuPos, const Vect<uint32_t> menuSize);
-    Menu(const Vect<int64_t> menuPos, const nlohmann::json& menuData);
+    Menu(Window& window, const Vect<int64_t> menuPos, const nlohmann::json& menuData);
     ~Menu();
 
     // Add elements to the menu
@@ -42,7 +42,8 @@ public:
                    const uint32_t fontSize = 0, SDL_Color textColor = { 255, 255, 255, 255 },
                    Dir dirCentered = None);
 
-    void addText(Window& window, const uint32_t size, 
+    void addText(Window& window, 
+                 const std::string tName, const uint32_t size, 
                  std::string text, SDL_Color color = { 255, 255, 255, 255 },
                  Vect<int64_t> posOffset = { 0, 0 }, Dir dirCentered = None);
 

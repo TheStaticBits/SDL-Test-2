@@ -208,11 +208,14 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\buttons\buildingShop.png" />
+    <Image Include="res\buttons\cancel.png" />
     <Image Include="res\buttons\shop.png" />
     <Image Include="res\graphics\bgParticle.png" />
     <Image Include="res\graphics\oldBgParticle.png" />
     <Image Include="res\interactables\platform\idle.png" />
     <Image Include="res\interactables\silverStorage\idle.png" />
+    <Image Include="res\menus\buildingsBuild.png" />
+    <Image Include="res\menus\interactableHomeBG.png" />
     <Image Include="res\shop\l1Bg.png" />
     <Image Include="res\shop\l2Bg.png" />
   </ItemGroup>
@@ -222,4 +225,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

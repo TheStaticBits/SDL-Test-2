@@ -18,12 +18,12 @@
 
 std::unordered_map<ObjType, std::unordered_map<std::string, SDL_Texture*>> Interactable::textures = {};
 std::unordered_map<std::string, Menu> Interactable::menus = {};
-nlohmann::json Interactable::menuData = nlohmann::json(nlohmann::json::value_t::object);
+nlohmann::json Interactable::menuData = nlohmann::json(nlohmann::json::value_t::object); // Empty object
 
 Interactable::Interactable(Window& window, const nlohmann::json& data, const Vect<uint32_t> tileSize, const ObjType type)
     : currentAnim("idle"), tileSize(tileSize), modColor{255, 255, 255},
-      renderPos{ 0, 0, static_cast<int>(tileSize.x * TILE_SIZE), 
-                       static_cast<int>(tileSize.y * TILE_SIZE) }, 
+      renderPos{0, 0, static_cast<int>(tileSize.x * TILE_SIZE), 
+                      static_cast<int>(tileSize.y * TILE_SIZE)}, 
       placing(true), placable(true), hovering(false), clicked(false),
       currentMenu("home"), type(type)
 {
@@ -67,13 +67,13 @@ void Interactable::setupAnims(Window& window, const nlohmann::json& data)
                                             frameData.value()["delay"].get<float>()));
 }
 
-void Interactable::loadMenuData()
+void Interactable::loadMenuData(Window& window)
 {
     menuData = nlohmann::json::parse(std::ifstream(MENU_DATA_PATH));
 
     // Loading menus from menu data
     for (const auto& data : menuData["interactables"].items())
-        menus.emplace(data.key(), Menu({0, 0}, data.value()));
+        menus.emplace(data.key(), Menu(window, {0, 0}, data.value()));
 }
 
 void Interactable::resetTextures(Window& window, const nlohmann::json& allData)

@@ -1,22 +1,27 @@
 {
     "interactables": {
         "home": {
-            "size": [360, 280],
-            "bgPath": "blah",
+            "bgPath": "res/menus/interactableHomeBG.png",
             "buttons": {
                 "cancel": {
                     "lockDir": "Bottom",
-                    "offset": [0, 10],
-                    "texture": "[insertCancelButtonHere]"
+                    "offset": [ 0, 10 ],
+                    "texture": "cancel",
+                    "text": {
+                        "text": "Cancel",
+                        "fontSize": 40,
+                        "color": [ 255, 255, 255, 255 ]
+                    }
                 }
             },
 
-            "text": {
+            "staticText": {
                 "stats": {
                     "text": "Stats",
                     "lockDir": "Top",
-                    "offset": [0, 10],
-                    "fontSize": 30
+                    "offset": [ 0, 10 ],
+                    "fontSize": 30,
+                    "color": [ 255, 255, 255, 255 ]
                 }
             },
 
@@ -24,17 +29,16 @@
                 "level": {
                     "text": "Level: ",
                     "lockDir": "TopLeft",
-                    "offset": [10, 10],
+                    "offset": [ 10, 10 ],
                     "fontSize": 30
                 }
             }
         },
 
         "beingBuilt": {
-            "size": [200, 150],
-            "bgPath": "blah",
+            "bgPath": "res/menus/buildingsBuild.png",
             "buttons": {},
-            "text": {},
+            "staticText": {},
             "runtimeRender": {}
         }
     },
