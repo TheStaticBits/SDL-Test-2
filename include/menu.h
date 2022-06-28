@@ -29,7 +29,6 @@ inline const std::unordered_map<std::string, Dir> strToDir = {
 class Menu
 {
 public:
-    Menu(const Vect<int64_t> menuPos, const Vect<uint32_t> menuSize);
     Menu(Window& window, const Vect<int64_t> menuPos, const nlohmann::json& menuData);
     ~Menu();
 

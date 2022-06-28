@@ -13,12 +13,6 @@
 #include "button.h"
 #include "utility.h"
 
-Menu::Menu(const Vect<int64_t> menuPos, const Vect<uint32_t> menuSize)
-    : bg(NULL), menuSize(menuSize), menuPos(menuPos)
-{
-
-}
-
 Menu::Menu(Window& window, const Vect<int64_t> menuPos, const nlohmann::json& menuData)
     : bg(window.loadTexture(menuData["bgPath"].get<std::string>().c_str())), 
       menuSize(util::getSize(bg)), menuPos(menuPos)
@@ -56,7 +50,7 @@ Menu::Menu(Window& window, const Vect<int64_t> menuPos, const nlohmann::json& me
 
 Menu::~Menu()
 {
-    if (bg != NULL) SDL_DestroyTexture(bg);
+    //if (bg != NULL) SDL_DestroyTexture(bg);
 }
 
 void Menu::addButton(Window& window, 
@@ -137,7 +131,7 @@ const Vect<int64_t> Menu::getCenteredPos(const Vect<uint32_t> objSize,
 
         case (Top):
             return { menuPos.x + (menuSize.x - objSize.x) / 2 + posOffset.x, 
-                     menuPos.y - posOffset.y };
+                     menuPos.y + posOffset.y };
         case (Bottom):
             return { menuPos.x + (menuSize.x - objSize.x) / 2 + posOffset.x, 
                      menuPos.y - posOffset.y };

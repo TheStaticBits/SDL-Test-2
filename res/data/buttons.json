@@ -13,7 +13,7 @@
         "hoverColorMod": [ 255, 255, 230, 50 ],
         "anim": {
             "frames": 2,
-            "delay": 0
+            "delay": 0.0
         }
     },
 

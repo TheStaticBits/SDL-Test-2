@@ -31,7 +31,7 @@ Button::Button(Window& window, std::string texType,
     {
         TTF_Font* font = window.font(fontSize);
         textImg = window.getTextImg(font, text, textColor);
-        TTF_CloseFont(font);
+        //TTF_CloseFont(font);
 
         textSize = util::getSize(textImg);
     }
@@ -51,7 +51,10 @@ void Button::loadButtonData(Window& window)
 
     // Load button textures
     for (const auto& data : buttonData.items())
-        textures[data.key()] = window.scale(window.loadTexture(data.value()["path"].get<std::string>().c_str()));
+    {
+        std::cout << data.value()["path"].get<std::string>().c_str() << std::endl;
+        textures.emplace(data.key(), window.scale(window.loadTexture(data.value()["path"].get<std::string>().c_str())));
+    }
 }
 
 void Button::resetTextures(Window& window)
