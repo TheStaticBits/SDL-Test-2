@@ -27,10 +27,10 @@ Menu::Menu(Window& window, const Vect<int64_t> menuPos, const nlohmann::json& me
                                                        button.value()["offset"][1].get<int64_t>() },
                                         button.value()["text"]["text"].get<std::string>(),
                                         button.value()["text"]["fontSize"].get<uint32_t>(),
-                                        SDL_Color( button.value()["text"]["color"][0].get<uint8_t>(),
+                                        SDL_Color{ button.value()["text"]["color"][0].get<uint8_t>(),
                                                    button.value()["text"]["color"][1].get<uint8_t>(),
                                                    button.value()["text"]["color"][2].get<uint8_t>(),
-                                                   button.value()["text"]["color"][3].get<uint8_t>() ),
+                                                   button.value()["text"]["color"][3].get<uint8_t>() },
                                         strToDir.at(button.value()["lockDir"].get<std::string>()));
     }
 
@@ -38,10 +38,10 @@ Menu::Menu(Window& window, const Vect<int64_t> menuPos, const nlohmann::json& me
     {
         addText(window, text.key(), text.value()["fontSize"].get<uint32_t>(),
                                     text.value()["text"].get<std::string>(),
-                                    SDL_Color( text.value()["color"][0].get<uint8_t>(),
+                                    SDL_Color{ text.value()["color"][0].get<uint8_t>(),
                                                text.value()["color"][1].get<uint8_t>(),
                                                text.value()["color"][2].get<uint8_t>(), 
-                                               text.value()["color"][3].get<uint8_t>() ),
+                                               text.value()["color"][3].get<uint8_t>() },
                                     Vect<int64_t>{ text.value()["offset"][0].get<int64_t>(),
                                                    text.value()["offset"][1].get<int64_t>() },
                                     strToDir.at(text.value()["lockDir"].get<std::string>()));
