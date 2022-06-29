@@ -44,7 +44,9 @@ public:
 
     inline static const Vect<uint32_t> getButtonSize(std::string texType)
     {
-        return util::getSize(textures[texType]);
+        Vect<uint32_t> size = util::getSize(textures[texType]);
+        size.x /= buttonData[texType]["anim"]["frames"].get<uint32_t>();
+        return size;
     }
 
 private:

@@ -50,7 +50,7 @@ Menu::Menu(Window& window, const Vect<int64_t> menuPos, const nlohmann::json& me
 
 Menu::~Menu()
 {
-    //if (bg != NULL) SDL_DestroyTexture(bg);
+    if (bg != NULL) SDL_DestroyTexture(bg);
 }
 
 void Menu::addButton(Window& window, 
@@ -60,6 +60,7 @@ void Menu::addButton(Window& window,
                      Dir dirCentered)
 {
     const Vect<int64_t> pos = getCenteredPos(Button::getButtonSize(texType), posOffset, dirCentered);
+    pos.print();
     buttons.emplace(bName, Button(window, texType, pos, text, fontSize, textColor));
 }
 

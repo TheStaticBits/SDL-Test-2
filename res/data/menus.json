@@ -5,7 +5,7 @@
             "buttons": {
                 "cancel": {
                     "lockDir": "Bottom",
-                    "offset": [ 0, 10 ],
+                    "offset": [ 0, 20 ],
                     "texture": "cancel",
                     "text": {
                         "text": "",
