@@ -61,7 +61,9 @@ void Menu::addButton(Window& window,
 {
     const Vect<int64_t> pos = getCenteredPos(Button::getButtonSize(texType), posOffset, dirCentered);
     pos.print();
-    buttons.emplace(bName, Button(window, texType, pos, text, fontSize, textColor));
+    buttons.emplace(std::piecewise_construct, 
+                    std::forward_as_tuple(bName),
+                    std::forward_as_tuple(window, texType, pos, text, fontSize, textColor));
 }
 
 void Menu::addText(Window& window, 

@@ -73,7 +73,9 @@ void Interactable::loadMenuData(Window& window)
 
     // Loading menus from menu data
     for (const auto& data : menuData["interactables"].items())
-        menus.emplace(data.key(), Menu(window, {0, 0}, data.value()));
+        menus.emplace(std::piecewise_construct,
+                      std::forward_as_tuple(data.key()), 
+                      std::forward_as_tuple(window, Vect<int64_t>{0, 0}, data.value()));
 }
 
 void Interactable::resetTextures(Window& window, const nlohmann::json& allData)
